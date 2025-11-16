@@ -1,0 +1,512 @@
+{
+  "updatedAt": "2025-11-12T18:11:11.000Z",
+  "createdAt": "2025-07-28T20:25:32.819Z",
+  "id": "ZdviP8rtlJinCRJT",
+  "name": "Monday Sub-Sub-Workflow (Creating Items)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n   \"output\": {\n   \"board_id\": 6038686507,\n   \"create_items\": true,\n   \"items\": [\n     {\n       \"item_name\": \"Storied GPT\",\n       \"deadline\": \"\",\n       \"description\": \"How to use it as part of the sales process; strengthen internal IP and legal IP (Storied and Narrative Intelligence as AI/Category).\",\n       \"owner\": \"Edward\",\n       \"board\": 6038686507,\n       \"group_id\": \"emailed_items54872\"\n     },\n     {\n       \"item_name\": \"Newsletter GPT\",\n       \"deadline\": \"\",\n       \"description\": \"Improve performance and speed; use as a springboard for Content GPT including LinkedIn posts.\",\n       \"owner\": \"Edward\",\n       \"board\": 6038686507,\n       \"group_id\": \"emailed_items54872\"\n     },\n     {\n       \"item_name\": \"Aspirational goal\",\n       \"deadline\": \"\",\n       \"description\": \"Create a custom GPT for every client; build Notebook LMs for every client.\",\n       \"owner\": \"Edward\",\n       \"board\": 6038686507,\n       \"group_id\": \"emailed_items54872\"\n     }\n    ]\n  }\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -2656,
+        -432
+      ],
+      "id": "0d82201d-900a-42dc-a260-7b2643c2e6b0",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "={{ $json.board }}",
+        "groupId": "={{ $json.group_id }}",
+        "name": "={{ $json.item_name }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        -880,
+        -512
+      ],
+      "id": "20b4a906-7910-46c1-89db-3857c7271757",
+      "name": "Create item on Edward's board",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $json.id }}",
+        "value": "={{ $('Split Out').item.json.description }}"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -544
+      ],
+      "id": "fb930921-97c4-4355-a642-8274e0b46e54",
+      "name": "Add an update to an item",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "=The item(s) have been added to your Monday board. ",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -272,
+        -576
+      ],
+      "id": "26af969f-0d9e-4c9e-8897-579de9270dd7",
+      "name": "Send a message2",
+      "webhookId": "8332284e-ab95-4a51-a277-21501f7687d9",
+      "executeOnce": true,
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0749cace-9af9-4c4d-9416-103b4f768abf",
+              "leftValue": "={{ $json.output.create_items }}",
+              "rightValue": "\"true\"",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2336,
+        -144
+      ],
+      "id": "3a5cb940-4efc-4721-90b9-33bff870feba",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        -464
+      ],
+      "id": "16b42677-d1cd-4c99-ab92-834ea890c4d3",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "message": "=Hello, I would like to approve the next step in this workflow?\nThe following item(s) will be created on your Monday board:\n\n{{ $json.output.items.map(item => `• ${item.item_name} – ${item.description}`).join('\\n\\n') }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -2016,
+        -240
+      ],
+      "id": "eba150ef-4365-43f2-a742-68990c098867",
+      "name": "Send message and wait for response",
+      "webhookId": "d4e2c3ea-b09b-44ad-b3ba-a853ed578ed2",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7a920f6f-ce6b-4a81-ae95-8be268770fb1",
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1776,
+        -272
+      ],
+      "id": "52f94b9e-eaae-4eb7-8b26-4a35515bd43e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "=No item(s) will be added to your Monday board. ",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -1440,
+        -192
+      ],
+      "id": "9f1008b8-9145-4d7c-a883-31e4c6cb46f8",
+      "name": "Send a message1",
+      "webhookId": "8332284e-ab95-4a51-a277-21501f7687d9",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch"
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -1504,
+        -416
+      ],
+      "id": "15288984-89fc-4fa0-b424-60ad93a0e51a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "99b8c016-6dd5-4140-8ee8-a6762b7a04ed",
+              "name": "summary",
+              "value": "The item(s) has not been added to the Monday board since the user declined to approve the creation |",
+              "type": "string"
+            },
+            {
+              "id": "db5fe821-7daa-4ddd-8214-40537250e481",
+              "name": "item_name",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].item_name }}",
+              "type": "string"
+            },
+            {
+              "id": "f1908e7a-10c1-4ee6-a6c0-441e432d0ef4",
+              "name": "item_description",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].description }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1120,
+        -192
+      ],
+      "id": "983166d5-ef17-480b-a423-731399a4344b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b28093a9-3987-45ba-9013-bad92ff192af",
+              "name": "summary",
+              "value": "The item has been created on Edward's board. The item details are in the object. ",
+              "type": "string"
+            },
+            {
+              "id": "2e42e1fe-fa4c-430b-81a9-ad6d64b6185c",
+              "name": "item_name",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].item_name }}",
+              "type": "string"
+            },
+            {
+              "id": "718957c6-5bd5-4c73-beb4-84ecc841c050",
+              "name": "created_item_id",
+              "value": "={{ $('Create item on Edward\\'s board').item.json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "a1ed6544-f640-4f6a-bc69-6c00938a2153",
+              "name": "item_description",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].description }}",
+              "type": "string"
+            },
+            {
+              "id": "d01fd539-ce71-4390-bb14-b47f524a827d",
+              "name": "board_id",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].board }}",
+              "type": "number"
+            },
+            {
+              "id": "0014292d-3bca-4677-a65d-4d2c84f2017d",
+              "name": "group_id",
+              "value": "={{ $('When Executed by Another Workflow').item.json.output.items[0].group_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -64,
+        -576
+      ],
+      "id": "c1ece2c7-de8e-43be-9800-99837a56d516",
+      "name": "Edit Fields1"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create item on Edward's board": {
+      "main": [
+        [
+          {
+            "node": "Add an update to an item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add an update to an item": {
+      "main": [
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Create item on Edward's board",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "output": {
+            "board_id": 6038686507,
+            "create_items": true,
+            "items": [
+              {
+                "item_name": "Research EOS -> A token migration (Coinbase to Exodus)",
+                "deadline": "2025-11-19",
+                "description": "Michael: Research and provide guidance on migrating EOS tokens from Coinbase to a self-custodial wallet (Exodus) and swapping them for A via the official migration portal. Not urgent — complete within the next week.",
+                "owner": "Edward Njogu",
+                "board": 6038686507,
+                "group_id": "emailed_items54872"
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "018e56e9-eb45-450d-8a17-72ac8bc18f59",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-07-28T20:25:32.833Z",
+      "createdAt": "2025-07-28T20:25:32.833Z",
+      "role": "workflow:owner",
+      "workflowId": "ZdviP8rtlJinCRJT",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
