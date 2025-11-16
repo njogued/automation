@@ -1,1 +1,1114 @@
-{"updatedAt":"2025-11-16T15:05:46.000Z","createdAt":"2025-11-14T22:43:00.588Z","id":"nyxwnS6B3f0GS4sI","name":"n8n Workflows - Github","active":true,"isArchived":false,"nodes":[{"parameters":{"rule":{"interval":[{"field":"hours","hoursInterval":4,"triggerAtMinute":40}]}},"type":"n8n-nodes-base.scheduleTrigger","typeVersion":1.2,"position":[-384,-48],"id":"c10ca563-f6a0-4500-9aff-18be112ca76d","name":"Schedule Trigger"},{"parameters":{"modelId":{"__rl":true,"value":"gpt-4.1-mini","mode":"list","cachedResultName":"GPT-4.1-MINI"},"responses":{"values":[{"content":"=#TASK\n\nI would like you to prepare a short commit message related the automation below. There is older version and an updated version of the automation. I would like you to identify the differences/updates made to the automation by comparing differences in the Old and Updated versions, then use that comparison to write the commit message to add the Updated Workflow into Github.\n\nWorkflow Name: {{ $('Get many workflows').item.json.name }}\n\n## UPDATED WORKFLOW\n{{ $('Get many workflows').item.json.nodes.toJsonString() }}\n\n## OLD WORKFLOW\n{{ $json.data.nodes.toJsonString() }}"}]},"builtInTools":{},"options":{"textFormat":{"textOptions":{"type":"json_schema","schema":"{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"}}}},"type":"@n8n/n8n-nodes-langchain.openAi","typeVersion":2,"position":[-64,496],"id":"02ade0a0-d9ca-491e-b30b-2add89332c00","name":"Message a model","credentials":{"openAiApi":{"id":"O0zxMyVMsAWQNvxb","name":"OpenAi account"}}},{"parameters":{"resource":"file","owner":{"__rl":true,"value":"njogued","mode":"name"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields').item.json.file_name }}","fileContent":"={{ $('Get many workflows').item.json.toJsonString() }}","commitMessage":"={{ $json.output[0].content[0].text.commit_message }}"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[400,736],"id":"17d18f40-e25f-4a54-9071-b05c8d395728","name":"Create a file","webhookId":"af1a453b-db41-4a8f-baa9-95b28849c06e","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"assignments":{"assignments":[{"id":"22311fda-25e7-4585-b07e-e60e14a4b812","name":"file_name","value":"=n8n/{{ $json.name.replaceAll(' ','_') }}.json","type":"string"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[-48,240],"id":"5550d7ee-582b-43bf-9d25-aa17a2aab812","name":"Edit Fields"},{"parameters":{"resource":"file","operation":"list","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"n8n"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[-32,-48],"id":"df781103-6adb-47d7-9d78-24a2b68233a7","name":"List files","webhookId":"1c17a39c-7667-4705-bf7c-a4dd7983f02e","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"fieldsToAggregate":{"fieldToAggregate":[{"fieldToAggregate":"path"}]},"options":{}},"type":"n8n-nodes-base.aggregate","typeVersion":1,"position":[288,-48],"id":"c7d8d610-3a8f-4b20-a7cd-dc032906062e","name":"Aggregate"},{"parameters":{"rules":{"values":[{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"leftValue":"={{ $('Aggregate').item.json.path }}","rightValue":"={{ $('Edit Fields').item.json.file_name }}","operator":{"type":"array","operation":"contains","rightType":"any"},"id":"2cf86146-b19c-4f32-8d46-d866fc11c320"}],"combinator":"and"}},{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"id":"be043fd5-e728-471c-8a06-ed4fbd815035","leftValue":"={{ $('Aggregate').item.json.path }}","rightValue":"={{ $('Edit Fields').item.json.file_name }}","operator":{"type":"array","operation":"notContains","rightType":"any"}}],"combinator":"and"}}]},"options":{}},"type":"n8n-nodes-base.switch","typeVersion":3.3,"position":[288,240],"id":"fe8020fa-cf60-4eaf-a553-23d3d7aa31e5","name":"Switch"},{"parameters":{"resource":"file","operation":"edit","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields').item.json.file_name }}","fileContent":"={{ $('Get many workflows').item.json.toJsonString() }}","commitMessage":"={{ $('Message a model').item.json.output[0].content[0].text.commit_message }}"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[400,496],"id":"25d9854e-f50d-4c39-a4d7-1f6972f72f45","name":"Edit a file","webhookId":"0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"resource":"file","operation":"get","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields').item.json.file_name }}","additionalParameters":{}},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[592,224],"id":"72dae206-845d-44de-ad13-77e5a5258c71","name":"Get a file","webhookId":"3040be33-3e0b-47d7-aabe-49814827f32c","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"operation":"fromJson","options":{}},"type":"n8n-nodes-base.extractFromFile","typeVersion":1,"position":[-368,496],"id":"81a55671-a35a-492b-abce-7b953c4c1924","name":"Extract from File"},{"parameters":{"modelId":{"__rl":true,"value":"gpt-4.1-mini","mode":"list","cachedResultName":"GPT-4.1-MINI"},"responses":{"values":[{"content":"=Extract this n8n workflow and prepare a short commit message related the automation.\n\nWorkflow Name: {{ $('Filter').item.json.name }}\n\nWorkflow: {{ $('Get many workflows').item.json.nodes.toJsonString() }}"}]},"builtInTools":{},"options":{"textFormat":{"textOptions":{"type":"json_schema","schema":"{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"}}}},"type":"@n8n/n8n-nodes-langchain.openAi","typeVersion":2,"position":[-368,736],"id":"e3244598-6cbd-4c37-b6f3-3b1290378545","name":"Message a model1","credentials":{"openAiApi":{"id":"O0zxMyVMsAWQNvxb","name":"OpenAi account"}}},{"parameters":{"filters":{},"requestOptions":{}},"type":"n8n-nodes-base.n8n","typeVersion":1,"position":[576,-48],"id":"510b3e21-13c8-4cca-91fe-bfb0ddd582b9","name":"Get many workflows","credentials":{"n8nApi":{"id":"1OxszQwe707RlHDg","name":"n8n account"}}},{"parameters":{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"id":"4886fde7-a356-4b96-b508-1269f12d8902","leftValue":"={{ $json.updatedAt }}","rightValue":"={{ $('Schedule Trigger').item.json.timestamp.toDateTime().minus(4, 'hours') }}","operator":{"type":"dateTime","operation":"afterOrEquals"}}],"combinator":"and"},"options":{}},"type":"n8n-nodes-base.filter","typeVersion":2.2,"position":[-368,240],"id":"be35cfb4-b542-4ce0-8ef2-acf7cf8e678f","name":"Filter"},{"parameters":{"resource":"file","owner":{"__rl":true,"value":"njogued","mode":"name"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields1').item.json.file_name }}","fileContent":"={{ $('Get many workflows1').item.json.toJsonString() }}","commitMessage":"={{ $json.output[0].content[0].text.commit_message }}"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[640,2064],"id":"346f9beb-7056-46ca-b5ff-03f02fd69c85","name":"Create a file1","webhookId":"af1a453b-db41-4a8f-baa9-95b28849c06e","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"assignments":{"assignments":[{"id":"22311fda-25e7-4585-b07e-e60e14a4b812","name":"file_name","value":"=n8n/{{ $json.name.replaceAll(' ','_') }}.json","type":"string"}]},"options":{}},"type":"n8n-nodes-base.set","typeVersion":3.4,"position":[-368,1552],"id":"4b20d9f6-7329-4db2-9fbb-92dacb270903","name":"Edit Fields1"},{"parameters":{"resource":"file","operation":"list","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"n8n"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[-16,1264],"id":"444f6736-7abf-4da0-a83a-e0434cf631e7","name":"List files1","webhookId":"1c17a39c-7667-4705-bf7c-a4dd7983f02e","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"fieldsToAggregate":{"fieldToAggregate":[{"fieldToAggregate":"path"}]},"options":{}},"type":"n8n-nodes-base.aggregate","typeVersion":1,"position":[304,1264],"id":"027346fb-2f31-4f53-8306-cf9da0ad8ceb","name":"Aggregate1"},{"parameters":{"rules":{"values":[{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"leftValue":"={{ $('Aggregate1').item.json.path }}","rightValue":"={{ $('Edit Fields1').item.json.file_name }}","operator":{"type":"array","operation":"contains","rightType":"any"},"id":"2cf86146-b19c-4f32-8d46-d866fc11c320"}],"combinator":"and"}},{"conditions":{"options":{"caseSensitive":true,"leftValue":"","typeValidation":"strict","version":2},"conditions":[{"id":"be043fd5-e728-471c-8a06-ed4fbd815035","leftValue":"={{ $('Aggregate1').item.json.path }}","rightValue":"={{ $('Edit Fields1').item.json.file_name }}","operator":{"type":"array","operation":"notContains","rightType":"any"}}],"combinator":"and"}}]},"options":{}},"type":"n8n-nodes-base.switch","typeVersion":3.3,"position":[-16,1552],"id":"263ce293-c391-427d-90e3-fb28742df3af","name":"Switch1"},{"parameters":{"resource":"file","operation":"get","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields1').item.json.file_name }}","additionalParameters":{}},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[320,1536],"id":"785d3ec4-1388-4bc8-895d-8899df5bacf4","name":"Get a file1","webhookId":"3040be33-3e0b-47d7-aabe-49814827f32c","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"modelId":{"__rl":true,"value":"gpt-4.1-mini","mode":"list","cachedResultName":"GPT-4.1-MINI"},"responses":{"values":[{"content":"=Extract this n8n workflow and prepare a short commit message related the automation.\n\nWorkflow Name: {{ $('Filter1').item.json.name }}\n\nWorkflow: {{ $('Get many workflows1').item.json.nodes.toJsonString() }}"}]},"builtInTools":{},"options":{"textFormat":{"textOptions":{"type":"json_schema","schema":"{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"}}}},"type":"@n8n/n8n-nodes-langchain.openAi","typeVersion":2,"position":[-352,2064],"id":"27995f9c-86b8-47cc-8ad7-d50e7e653f88","name":"Message a model3","credentials":{"openAiApi":{"id":"O0zxMyVMsAWQNvxb","name":"OpenAi account"}}},{"parameters":{"filters":{},"requestOptions":{}},"type":"n8n-nodes-base.n8n","typeVersion":1,"position":[592,1264],"id":"c200635d-9275-437f-b6f1-497cd7f06e88","name":"Get many workflows1","credentials":{"n8nApi":{"id":"1OxszQwe707RlHDg","name":"n8n account"}}},{"parameters":{},"type":"n8n-nodes-base.manualTrigger","typeVersion":1,"position":[-368,1264],"id":"02b54815-eae6-4719-b4cc-7403dd11e2c6","name":"When clicking ‘Execute workflow’"},{"parameters":{"resource":"file","operation":"edit","owner":{"__rl":true,"value":"njogued","mode":"list","cachedResultName":"njogued","cachedResultUrl":"https://github.com/njogued"},"repository":{"__rl":true,"value":"automation","mode":"list","cachedResultName":"automation","cachedResultUrl":"https://github.com/njogued/automation"},"filePath":"={{ $('Edit Fields1').item.json.file_name }}","fileContent":"={{ $('Get many workflows1').item.json.toJsonString() }}","commitMessage":"={{ $('Message a model2').item.json.output[0].content[0].text.commit_message }}"},"type":"n8n-nodes-base.github","typeVersion":1.1,"position":[640,1808],"id":"ae13ee43-5b08-454e-9cc5-4fc52fc36ae7","name":"Edit a file1","webhookId":"0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38","credentials":{"githubApi":{"id":"gXXV3FNOXoKqeD9d","name":"GitHub account"}}},{"parameters":{"modelId":{"__rl":true,"value":"gpt-4.1-mini","mode":"list","cachedResultName":"GPT-4.1-MINI"},"responses":{"values":[{"content":"=#TASK\n\nI would like you to prepare a short commit message related the automation below. There is older version and an updated version of the automation. I would like you to identify the differences/updates made to the automation by comparing differences in the Old and Updated versions, then use that comparison to write the commit message to add the Updated Workflow into Github.\n\nWorkflow Name: {{ $('Get many workflows1').item.json.name }}\n\n## UPDATED WORKFLOW\n{{ $('Get many workflows1').item.json.nodes.toJsonString() }}\n\n## OLD WORKFLOW\n{{ $json.data.nodes.toJsonString() }}"}]},"builtInTools":{},"options":{"textFormat":{"textOptions":{"type":"json_schema","schema":"{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"}}}},"type":"@n8n/n8n-nodes-langchain.openAi","typeVersion":2,"position":[-352,1808],"id":"82f54432-8c72-4af5-aa05-0036fcf91fd1","name":"Message a model2","credentials":{"openAiApi":{"id":"O0zxMyVMsAWQNvxb","name":"OpenAi account"}}},{"parameters":{"operation":"fromJson","options":{}},"type":"n8n-nodes-base.extractFromFile","typeVersion":1,"position":[608,1536],"id":"67bcdca7-cef0-467e-af4a-440589f0e1d5","name":"Extract from File1"},{"parameters":{"content":"## First Time\n* Run this to send all your workflows to Github. \n* Update Github parameters to get started","height":1152,"width":1312,"color":6},"type":"n8n-nodes-base.stickyNote","position":[-512,1120],"typeVersion":1,"id":"d4c3a716-fdc4-4d7c-93bd-44ae4a66fff9","name":"Sticky Note"},{"parameters":{"content":"## Periodic Workflows\n* Runs with defined intervals (currently set to 4 hours) and makes any changes to Github files\n* Does not delete files, just updates existing ones or creates new ones","height":1136,"width":1296,"color":3},"type":"n8n-nodes-base.stickyNote","position":[-512,-192],"typeVersion":1,"id":"3b0a5561-860e-4642-b1cb-c453a2000618","name":"Sticky Note1"}],"connections":{"Schedule Trigger":{"main":[[{"node":"List files","type":"main","index":0}]]},"Message a model":{"main":[[{"node":"Edit a file","type":"main","index":0}]]},"Edit Fields":{"main":[[{"node":"Switch","type":"main","index":0}]]},"List files":{"main":[[{"node":"Aggregate","type":"main","index":0}]]},"Aggregate":{"main":[[{"node":"Get many workflows","type":"main","index":0}]]},"Switch":{"main":[[{"node":"Get a file","type":"main","index":0}],[{"node":"Message a model1","type":"main","index":0}]]},"Get a file":{"main":[[{"node":"Extract from File","type":"main","index":0}]]},"Extract from File":{"main":[[{"node":"Message a model","type":"main","index":0}]]},"Message a model1":{"main":[[{"node":"Create a file","type":"main","index":0}]]},"Get many workflows":{"main":[[{"node":"Filter","type":"main","index":0}]]},"Filter":{"main":[[{"node":"Edit Fields","type":"main","index":0}]]},"Edit Fields1":{"main":[[{"node":"Switch1","type":"main","index":0}]]},"List files1":{"main":[[{"node":"Aggregate1","type":"main","index":0}]]},"Aggregate1":{"main":[[{"node":"Get many workflows1","type":"main","index":0}]]},"Switch1":{"main":[[{"node":"Get a file1","type":"main","index":0}],[{"node":"Message a model3","type":"main","index":0}]]},"Get a file1":{"main":[[{"node":"Extract from File1","type":"main","index":0}]]},"Message a model3":{"main":[[{"node":"Create a file1","type":"main","index":0}]]},"Get many workflows1":{"main":[[{"node":"Edit Fields1","type":"main","index":0}]]},"When clicking ‘Execute workflow’":{"main":[[{"node":"List files1","type":"main","index":0}]]},"Message a model2":{"main":[[{"node":"Edit a file1","type":"main","index":0}]]},"Extract from File1":{"main":[[{"node":"Message a model2","type":"main","index":0}]]}},"settings":{"executionOrder":"v1","callerPolicy":"workflowsFromSameOwner","availableInMCP":false,"errorWorkflow":"geHpTM7jr9NoyZNi","timeSavedPerExecution":5},"staticData":{"node:Schedule Trigger":{"recurrenceRules":[]}},"meta":{"templateCredsSetupCompleted":true},"pinData":{},"versionId":"11262d40-bb0a-4dd4-aa03-1db313712dc3","triggerCount":1,"shared":[{"updatedAt":"2025-11-14T22:43:00.596Z","createdAt":"2025-11-14T22:43:00.596Z","role":"workflow:owner","workflowId":"nyxwnS6B3f0GS4sI","projectId":"VAJTVGe0TjfANDAE"}],"tags":[]}
+{
+  "updatedAt": "2025-11-16T15:05:46.000Z",
+  "createdAt": "2025-11-14T22:43:00.588Z",
+  "id": "nyxwnS6B3f0GS4sI",
+  "name": "n8n Workflows - Github",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4,
+              "triggerAtMinute": 40
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -384,
+        -48
+      ],
+      "id": "c10ca563-f6a0-4500-9aff-18be112ca76d",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=#TASK\n\nI would like you to prepare a short commit message related the automation below. There is older version and an updated version of the automation. I would like you to identify the differences/updates made to the automation by comparing differences in the Old and Updated versions, then use that comparison to write the commit message to add the Updated Workflow into Github.\n\nWorkflow Name: {{ $('Get many workflows').item.json.name }}\n\n## UPDATED WORKFLOW\n{{ $('Get many workflows').item.json.nodes.toJsonString() }}\n\n## OLD WORKFLOW\n{{ $json.data.nodes.toJsonString() }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        496
+      ],
+      "id": "02ade0a0-d9ca-491e-b30b-2add89332c00",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields').item.json.file_name }}",
+        "fileContent": "={{ $('Get many workflows').item.json.toJsonString() }}",
+        "commitMessage": "={{ $json.output[0].content[0].text.commit_message }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        736
+      ],
+      "id": "17d18f40-e25f-4a54-9071-b05c8d395728",
+      "name": "Create a file",
+      "webhookId": "af1a453b-db41-4a8f-baa9-95b28849c06e",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22311fda-25e7-4585-b07e-e60e14a4b812",
+              "name": "file_name",
+              "value": "=n8n/{{ $json.name.replaceAll(' ','_') }}.json",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -48,
+        240
+      ],
+      "id": "5550d7ee-582b-43bf-9d25-aa17a2aab812",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "n8n"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -32,
+        -48
+      ],
+      "id": "df781103-6adb-47d7-9d78-24a2b68233a7",
+      "name": "List files",
+      "webhookId": "1c17a39c-7667-4705-bf7c-a4dd7983f02e",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "path"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -48
+      ],
+      "id": "c7d8d610-3a8f-4b20-a7cd-dc032906062e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Aggregate').item.json.path }}",
+                    "rightValue": "={{ $('Edit Fields').item.json.file_name }}",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    },
+                    "id": "2cf86146-b19c-4f32-8d46-d866fc11c320"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "be043fd5-e728-471c-8a06-ed4fbd815035",
+                    "leftValue": "={{ $('Aggregate').item.json.path }}",
+                    "rightValue": "={{ $('Edit Fields').item.json.file_name }}",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notContains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        288,
+        240
+      ],
+      "id": "fe8020fa-cf60-4eaf-a553-23d3d7aa31e5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields').item.json.file_name }}",
+        "fileContent": "={{ $('Get many workflows').item.json.toJsonString() }}",
+        "commitMessage": "={{ $('Message a model').item.json.output[0].content[0].text.commit_message }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        496
+      ],
+      "id": "25d9854e-f50d-4c39-a4d7-1f6972f72f45",
+      "name": "Edit a file",
+      "webhookId": "0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields').item.json.file_name }}",
+        "additionalParameters": {}
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        592,
+        224
+      ],
+      "id": "72dae206-845d-44de-ad13-77e5a5258c71",
+      "name": "Get a file",
+      "webhookId": "3040be33-3e0b-47d7-aabe-49814827f32c",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        496
+      ],
+      "id": "81a55671-a35a-492b-abce-7b953c4c1924",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Extract this n8n workflow and prepare a short commit message related the automation.\n\nWorkflow Name: {{ $('Filter').item.json.name }}\n\nWorkflow: {{ $('Get many workflows').item.json.nodes.toJsonString() }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        736
+      ],
+      "id": "e3244598-6cbd-4c37-b6f3-3b1290378545",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        576,
+        -48
+      ],
+      "id": "510b3e21-13c8-4cca-91fe-bfb0ddd582b9",
+      "name": "Get many workflows",
+      "credentials": {
+        "n8nApi": {
+          "id": "1OxszQwe707RlHDg",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4886fde7-a356-4b96-b508-1269f12d8902",
+              "leftValue": "={{ $json.updatedAt }}",
+              "rightValue": "={{ $('Schedule Trigger').item.json.timestamp.toDateTime().minus(4, 'hours') }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "afterOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -368,
+        240
+      ],
+      "id": "be35cfb4-b542-4ce0-8ef2-acf7cf8e678f",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields1').item.json.file_name }}",
+        "fileContent": "={{ $('Get many workflows1').item.json.toJsonString() }}",
+        "commitMessage": "={{ $json.output[0].content[0].text.commit_message }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        2064
+      ],
+      "id": "346f9beb-7056-46ca-b5ff-03f02fd69c85",
+      "name": "Create a file1",
+      "webhookId": "af1a453b-db41-4a8f-baa9-95b28849c06e",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22311fda-25e7-4585-b07e-e60e14a4b812",
+              "name": "file_name",
+              "value": "=n8n/{{ $json.name.replaceAll(' ','_') }}.json",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        1552
+      ],
+      "id": "4b20d9f6-7329-4db2-9fbb-92dacb270903",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "list",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "n8n"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -16,
+        1264
+      ],
+      "id": "444f6736-7abf-4da0-a83a-e0434cf631e7",
+      "name": "List files1",
+      "webhookId": "1c17a39c-7667-4705-bf7c-a4dd7983f02e",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "path"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        304,
+        1264
+      ],
+      "id": "027346fb-2f31-4f53-8306-cf9da0ad8ceb",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Aggregate1').item.json.path }}",
+                    "rightValue": "={{ $('Edit Fields1').item.json.file_name }}",
+                    "operator": {
+                      "type": "array",
+                      "operation": "contains",
+                      "rightType": "any"
+                    },
+                    "id": "2cf86146-b19c-4f32-8d46-d866fc11c320"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "be043fd5-e728-471c-8a06-ed4fbd815035",
+                    "leftValue": "={{ $('Aggregate1').item.json.path }}",
+                    "rightValue": "={{ $('Edit Fields1').item.json.file_name }}",
+                    "operator": {
+                      "type": "array",
+                      "operation": "notContains",
+                      "rightType": "any"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -16,
+        1552
+      ],
+      "id": "263ce293-c391-427d-90e3-fb28742df3af",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields1').item.json.file_name }}",
+        "additionalParameters": {}
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        1536
+      ],
+      "id": "785d3ec4-1388-4bc8-895d-8899df5bacf4",
+      "name": "Get a file1",
+      "webhookId": "3040be33-3e0b-47d7-aabe-49814827f32c",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Extract this n8n workflow and prepare a short commit message related the automation.\n\nWorkflow Name: {{ $('Filter1').item.json.name }}\n\nWorkflow: {{ $('Get many workflows1').item.json.nodes.toJsonString() }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        2064
+      ],
+      "id": "27995f9c-86b8-47cc-8ad7-d50e7e653f88",
+      "name": "Message a model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        592,
+        1264
+      ],
+      "id": "c200635d-9275-437f-b6f1-497cd7f06e88",
+      "name": "Get many workflows1",
+      "credentials": {
+        "n8nApi": {
+          "id": "1OxszQwe707RlHDg",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        1264
+      ],
+      "id": "02b54815-eae6-4719-b4cc-7403dd11e2c6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "njogued",
+          "mode": "list",
+          "cachedResultName": "njogued",
+          "cachedResultUrl": "https://github.com/njogued"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "automation",
+          "mode": "list",
+          "cachedResultName": "automation",
+          "cachedResultUrl": "https://github.com/njogued/automation"
+        },
+        "filePath": "={{ $('Edit Fields1').item.json.file_name }}",
+        "fileContent": "={{ $('Get many workflows1').item.json.toJsonString() }}",
+        "commitMessage": "={{ $('Message a model2').item.json.output[0].content[0].text.commit_message }}"
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        640,
+        1808
+      ],
+      "id": "ae13ee43-5b08-454e-9cc5-4fc52fc36ae7",
+      "name": "Edit a file1",
+      "webhookId": "0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38",
+      "credentials": {
+        "githubApi": {
+          "id": "gXXV3FNOXoKqeD9d",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=#TASK\n\nI would like you to prepare a short commit message related the automation below. There is older version and an updated version of the automation. I would like you to identify the differences/updates made to the automation by comparing differences in the Old and Updated versions, then use that comparison to write the commit message to add the Updated Workflow into Github.\n\nWorkflow Name: {{ $('Get many workflows1').item.json.name }}\n\n## UPDATED WORKFLOW\n{{ $('Get many workflows1').item.json.nodes.toJsonString() }}\n\n## OLD WORKFLOW\n{{ $json.data.nodes.toJsonString() }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"commit_message\": {\n      \"type\": \"string\"\n    }\n  },\n  \"additionalProperties\": false,\n  \"required\": [\"commit_message\"]\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        1808
+      ],
+      "id": "82f54432-8c72-4af5-aa05-0036fcf91fd1",
+      "name": "Message a model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        608,
+        1536
+      ],
+      "id": "67bcdca7-cef0-467e-af4a-440589f0e1d5",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "content": "## First Time\n* Run this to send all your workflows to Github. \n* Update Github parameters to get started",
+        "height": 1152,
+        "width": 1312,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        1120
+      ],
+      "typeVersion": 1,
+      "id": "d4c3a716-fdc4-4d7c-93bd-44ae4a66fff9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Periodic Workflows\n* Runs with defined intervals (currently set to 4 hours) and makes any changes to Github files\n* Does not delete files, just updates existing ones or creates new ones",
+        "height": 1136,
+        "width": 1296,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "3b0a5561-860e-4642-b1cb-c453a2000618",
+      "name": "Sticky Note1"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "List files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Edit a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List files": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List files1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Get many workflows1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model3": {
+      "main": [
+        [
+          {
+            "node": "Create a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many workflows1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "List files1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Edit a file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "geHpTM7jr9NoyZNi",
+    "timeSavedPerExecution": 5
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "11262d40-bb0a-4dd4-aa03-1db313712dc3",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-11-14T22:43:00.596Z",
+      "createdAt": "2025-11-14T22:43:00.596Z",
+      "role": "workflow:owner",
+      "workflowId": "nyxwnS6B3f0GS4sI",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
