@@ -1,0 +1,279 @@
+{
+  "updatedAt": "2025-07-21T15:27:25.000Z",
+  "createdAt": "2025-06-03T15:55:12.742Z",
+  "id": "lQxi6YEZQaiu6s76",
+  "name": "Gmail Subagent",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -340,
+        20
+      ],
+      "id": "119e6a85-be1f-492b-b832-34f4fde061ec",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "sendTo": "=edward@storiedinc.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "",
+          "replyTo": ""
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        280,
+        -240
+      ],
+      "id": "6ab215a9-22a6-4749-9170-3eb3f00b0b22",
+      "name": "Gmail",
+      "webhookId": "29fc4ab8-05aa-4613-9806-acf98c9d17f5",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -20,
+        280
+      ],
+      "id": "965bbe58-d070-4b67-8414-65afa33d7891",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "",
+          "replyToSenderOnly": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        100,
+        -200
+      ],
+      "id": "26290cbb-8ef6-4857-b8f6-2391b645904e",
+      "name": "Reply to a message in Gmail",
+      "webhookId": "6487f364-da0e-49dc-9053-16f6aac10612",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "ai@storiedinc.com",
+        "toEmail": "=edward@storiedinc.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailFormat": "text",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false,
+          "attachments": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attachments', ``, 'string') }}",
+          "replyTo": "ai@storiedinc.com"
+        }
+      },
+      "type": "n8n-nodes-base.emailSendTool",
+      "typeVersion": 2.1,
+      "position": [
+        380,
+        400
+      ],
+      "id": "31ad13c8-0779-4349-8d5e-476f067adcdd",
+      "name": "Send Email to Edward from AI",
+      "webhookId": "24d9f5d4-06e9-44d1-a905-54a1c927644f",
+      "credentials": {
+        "smtp": {
+          "id": "rSyoUhxs4notBhhj",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.prompt }}\n\nThe date today is  {{ $now.toString() }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant.\n\nYou are tasked with sending emails or getting emails."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        60,
+        20
+      ],
+      "id": "150ef459-ff50-4d02-a6d7-2570f66838e0",
+      "name": "Email Agent"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many messages in Gmail. This tool will be used when the workflow requires a search step in Gmail  to extract information about a sender, specific context, event, workflow, task, etc.",
+        "operation": "getAll",
+        "limit": 30,
+        "simple": false,
+        "filters": {
+          "labelIds": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Label_Names_or_IDs', ``, 'string') }}",
+          "q": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Search', ``, 'string') }}",
+          "receivedAfter": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Received_After', ``, 'string') }}",
+          "receivedBefore": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Received_Before', ``, 'string') }}",
+          "sender": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Sender', ``, 'string') }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        200,
+        380
+      ],
+      "id": "dfed88c3-0283-4369-aa44-a29bd7fae476",
+      "name": "Get many messages in Gmail",
+      "webhookId": "25d66d5c-accc-4ada-8992-c9252e773cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reply to a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email to Edward from AI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Get many messages in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "bbc08481-f845-4619-92c0-30cd077b782b",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-06-03T15:55:12.753Z",
+      "createdAt": "2025-06-03T15:55:12.753Z",
+      "role": "workflow:owner",
+      "workflowId": "lQxi6YEZQaiu6s76",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
