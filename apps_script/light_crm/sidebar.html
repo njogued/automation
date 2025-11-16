@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    :root{
+      --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+                  "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      --text-base: 14px;
+      --text-sm: 12.5px;
+    }
+
+    /* One font everywhere */
+    html, body, input, select, textarea, button, label {
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body { font-size: var(--text-base); line-height: 1.4; color: #222; }
+
+    /* Headings & spacing */
+    h1 { font-size: 18px; font-weight: 600; margin: 0 0 10px; }
+    .section { margin-top: 12px; }
+
+    /* Labels */
+    label { display: block; font-size: var(--text-sm); font-weight: 600; margin: 10px 0 6px; }
+    /* Our checkbox rows from earlier */
+    .checkbox-row { display: inline-flex; align-items: center; gap: 8px; margin: 6px 0; }
+    .checkbox-row.is-disabled { opacity: 0.6; }
+    input[type="checkbox"]{ display: inline-block; width: auto; margin: 0; vertical-align: middle; }
+
+    /* Inputs/selects inherit the same font */
+    input, select, textarea, button { font: inherit; }
+    input, select, textarea { width: 100%; box-sizing: border-box; }
+
+    /* Disabled look */
+    input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Optional: tidy button */
+    .btn{
+      font: inherit; padding: 8px 14px; border: 1px solid #d0d0d0; border-radius: 6px;
+      background: #f6f6f6; cursor: pointer;
+    }
+    .btn:hover{ background: #eee; }
+    /* body   {font-family:Arial,Helvetica,sans-serif;font-size:14px}
+    label  {margin-top:12px;display:block}
+    input  {width:100%;padding:6px;box-sizing:border-box}
+    button {margin-top:16px;padding:8px 12px}
+    input:disabled, select:disabled { opacity: 0.6; cursor: not-allowed; }
+    label.is-disabled { opacity: 0.6; }
+    input[type="checkbox"],
+    input[type="radio"] {
+      display: inline-block;
+      width: auto;
+      margin: 0 8px 0 0;
+      vertical-align: middle;
+    } */
+</style>
+</head>
+
+<body>
+  <h3>CRM Settings</h3>
+  <div id="warning" class="warning" style="display:none;">
+    <strong>Heads-up:</strong> initial authorisation hasn’t been completed.<br>
+    Please click <strong><em>Set Permissions on the Menu</em></strong> to finish setup.<br>
+    Otherwise, you'll experience unexpected behaviour.
+  </div>
+  <label>
+    <input type="checkbox" id="enableEmailReminders"> Get daily reminder emails (recommended)
+  </label>
+
+  <label for="reminderEmail">Reminder-to e-mail address</label>
+  <input type="email" id="reminderEmail" placeholder="name@example.com" required>
+
+  <label for="reminderTime">Reminder time (EST, HH:MM, 24-hr)</label>
+  <input type="time" id="reminderTime" value="09:00">
+
+  <label>
+    <input type="checkbox" id="enableEmailTracking"> Track email activity (recommended)
+  </label>
+
+  <label for="touchOffset">Days until next touch-point</label>
+  <input type="number" id="touchOffset" min="1" value="5">
+
+  <label>
+    <input type="checkbox" id="enableAI"> Enable AI notes & Top actions
+  </label>
+
+  <label for="apiKey">OpenAI API Key</label>
+  <input type="text" id="apiKey" value="">
+
+  <label for="aiModel">Model Preferred</label>
+  <select id="aiModel">
+    <option value="gpt-5">gpt-5</option>
+    <option value="gpt-5-mini">gpt-5-mini</option>
+    <option value="gpt-5-nano">gpt-5-nano</option>
+    <option value="gpt-4.1">gpt-4.1</option>
+    <option value="gpt-4.1-mini">gpt-4.1-mini</option>
+    <option value="gpt-4.1-nano">gpt-4.1-nano</option>
+    <option value="gpt-4o">gpt-4o</option>
+    <option value="gpt-4o-mini">gpt-4o-mini</option>
+    <option value="gpt-4">gpt-4</option>
+    <option value="o1">o1</option>
+    <option value="o1-mini">o1-mini</option>
+    <option value="o1-pro">o1-pro</option>
+    <option value="o3">o3</option>
+    <option value="o3-mini">o3-mini</option>
+    <option value="o4-mini">o4-mini</option>
+  </select>
+  <br>
+  <br>
+  <button class="btn" onclick="save()">Save</button>
+
+  <script>
+    /* ⇢ settings injected server-side */
+    google.script.run
+      .withSuccessHandler(function(executed) {
+        if (!executed) {
+          document.getElementById('warning').style.display = 'block';
+        }
+      })
+      .hasRunActionExecuted();
+    const cfg = <?!= JSON.stringify(settings || {}) ?>;
+    
+    function wireToggle(toggleId, fieldIds) {
+      const t = document.getElementById(toggleId);
+      const fields = fieldIds
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      const labels = fieldIds
+        .map(id => document.querySelector(`label[for="${id}"]`))
+        .filter(Boolean);
+
+      function sync() {
+        const on = t.checked;
+        fields.forEach(el => { el.disabled = !on; });
+        labels.forEach(l => l.classList.toggle('is-disabled', !on));
+      }
+
+      t.addEventListener('change', sync);
+      sync(); // set initial state
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      reminderEmail.value           = cfg.reminderEmail || '';
+      reminderTime.value            = cfg.reminderTime  || '09:00';
+      touchOffset.value             = cfg.touchOffset   || 5;
+      apiKey.value                  = cfg.apiKey || '';
+      aiModel.value                 = cfg.aiModel || 'gpt-5';
+      enableEmailTracking.checked   = cfg.enableEmailTracking || false;
+      enableEmailReminders.checked  = cfg.enableEmailReminders || false;
+      enableAI.checked              = cfg.enableAI || false;
+      // Grey out reminder targets when reminders are off
+      wireToggle('enableEmailReminders', ['reminderEmail', 'reminderTime']);
+      // Grey out touch-offset when email tracking is off
+      wireToggle('enableEmailTracking', ['touchOffset']);
+      // Grey out AI bits when AI is off
+      wireToggle('enableAI', ['apiKey', 'aiModel']);
+    });
+    function save() {
+      const s = {
+        reminderEmail       : reminderEmail.value.trim(),
+        reminderTime        : reminderTime.value,
+        touchOffset         : parseInt(touchOffset.value,10)||5,
+        apiKey              : apiKey.value,
+        aiModel             : aiModel.value,
+        enableEmailTracking : enableEmailTracking.checked,
+        enableEmailReminders: enableEmailReminders.checked,
+        enableAI            : enableAI.checked
+      };
+      google.script.run
+        .withSuccessHandler(()=>google.script.host.close())
+        .saveUserSettings(s);
+    }
+  </script>
+</body>
+</html>
