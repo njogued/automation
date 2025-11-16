@@ -1,0 +1,21 @@
+Bug #1: Updating company name does not update employer ID
+Status: Closed
+
+Bug #2: & in title is pasted as &amp;
+Status: Closed => Used innerText instead of innerHTML
+
+Bug #3: Line 74 will listen to any updates
+after initial newjob message is sent.
+Status: Closed. => Added a removeListener
+
+Bug #4: Date edge case
+`Application Closing Date
+4th November, 2023 at 11:59pm UTC`
+Status: Open
+
+Bug #5: Qualifications Title should be bolded
+Status: Closed => Added a strong tag to the header
+
+Bug #6: When you go back to page, the job details are not
+autofilled.
+Status: Closed => All good after version update
