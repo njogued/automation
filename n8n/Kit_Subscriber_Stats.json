@@ -1,0 +1,266 @@
+{
+  "updatedAt": "2025-09-30T01:32:11.000Z",
+  "createdAt": "2025-09-29T23:49:00.253Z",
+  "id": "t7XfUeqhpZSfYf4n",
+  "name": "Kit Subscriber Stats",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "=https://api.kit.com/v4/subscribers?per_page=1000&status=active",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -560,
+        -592
+      ],
+      "id": "d3a21229-3be5-4e36-b6f6-c3cf73c75553",
+      "name": "Get Kit Subscribers",
+      "executeOnce": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "rQ2ENPIII8EfLIc1",
+          "name": "ConvertKit Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "subscribers",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        48,
+        -592
+      ],
+      "id": "120dacfd-bcf9-41df-b555-7cbb688488b5",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bba5f3f3-914c-4b0a-a35d-0bcc5127b13c",
+              "leftValue": "={{ $('No Operation, do nothing').item.json.pagination.has_next_page }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        -416
+      ],
+      "id": "4936c052-659a-4bb7-98c0-efc0cc7e59ec",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.kit.com/v4/subscribers?per_page=1000&status=active&after={{ $('No Operation, do nothing').item.json.pagination.end_cursor }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -352,
+        -752
+      ],
+      "id": "c1f54424-8105-498c-a2f6-b2968eb88ce8",
+      "name": "Get Kit Subscribers1",
+      "executeOnce": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "rQ2ENPIII8EfLIc1",
+          "name": "ConvertKit Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        -592
+      ],
+      "id": "6f3d1c58-828e-4bba-bd44-c2228d2ffd31",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "QmjqpZWeMfNr7ARu",
+          "mode": "list",
+          "cachedResultName": "Sub Stats to Sheet"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        },
+        "mode": "each",
+        "options": {
+          "waitForSubWorkflow": true
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        -592
+      ],
+      "id": "001a9c23-d1d9-4c4a-bfcb-505d8cc4f462",
+      "name": "Call 'Sub Stats to Sheet'"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        -592
+      ],
+      "id": "5ecfe8e8-7a13-477c-bbab-e79702da065d",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "Get Kit Subscribers": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Call 'Sub Stats to Sheet'",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Kit Subscribers1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get Kit Subscribers1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "No Operation, do nothing": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Sub Stats to Sheet'": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Kit Subscribers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedPerExecution": 1
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e822c1c9-cc8a-4665-8f74-d72be7c00e06",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-09-29T23:49:00.262Z",
+      "createdAt": "2025-09-29T23:49:00.262Z",
+      "role": "workflow:owner",
+      "workflowId": "t7XfUeqhpZSfYf4n",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
