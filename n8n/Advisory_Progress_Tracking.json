@@ -1,0 +1,492 @@
+{
+  "updatedAt": "2025-10-30T22:10:34.000Z",
+  "createdAt": "2025-08-15T10:30:28.000Z",
+  "id": "AAjN9wZKLf9xnGSz",
+  "name": "Advisory Progress Tracking",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 9,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        96
+      ],
+      "id": "db5e0df9-7b0f-4f0a-a378-2379d70e7e58",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c820503a-450f-4e75-bc91-70b12969821d",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "6d70d17e-8277-48b9-a87e-105b32bfda36",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "059c5fa2-dba8-4182-9cfe-c7393d50fd8f",
+              "name": "column_values[4]",
+              "value": "={{ $json.column_values[4] }}",
+              "type": "object"
+            },
+            {
+              "id": "41e3a6bd-e078-48c1-9c2e-0808c6a6fd18",
+              "name": "column_values[6]",
+              "value": "={{ $json.column_values[6] }}",
+              "type": "object"
+            },
+            {
+              "id": "e3873de5-e9fb-422f-b132-f70c9bace3f6",
+              "name": "column_values[15]",
+              "value": "={{ $json.column_values[15] }}",
+              "type": "object"
+            },
+            {
+              "id": "b11abe1b-e8b3-4970-96dc-bef48c09a766",
+              "name": "column_values[19]",
+              "value": "={{ $json.column_values[19] }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1072,
+        96
+      ],
+      "id": "7a2464a9-df09-4af3-b844-5a2f4c468932",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8adcfb26-a950-4798-af68-fff98f65ca4c",
+                    "leftValue": "={{ $json.column_values[4].text }}",
+                    "rightValue": "Done",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.column_values[4].text }}",
+                    "rightValue": "Done",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7f6b36f4-4443-4a3d-9eb8-1c0f429d31d2"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1328,
+        96
+      ],
+      "id": "7068d0be-3727-4069-b03c-748957809fe5",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "// ----- UTC-only date helpers -----\nfunction toUtcDateOnly(d) {\n  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));\n}\n\nfunction parseIsoDate(str) {\n  try {\n    const s = (str || \"\").slice(0, 10); // \"YYYY-MM-DD\"\n    const [y, m, d] = s.split(\"-\").map(Number);\n    if (!y || !m || !d) return null;\n    return new Date(Date.UTC(y, m - 1, d));\n  } catch {\n    return null;\n  }\n}\n\nfunction endOfMonth(d) {\n  const y = d.getUTCFullYear();\n  const m = d.getUTCMonth();\n  return new Date(Date.UTC(y, m + 1, 0));\n}\n\nfunction addMonthsUTC(d, months) {\n  // add whole months in UTC, then clamp to end-of-month safely\n  const y = d.getUTCFullYear();\n  const m = d.getUTCMonth();\n  const base = new Date(Date.UTC(y, m + months + 1, 0)); // day 0 of next month = last day of target month\n  return toUtcDateOnly(base);\n}\n\nfunction diffDays(a, b) {\n  const a0 = toUtcDateOnly(a);\n  const b0 = toUtcDateOnly(b);\n  const msPerDay = 24 * 60 * 60 * 1000;\n  return Math.round((a0 - b0) / msPerDay);\n}\n\nfunction clamp(v, lo, hi) {\n  return Math.max(lo, Math.min(hi, v));\n}\n\n// Month difference ignoring day: months(from start to t)\nfunction monthIndex(d) {\n  return d.getUTCFullYear() * 12 + d.getUTCMonth();\n}\n\n// ----- Business logic -----\nfunction getProgress(start_date, completion_date) {\n  const progress = {};\n  const dateToday = toUtcDateOnly(new Date());\n  const start = parseIsoDate(start_date);\n  const end = parseIsoDate(completion_date);\n\n  // If dates are missing, keep behavior simple\n  if (!end || !start) {\n    if (end) progress.to_renewal = diffDays(end, dateToday);\n    progress.percentage = 0;\n    return progress;\n  }\n\n  // days to renewal\n  progress.to_renewal = diffDays(end, dateToday);\n\n  // percentage, still day-based but simple\n  let pct10 = 0;\n  if (dateToday >= start) {\n    const elapsed = diffDays(new Date(Math.min(dateToday.getTime(), end.getTime())), start);\n    const contractLength = Math.max(1, diffDays(end, start));\n    const pctRaw = (elapsed * 100) / contractLength;\n    pct10 = Math.floor((pctRaw + 5) / 10) * 10;\n    pct10 = clamp(pct10, 0, 100);\n  }\n  progress.percentage = pct10;\n\n  // ----- Month-wise pulses -----\n  // Pulses occur: EOM(start + 2 months), then every +3 months\n  // Compute the first pulse:\n  const firstPulse = addMonthsUTC(start, 2); // already EOM of target month\n\n  let nextPulse = firstPulse;\n  if (dateToday > firstPulse) {\n    // How many whole 3-month jumps are needed to reach today or beyond\n    const k = Math.ceil((monthIndex(dateToday) - monthIndex(firstPulse)) / 3);\n    nextPulse = addMonthsUTC(start, 2 + 3 * Math.max(0, k));\n  }\n\n  // Cap to contract end if earlier\n  const target = nextPulse <= end ? nextPulse : end;\n\n  if (target >= dateToday) {\n    progress.to_pulse = diffDays(target, dateToday);\n    progress.pulse_is_contract_end = nextPulse > end; // true if we capped to end\n  }\n\n  return progress;\n}\n\n// Extract values for each item { id, name, column_values }\nfunction getColVals(inputItem) {\n  const { id, name, column_values } = inputItem || {};\n  const out = { id, name };\n\n  let statsUpdated = false;\n  for (const col of column_values || []) {\n    if (!col) continue;\n    if (col.id) out[col.id] = col.text;\n\n    if (!statsUpdated && out[\"date_mktv1y3v\"] && out[\"date_mknxb5m1\"]) {\n      const p = getProgress(out[\"date_mktv1y3v\"], out[\"date_mknxb5m1\"]);\n      out.progress = p.percentage;\n      out.to_renewal = p.to_renewal;\n      if (typeof p.to_pulse !== \"undefined\") out.to_pulse = p.to_pulse;\n      if (typeof p.pulse_is_contract_end !== \"undefined\") {\n        out.pulse_is_contract_end = p.pulse_is_contract_end;\n      }\n      statsUpdated = true;\n    }\n  }\n\n  return out;\n}\n\n// ----- n8n wrapper -----\nfunction normalizeInput(n8nItems) {\n  if (n8nItems.length === 1 && Array.isArray(n8nItems[0]?.json)) {\n    return n8nItems[0].json.map(obj => ({ json: obj }));\n  }\n  return n8nItems;\n}\n\nconst inItems = normalizeInput(items);\n\nconst out = inItems.map(it => {\n  const payload = it?.json || {};\n  const computed = getColVals(payload);\n  return { json: computed };\n});\n\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1632,
+        80
+      ],
+      "id": "0aa083be-2dbd-47f6-a0eb-5d4c0859727a",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getAll",
+        "boardId": "8080609962",
+        "groupId": "new_group__1",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        624,
+        96
+      ],
+      "id": "6778e854-9cb9-4012-8d74-c6e42d68caa0",
+      "name": "Get many items",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C07L55RT962",
+          "mode": "list",
+          "cachedResultName": "core-team"
+        },
+        "text": "={{ \"* Contract Progress Overview:*\\n\" + $('Aggregate').item.json.data.map(c => ` • ${c.name}: ${c.progress + \"%\" || (c.label4__1)}`).join(\"\\n\") }}\n\n{{ \"*Contracts Approaching Renewal (<= 30 days):*\\n\" + (((Array.isArray($('Aggregate').item.json.data)?$('Aggregate').item.json.data:[]).filter(c => typeof c.to_renewal === 'number' && c.to_renewal <= 30).sort((a,b)=>a.to_renewal-b.to_renewal).map(c => ' • ' + (c.name || 'Unknown')).join('\\n')) || \"_None in the next 30 days_\") }}\n\n{{ \"*Pulse Data Requests Approaching (<= 10 days):*\\n\" + (((Array.isArray($('Aggregate').item.json.data)?$('Aggregate').item.json.data:[]).filter(c => typeof c.to_pulse === 'number' && c.to_pulse <= 10).sort((a,b)=>a.to_pulse-b.to_pulse).map(c => ' • ' + (c.name || 'Unknown')).join('\\n')) || \"_None in the next 10 days_\") }}\n",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "thread_ts": {
+            "replyValues": {
+              "thread_ts": "={{ $json.message.ts }}"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        3152,
+        64
+      ],
+      "id": "ed7ce759-ae60-4252-9e0e-dfe400640375",
+      "name": "Send a message",
+      "webhookId": "56446a47-84a8-4f93-8edf-58923772329b",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2ed85206-f2cf-4e89-88ad-f8628e01f9b6",
+              "leftValue": "={{ $json.name.toLowerCase().includes(\"advisory\") }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        96
+      ],
+      "id": "8958e463-72c6-4639-87ce-ff67b9f44a32",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2688,
+        64
+      ],
+      "id": "f46756aa-1fff-4621-9406-8e389a0f1012",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "mode": "chooseBranch",
+        "useDataOfInput": 2
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2464,
+        64
+      ],
+      "id": "e6fc404b-18e0-4fc1-8223-3de8fdad4b2d",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\"query\":\"mutation { change_simple_column_value(item_id: {{ $json.id.toNumber() }}, board_id: 8080609962, column_id: \\\"label4__1\\\", value: \\\"{{ String($json.progress) + '%' }}\\\") { id } }\"}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2032,
+        -112
+      ],
+      "id": "09fb0af6-0966-4817-b231-9aa152d9d286",
+      "name": "HTTP Request",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C07L55RT962",
+          "mode": "list",
+          "cachedResultName": "core-team"
+        },
+        "text": "Status - Advisory Clients (also updated on the Clients' Section on Monday Board)",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2912,
+        64
+      ],
+      "id": "10c15c61-718b-4820-a449-24c4db609b79",
+      "name": "Send a message1",
+      "webhookId": "e17c46c0-5050-4b16-83a1-9e9d1c4095ba",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get many items": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedPerExecution": 20,
+    "availableInMCP": false,
+    "errorWorkflow": "geHpTM7jr9NoyZNi"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "49494881-3c0a-4001-b143-b56d90718103",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-08-15T10:30:28.008Z",
+      "createdAt": "2025-08-15T10:30:28.008Z",
+      "role": "workflow:owner",
+      "workflowId": "AAjN9wZKLf9xnGSz",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
