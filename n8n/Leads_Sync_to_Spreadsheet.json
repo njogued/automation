@@ -1,0 +1,751 @@
+{
+  "updatedAt": "2025-10-10T01:21:48.000Z",
+  "createdAt": "2025-08-29T19:30:43.586Z",
+  "id": "0lM8Hb3u9RexlvoH",
+  "name": "Leads Sync to Spreadsheet",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 8,
+              "triggerAtMinute": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1152,
+        -592
+      ],
+      "id": "74089fea-9047-420c-b0a1-5740914c84e5",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"query\": \"query { items_page_by_column_values(limit: 500, board_id: 6322035424, columns: [{column_id: \\\"deal_stage\\\", column_values: [\\\"Legal\\\", \\\"Intent\\\", \\\"Call 3 - SOW\\\", \\\"Call 2 - Diagnosis\\\"]}]) { cursor items { id name column_values(ids: [\\\"deal_stage\\\", \\\"status_1\\\", \\\"numeric_mkv8m3gy\\\"]) { id text value } } } }\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1440,
+        -592
+      ],
+      "id": "46c7d361-51a2-41a3-acb6-a2a20ace1c1b",
+      "name": "HTTP Request",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1CVusQqZzCGzfdBdNs1auDPLFUVshUGaH3U-CDUkgzZQ/edit?gid=1000675886#gid=1000675886",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1000675886,
+          "mode": "list",
+          "cachedResultName": "2025 Accrual Pipeline **",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1CVusQqZzCGzfdBdNs1auDPLFUVshUGaH3U-CDUkgzZQ/edit#gid=1000675886"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        -336
+      ],
+      "id": "3d3e4c72-10a5-495a-8074-0d08a9a8d55b",
+      "name": "Get row(s) in sheet",
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.items_page_by_column_values.items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        -592
+      ],
+      "id": "3290c13a-8203-467f-97f8-d8a1acf536b5",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -336
+      ],
+      "id": "d018f99d-6d70-4cca-b933-e7577cd1a653",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "91557374-bab4-452b-a7a0-d4712da99e5a",
+              "name": "Lead Name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "5f55fa64-b582-4f61-add1-b37ef0bda99a",
+              "name": "Deal Stage",
+              "value": "={{ $json.column_values[0].text }}",
+              "type": "string"
+            },
+            {
+              "id": "1c81a138-aece-45ed-b32c-d826b297bd56",
+              "name": "Offer",
+              "value": "={{ $json.column_values[1].text }}",
+              "type": "string"
+            },
+            {
+              "id": "5464ac98-5ede-4431-a8da-6cf13d4ceb4b",
+              "name": "MDV",
+              "value": "={{ $json.column_values[2].value }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1984,
+        -592
+      ],
+      "id": "0338eb0a-1099-45be-a0e8-6fc4f8fbad52",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2272,
+        -592
+      ],
+      "id": "5e82e138-3fa2-4089-afb6-3ee196f856b9",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# TASK\nCompare two datasets: (1) CRM leads and (2) spreadsheet entries. Return ONLY the CRM leads that are NOT present in the spreadsheet. Analyse the two datasets attached below based on similarity of entries. \n\nI would like to identify which sales leads are not accounted for in the spreadsheet pipeline. First, I will paste in all sales leads on our CRM along with their corresponding data, such as deal stage. And down below, I will paste in spreadsheet entries in JSON format. You will analyse both data sets and identify, which entries are in the CRM and are not in the spreadsheet. \n\n# Comparison Logic\n- A CRM lead is considered “present in the spreadsheet” if there is a similarity match with a spreadsheet entry.\n- There is no specific key or index that must correspond to guarantee a match, thus deduce similarity in names as a key deciding factor.\n- Otherwise, it is “missing” and should be included in the output.\n- Do NOT produce fuzzy/near matches; exact-only.\n\n# Output Format (STRICT)\n- Return ONLY a JSON array of objects with EXACT keys \"name\", \"offer\", \"MDV\".\n- No markdown, no prose, no extra fields.\n- If there are no missing leads, return [].\n\n# Final Rendering\n- For each missing CRM lead, output:\n  { \"deal_name\": <string|null>, \"deal_stage\":<string|null>, \"offer\": <string|null>, \"MDV\": <number|string|null> }\n- Ensure valid JSON with double-quoted keys and strings.\n\n\n## LEADS IN THE PIPELINE\n{{ JSON.stringify($('Aggregate1').item.json.data) }}\n\n## SPREADSHEET ENTRIES\n{{ JSON.stringify($('Aggregate').item.json.data) }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "# ROLE\n\nYou are a meticulous data reconciliation assistant. \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2272,
+        -336
+      ],
+      "id": "4cea4396-b231-44a4-bde7-a1446edb17a0",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2272,
+        -80
+      ],
+      "id": "e36cc144-2918-4756-9b0a-986ddf875f66",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{ \n  \"leads\":\n  [\n    { \"name\": \"Avery Chen\", \"deal_stage\": \"Call 3 - SOW\", \"offer\": \"Speaking\", \"MDV\": \"14500\" },\n    { \"name\": \"Jo dan\", \"deal_stage\": \"Call 1 - Qualifying\", \"offer\": \"Advisory\", \"MDV\": \"6000\" },\n    { \"name\": \"Casey Smith\", \"deal_stage\": null, \"offer\": null, \"MDV\": null }\n  ]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2464,
+        -112
+      ],
+      "id": "45b00c64-052e-4a01-9cb5-62d1475d3dde",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# ROLE\n\nYou are a spreadsheet section-finder. \n\n# TASK\n\nUsing the spreadsheet passed as JSON, determine: \n1) The row index to ADD-AFTER for a new Advisory offer lead so it becomes the last row of the Advisory Leads section. \n2) The row index to ADD-AFTER for a new Speaking lead so it becomes the last row of the Speaking Leads section.\n\n# OUTPUT (STRICT JSON ONLY)\nReturn ONLY this JSON (no markdown or prose):\n\n{\n  \"advisory\": {\n    \"add_after_row\": <int>,\n    \"section_bounds\": { \"start_row\": <int|null>, \"end_row\": <int|null> }\n  },\n  \"speaking\": {\n    \"add_after_row\": <int>,\n    \"section_bounds\": { \"start_row\": <int|null>, \"end_row\": <int|null> }\n  },\n}\n\n {{ JSON.stringify($json.data) }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1904,
+        -336
+      ],
+      "id": "065dc7f4-8861-487a-bfc7-00406e0ccf29",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "376d1d88-1eb5-4c39-88c1-976a8de88636",
+              "leftValue": "={{ $json.row_number }}",
+              "rightValue": 95,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        -336
+      ],
+      "id": "82110bf6-7a2c-4457-8696-19c44f49f4f2",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1904,
+        -80
+      ],
+      "id": "2fdce68c-c36b-41ae-bdd6-30c3a8486e97",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n    \"advisory\": {\n    \"add_after_row\": 41,\n    \"section_bounds\": { \"start_row\": 12, \"end_row\": 41 }\n  },\n    \"speaking\": {\n    \"add_after_row\": 75,\n    \"section_bounds\": { \"start_row\": 60, \"end_row\": 75 }\n  }\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2032,
+        -128
+      ],
+      "id": "c32ffab1-1c15-402a-a18a-8905bb918e84",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.leads",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        112
+      ],
+      "id": "31af2d86-2a87-465a-b5f1-c170080373b3",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/1CVusQqZzCGzfdBdNs1auDPLFUVshUGaH3U-CDUkgzZQ:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleSheetsOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"insertDimension\": {\n        \"range\": {\n          \"sheetId\": 1000675886,\n          \"dimension\": \"ROWS\",\n          \"startIndex\": {{ ({'speaking':$('AI Agent1').item.json.output.speaking.add_after_row,'advisory':$('AI Agent1').item.json.output.advisory.add_after_row}[($json.offer||'').toLowerCase().trim()] ?? null) }},\n          \"endIndex\": {{ ({'speaking':$('AI Agent1').item.json.output.speaking.add_after_row,'advisory':$('AI Agent1').item.json.output.advisory.add_after_row}[($json.offer||'').toLowerCase().trim()]+1 ?? null) }}\n        },\n        \"inheritFromBefore\": true\n      }\n    },\n    {\n      \"updateCells\": {\n        \"range\": {\n          \"sheetId\": 1000675886,\n          \"startRowIndex\": {{ ({'speaking':$('AI Agent1').item.json.output.speaking.add_after_row,'advisory':$('AI Agent1').item.json.output.advisory.add_after_row}[($json.offer||'').toLowerCase().trim()] ?? null) }},\n          \"endRowIndex\": {{ ({'speaking':$('AI Agent1').item.json.output.speaking.add_after_row,'advisory':$('AI Agent1').item.json.output.advisory.add_after_row}[($json.offer||'').toLowerCase().trim()]+1 ?? null) }},\n          \"startColumnIndex\": 1\n        },\n        \"rows\": [\n          {\n            \"values\": [\n              { \"userEnteredValue\": { \"stringValue\": \"{{ $json.name }}\" } },\n              { \"userEnteredValue\": { \"stringValue\":  \"{{ $json.offer }}\" } },\n              { \"userEnteredValue\": { \"stringValue\": \"{{ $json.deal_stage }}\" } },\n              { \"userEnteredValue\": { \"stringValue\": \"{{ (() => { const s = String($json.deal_stage ?? '').trim().toLowerCase(); const map = { 'call 2 - diagnosis': 60, 'call 3 - sow': 80, 'intent': 90, 'legal': 95, 'won': 100 }; return map[s]+\"%\" ?? null; })() }}\" } }\n            ]\n          }\n        ],\n        \"fields\": \"userEnteredValue\"\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1936,
+        96
+      ],
+      "id": "f042e62c-1ce8-46be-bd05-462f1a905b6c",
+      "name": "HTTP Request2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "=The following leads will be added to the Storied Pipeline + Profit Calculator Sheet\n{{ ( $('AI Agent').item.json.output.leads || [] ).map(l => `• ${l?.name || l}`).join('\\n') }}\n\nLink to sheet: https://docs.google.com/spreadsheets/d/1CVusQqZzCGzfdBdNs1auDPLFUVshUGaH3U-CDUkgzZQ/edit?usp=sharing\n\nGo check it out.",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2272,
+        96
+      ],
+      "id": "472194b8-5f45-4814-9640-5c2cf31f8cd8",
+      "name": "Send a message",
+      "webhookId": "d5d94d8b-3617-43fe-a22e-d91992657d4a",
+      "executeOnce": true,
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9fbfc729-d089-4817-80fe-493d828961c8",
+              "leftValue": "={{ $json.offer.toLowerCase() }}",
+              "rightValue": "speaking",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "25b2e1dc-900a-42d5-a6a5-5054cf6360fe",
+              "leftValue": "={{ $json.offer.toLowerCase() }}",
+              "rightValue": "advisory",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1584,
+        112
+      ],
+      "id": "a42a4fc3-98f1-43d5-a69d-8bbb76458d24",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2576,
+        16
+      ],
+      "id": "136ebea8-77ae-46dc-aab8-5d535d8386bd",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2112,
+        32
+      ],
+      "id": "d2b550bf-46e0-4ed2-9a57-6deffc316471",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-09-26T08:30:15.104-07:00",
+          "Readable date": "September 26th 2025, 8:30:15 am",
+          "Readable time": "8:30:15 am",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "September",
+          "Day of month": "26",
+          "Hour": "08",
+          "Minute": "30",
+          "Second": "15",
+          "Timezone": "America/Los_Angeles (UTC-07:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "84f5931b-6e99-4cb8-ae8a-a635f50531a8",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-08-29T19:30:43.591Z",
+      "createdAt": "2025-08-29T19:30:43.591Z",
+      "role": "workflow:owner",
+      "workflowId": "0lM8Hb3u9RexlvoH",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
