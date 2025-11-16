@@ -1,0 +1,839 @@
+{
+  "updatedAt": "2025-11-14T19:16:20.000Z",
+  "createdAt": "2025-10-03T22:08:38.570Z",
+  "id": "m9ojEo33NPBMuYIZ",
+  "name": "n8n auto-update",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9027cc7c-e73f-4e9b-9cfc-537e038f735c",
+              "name": "docker_path",
+              "type": "string",
+              "value": "/opt/n8n-compose"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "3e24c65a-3232-41b4-b431-aabad6a36135",
+      "name": "Docker Path",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        -416,
+        528
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=sudo docker inspect $(sudo docker ps -q --filter \"name=n8n\")",
+        "cwd": "={{ $('Docker Path').last().json.docker_path }}"
+      },
+      "id": "6f307d01-ef4b-42f7-9c19-8756bf71a925",
+      "name": "Get n8n Current Version",
+      "type": "n8n-nodes-base.ssh",
+      "position": [
+        -112,
+        528
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "D3sPlVcppZzCh4fv",
+          "name": "SSH Private Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $env.WEBHOOK_URL }}/rest/settings",
+        "options": {}
+      },
+      "id": "867cf661-16de-496e-9753-578c6f1d978f",
+      "name": "Get Instance's Settings",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -912,
+        544
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "loose"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "4021cef9-daa5-448e-9df3-d38e2cafe2ed",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.data.isDocker }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "id": "74fd5e26-615f-4a9d-a6fe-5e50e6e7a080",
+      "name": "Is Docker",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -688,
+        544
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "url": "=https://registry.hub.docker.com/v2/repositories/n8nio/n8n/tags/{{ $json.n8n_target_version }}",
+        "options": {}
+      },
+      "id": "ce456f39-6564-41f8-ac24-d9cf8cdf27e0",
+      "name": "Get Version's Last Update",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        336,
+        528
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3eb04423-6d04-4371-8dfe-a092996a9235",
+              "name": "n8n_target_version",
+              "type": "string",
+              "value": "={{ $json.stdout.parseJson()[0].Config.Image.replaceAll(\"docker.n8n.io/n8nio/n8n:\", \"\").trim().split(\":\")[1] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "72015ab0-4222-47c3-9ce2-2abce1fac94f",
+      "name": "Target Version",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        112,
+        528
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "url": "=https://registry.hub.docker.com/v2/repositories/n8nio/n8n/tags/latest",
+        "options": {}
+      },
+      "id": "a86eab0f-90d4-4e4a-94fb-8856a678cdad",
+      "name": "Get Current Version",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        544,
+        528
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "79ba3ace-f894-438f-a8da-0616419ffff7",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              },
+              "leftValue": "={{ $json.digest }}",
+              "rightValue": "={{ $('Get Version\\'s Last Update').item.json.digest }}"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "dbe2f57b-012e-4c2e-a9f3-928d36804089",
+      "name": "Needs Update ?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        768,
+        528
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "7590024e-2f4d-491f-a6c1-aa906e7aa755",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.data.approved }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6db4468e-57c5-4c54-99b0-10043659d398",
+      "name": "Approved ?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        2256,
+        528
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "content": "## ⚠️ MANUAL APPROVAL SECTION\n\nThis entire block handles fetching release notes and waiting for your approval on Telegram.\n\n**To enable fully automatic updates**, delete all nodes in this section and connect the `Needs Update ?` node's \"true\" output directly to the `Update Docker` node.",
+        "height": 820,
+        "width": 1460,
+        "color": 6
+      },
+      "id": "49fbcd7f-102d-499b-a6cd-f949fb5da522",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        -48
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 💬 APPROVAL NOTIFICATION\n\n1.  Select your **Slack Bot** credential.\n2. Approve within 5 minutes whether or not to upgrade.",
+        "height": 424,
+        "width": 260,
+        "color": 3
+      },
+      "id": "577d38c9-9297-43ba-a03e-d74e715ebb23",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1952,
+        320
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 🤖 AI Release Summary\n\nThese nodes fetch the official release notes and use an AI model to create a simple, easy-to-read summary.\n\nYou can replace the Google Gemini node with any other LLM node (OpenAI, Anthropic, etc.). The prompt is designed to be robust so feel free to use a small and cheap LLM.",
+        "height": 620,
+        "width": 340,
+        "color": 7
+      },
+      "id": "8f4b4330-fa14-44fa-85d0-227a412a6d46",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1584,
+        144
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 🕒 Version Check\n\nThis node checks if the new version was published after the last published version checked. This prevents sending duplicate notifications for the same update, as is will only proceed if there is a later publication date.",
+        "height": 380,
+        "width": 300,
+        "color": 7
+      },
+      "id": "6ecdd7c2-5db5-4226-87e9-06f30c557774",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        160
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 📝 Fetch Release Notes\n\nThis node retrieves the official release notes for the new version directly from the n8n GitHub repository API.\n\nThis provides the raw content for the AI to summarize. If this node fails (e.g., due to a GitHub API issue), the workflow will still send an update notification but without the detailed summary.",
+        "height": 480,
+        "color": 7
+      },
+      "id": "9af57df3-99b7-4af4-9ba3-32edacb39339",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        176
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<role>\nYou are an expert technical writer and software release analyst specializing in the n8n automation platform. You have a deep understanding of the n8n user base, which ranges from non-technical business users to experienced developers. Your expertise lies in quickly parsing technical changelogs and identifying the changes that have the most significant impact on users.\n</rol>\n\n<instructions>\n<goal>\nYour goal is to analyze raw n8n release notes and extract a concise, human-readable summary of the most important changes. The summary should be easily digestible for n8n users and developers, highlighting only the key new features, critical fixes, and major enhancements.\n</goal>\n\n<context>\nThe n8n release notes are provided in a markdown-like format, typically generated from GitHub. They are structured with headings like `### Features`, `### Bug Fixes`, and `### Enhancements`.\n\nYour task is to prioritize the information based on its impact:\n1.  **Highest Priority:** New Features (especially new nodes or major core functionalities) and Breaking Changes.\n2.  **High Priority:** Significant Enhancements to existing popular nodes or core platform capabilities.\n3.  **Medium Priority:** Critical Bug Fixes, especially those related to security (XSS, authorization), data integrity, or core execution failures.\n4.  **Low Priority (to be ignored):** Minor bug fixes, documentation updates, internal refactoring, dependency updates, or changes to very niche nodes.\n\nYou must filter out the noise and focus only on what a user *needs* to know about the new version.\n</context>\n\n<examples>\n<example_1>\n<inputs>\n<release_notes>\n### [1.99.1](https://github.com/n8n-io/n8n/compare/n8n@1.99.0...n8n@1.99.1) (2025-06-19)\n\n\n### Bug Fixes\n\n* **core:** Fix pdf extract not working ([#16463](https://github.com/n8n-io/n8n/issues/16463)) ([0d69ea4](https://github.com/n8n-io/n8n/commit/0d69ea4f5bdd1216bd06ad5ae4e60eec6cc948b3))\n* **core:** Prevent unauthorised workflow termination ([#16405](https://github.com/n8n-io/n8n/issues/16405)) ([e5edc60](https://github.com/n8n-io/n8n/commit/e5edc60e344924230baafb11fa1f0af788e9ca9a))\n* **n8n Form Node:** Prevent XSS with video and source tags ([#16329](https://github.com/n8n-io/n8n/issues/16329)) ([7940384](https://github.com/n8n-io/n8n/commit/7940384a85041a1890b1203d69c092c887312500))\n</release_notes>\n</inputs>\n<output>\nThis release focuses on important security and stability fixes:\n- A critical security vulnerability (XSS) in the n8n Form Node has been patched.\n- An issue that could allow unauthorized workflow termination has been resolved.\n- The PDF extraction functionality in the core has been fixed.\n</output>\n</example_1>\n\n<example_2>\n<inputs>\n<release_notes>\n## [1.98.0](https://github.com/n8n-io/n8n/compare/n8n@1.97.2...n8n@1.98.0) (2025-06-12)\n\n\n### Features\n\n* **Airtable Trigger Node:** Add new trigger node ([#16201](https://github.com/n8n-io/n8n/issues/16201)) ([a1b2c3d](https://github.com/n8n-io/n8n/commit/a1b2c3d...))\n\n### Enhancements\n\n* **Google Sheets Node:** Add 'overwrite' option for writing data ([#16115](https://github.com/n8n-io/n8n/issues/16115)) ([e4f5g6h](https://github.com/n8n-io/n8n/commit/e4f5g6h...))\n\n### Bug Fixes\n\n* **UI:** Corrected typo in settings panel ([#16300](https://github.com/n8n-io/n8n/issues/16300)) ([i7j8k9l](https://github.com/n8n-io/n8n/commit/i7j8k9l...))\n</release_notes>\n</inputs>\n<output>\nKey highlights for this version:\n- **New Node:** A new Airtable Trigger node has been introduced, allowing workflows to start based on Airtable record changes.\n- **Google Sheets Node:** The node has been enhanced with a new 'overwrite' option when writing data to a sheet.\n</output>\n</example_2>\n\n<example_3>\n<inputs>\n<release_notes>\n## [1.97.3](https://github.com/n8n-io/n8n/compare/n8n@1.97.2...n8n@1.97.3) (2025-06-10)\n\n\n### Chores\n\n* **deps:** update dependency `some-package` to v2.5.1\n* **docs:** clarify wording in credentials page\n</release_notes>\n</inputs>\n<output>\nThis release contains minor maintenance and documentation updates.\n</output>\n</example_3>\n</examples>\n\n<output_format>\n- A short, unordered bulleted list (using `-`) or a brief paragraph.\n- Use clear, benefit-oriented language. (e.g., \"You can now...\" or \"Resolved an issue that caused...\").\n- Rephrase the technical commit messages into plain English.\n- Do not include the version number, date, GitHub issue numbers, or commit hashes in your output.\n- If there are no significant changes (e.g., only chores, docs, or minor dependency updates), you MUST output the exact phrase: `This release contains minor maintenance and documentation updates.`\n</output_format>\n</instructions>\n\n<inputs>\n<release_notes>\n{{ $json.body }}\n</release_notes>\n</inputs",
+        "batching": {}
+      },
+      "id": "9080e7bc-e864-425f-a5d0-426441ee96b8",
+      "name": "Release Overview",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1632,
+        384
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "content": "### ⚙️ CONFIGURE YOUR SERVER PATHS HERE\n\n*   **`docker_path`**: Set this to the **absolute path** on your server where your `docker-compose.yml` file is located.\n    *   Example: `/home/user/n8n-docker`\n*   **`worker_command`**: If you use n8n workers, set the scale command here (e.g., `--scale n8n-worker=4`). Leave blank if you don't use workers.",
+        "height": 440,
+        "width": 300,
+        "color": 5
+      },
+      "id": "546d7fc7-8fc5-4395-82e5-700c13f52a52",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -512,
+        256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 🔒 SSH Connection\n\nSelect your SSH credential for the server hosting your n8n instance in **both** of these nodes.",
+        "height": 320,
+        "width": 260,
+        "color": 3
+      },
+      "id": "519ab1a3-d500-4c44-8f36-20ffb3c69ef7",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -192,
+        368
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 💡 How Update Detection Works\n\nThis workflow compares the unique `digest` of your running Docker image with the latest `digest` on Docker Hub for your tag (e.g., `latest`).\n\nIf they are different, an update is available.",
+        "height": 340,
+        "width": 660,
+        "color": 7
+      },
+      "id": "f751c75f-7ca1-4ff3-88c9-32019b335277",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        272,
+        352
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/n8n-io/n8n/releases/latest",
+        "options": {}
+      },
+      "id": "6b315403-4c4e-4ad0-b185-500e62aad6e1",
+      "name": "Get n8n Github Release",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1072,
+        512
+      ],
+      "typeVersion": 4.2,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "content": "### 🔎 Get Instance Info\n\nThis node fetches local instance settings, like the current version and whether it's running on Docker.\n\nThis step ensures the workflow only proceeds if it's on a compatible (Docker) setup. No configuration is needed here.",
+        "height": 416,
+        "width": 260,
+        "color": 7
+      },
+      "id": "9fb865e2-0420-4a01-81d2-cab0b264f547",
+      "name": "Sticky Note8",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -992,
+        288
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 🚀 Final Step: Execute Update\n\nThis is the final action node. It connects to your server via SSH and runs the command to update your n8n Docker instance.\n\n**How it works:**\nThe command performs three key actions:\n1.  `docker compose pull`: Downloads the newest n8n image.\n2.  `docker compose down`: Safely stops your current n8n containers.\n3.  `docker compose up -d`: Starts the new containers in the background.\n\n**Important Details:**\n*   **Background Process:** It uses `nohup ... &` to run the update in the background. This is critical because it allows this workflow to finish immediately without waiting for the Docker update to complete, preventing a crash when the docker instance is stopped.\n*   **Log File:** Any output or errors from the update process are saved to a file named `update.log` in your n8n Docker directory on the server. **Check this file if you encounter issues after an update.**",
+        "height": 680,
+        "width": 520,
+        "color": 4
+      },
+      "id": "228a0252-61d4-4160-8ce1-e08da779d5b5",
+      "name": "Sticky Note9",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2544,
+        32
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "logic": "removeItemsUpToStoredDate",
+        "dateDedupeValue": "={{ $json.published_at }}",
+        "options": {}
+      },
+      "id": "de1b8080-a215-416a-9051-fc9f336c5132",
+      "name": "New Version ?",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "position": [
+        1376,
+        384
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        624
+      ],
+      "id": "446aa7a3-4816-4e64-9a68-ac0c22ff6e57",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "P0TQQiGAV5I5pAou",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "message": "=*New n8n version.*\n\nPlease confirm if you would like to approve an update.\n\n*Release summary*\n\n{{ $json.text }}",
+        "approvalOptions": {
+          "values": {
+            "approvalType": "double"
+          }
+        },
+        "options": {
+          "limitWaitTime": {
+            "values": {
+              "resumeAmount": 5,
+              "resumeUnit": "minutes"
+            }
+          },
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2032,
+        528
+      ],
+      "id": "25153f1f-92ff-40bd-9e51-b575bd7c8abd",
+      "name": "Send message and wait for response",
+      "webhookId": "d6906d5e-36fd-4138-bd36-d2d97ec694fe",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "Updating n8n. Check update success after 3-5 minutes on https://ai.storiedos.com/healthz",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "mrkdwn": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2624,
+        512
+      ],
+      "id": "f2e12e97-1f7e-49ac-bf57-c1d14923592c",
+      "name": "Send a message",
+      "webhookId": "fce7e217-9b27-44ca-b1e7-70113311d2a4",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "n8n version will not be updated. ",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "mrkdwn": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        2640,
+        784
+      ],
+      "id": "e8302c0e-6cf7-4f10-b638-5e181345c725",
+      "name": "Send a message1",
+      "webhookId": "fce7e217-9b27-44ca-b1e7-70113311d2a4",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1120,
+        768
+      ],
+      "id": "b89462d1-4eab-4555-8148-2a06f4934e9d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 16
+            }
+          ]
+        }
+      },
+      "id": "3b593d0a-3652-4a05-9696-febab5197b07",
+      "name": "Every Week",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -1136,
+        544
+      ],
+      "typeVersion": 1.2
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "./n8n_update.sh",
+        "cwd": "=/home/edward/"
+      },
+      "id": "99e0f7a4-5368-4976-ac44-0de404cd32c4",
+      "name": "Update Docker Version (n8n)",
+      "type": "n8n-nodes-base.ssh",
+      "position": [
+        2896,
+        512
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "D3sPlVcppZzCh4fv",
+          "name": "SSH Private Key account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Docker Path": {
+      "main": [
+        [
+          {
+            "node": "Get n8n Current Version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get n8n Current Version": {
+      "main": [
+        [
+          {
+            "node": "Target Version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Instance's Settings": {
+      "main": [
+        [
+          {
+            "node": "Is Docker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Docker": {
+      "main": [
+        [
+          {
+            "node": "Docker Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Version's Last Update": {
+      "main": [
+        [
+          {
+            "node": "Get Current Version",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Target Version": {
+      "main": [
+        [
+          {
+            "node": "Get Version's Last Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Current Version": {
+      "main": [
+        [
+          {
+            "node": "Needs Update ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Needs Update ?": {
+      "main": [
+        [
+          {
+            "node": "Get n8n Github Release",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Approved ?": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Release Overview": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get n8n Github Release": {
+      "main": [
+        [
+          {
+            "node": "New Version ?",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "New Version ?": {
+      "main": [
+        [
+          {
+            "node": "Release Overview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Release Overview",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Approved ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Update Docker Version (n8n)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Instance's Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every Week": {
+      "main": [
+        [
+          {
+            "node": "Get Instance's Settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Docker Version (n8n)": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 5,
+    "errorWorkflow": "geHpTM7jr9NoyZNi"
+  },
+  "staticData": {
+    "node:Every Week": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f4bcac52-f589-4ee9-a2b8-fa33bbd6a555",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-10-03T22:08:38.688Z",
+      "createdAt": "2025-10-03T22:08:38.688Z",
+      "role": "workflow:owner",
+      "workflowId": "m9ojEo33NPBMuYIZ",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}

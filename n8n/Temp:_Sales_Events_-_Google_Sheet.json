@@ -1,0 +1,233 @@
+{
+  "updatedAt": "2025-09-26T00:49:25.000Z",
+  "createdAt": "2025-09-19T17:05:23.732Z",
+  "id": "tp31LjjM0uo4sSo3",
+  "name": "Temp: Sales Events - Google Sheet",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -704,
+        -400
+      ],
+      "id": "419127ba-e856-41f6-a8c7-10d4cf93db65",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "michael@storiedinc.com",
+          "mode": "list",
+          "cachedResultName": "Michael/Storied Main Calendar"
+        },
+        "returnAll": true,
+        "timeMin": "={{ $now.minus(11, 'months') }}",
+        "timeMax": "={{ $now }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -496,
+        -400
+      ],
+      "id": "f1891b3d-3508-45fe-a6f8-c7dd27c89f14",
+      "name": "Get many events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "YCMouffWYvraUYHz",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8e826ac8-5220-452b-a48e-14a908239e8d",
+              "leftValue": "={{ $json.colorId }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "f1c1cbce-6fac-47cd-8014-6f5e97737e25",
+              "leftValue": "={{ $json.colorId }}",
+              "rightValue": "9",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        -400
+      ],
+      "id": "d9d765a2-b2f4-46f8-998d-28f2327b20c3",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1VhUhGuY5j--m4qHQ5gAGNdVEtFyd5unRZ2ivFzQXq0o",
+          "mode": "list",
+          "cachedResultName": "Sales Calls",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VhUhGuY5j--m4qHQ5gAGNdVEtFyd5unRZ2ivFzQXq0o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VhUhGuY5j--m4qHQ5gAGNdVEtFyd5unRZ2ivFzQXq0o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Summary": "={{ $json.summary }}",
+            "Date": "={{ $json.start.dateTime }}",
+            "Email": "={{ $json.attendees[1].email }}",
+            "Month": "={{ $json.start.dateTime.toString().slice(0,7) }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Month",
+              "displayName": "Month",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -16,
+        -400
+      ],
+      "id": "0c565d52-b32c-4330-97bd-b785d3d6d056",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many events",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "2ca84f9d-5544-4325-b71a-f94da53410af",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-09-19T17:05:23.764Z",
+      "createdAt": "2025-09-19T17:05:23.764Z",
+      "role": "workflow:owner",
+      "workflowId": "tp31LjjM0uo4sSo3",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}

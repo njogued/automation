@@ -1,0 +1,164 @@
+{
+  "updatedAt": "2025-08-21T21:34:18.000Z",
+  "createdAt": "2025-06-08T21:15:09.676Z",
+  "id": "Ej82KV1ttHjC8dZH",
+  "name": "Slack Subagent",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "message"
+            },
+            {
+              "name": "client"
+            },
+            {
+              "name": "channel"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e7291b96-6a69-41d0-81fb-fdfd57808ce9",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        368,
+        0
+      ],
+      "id": "58dea2ce-e2a0-428a-83f6-97bf9a628a15",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        368,
+        240
+      ],
+      "id": "c7453568-c654-415b-a608-69b6fe15ba87",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_Text', ``, 'string') }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "mrkdwn": true
+        }
+      },
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.3,
+      "position": [
+        720,
+        240
+      ],
+      "id": "caa9a4fd-29db-429e-9bd4-6a944b24a023",
+      "name": "Send a message in Slack",
+      "webhookId": "5b182eba-2fc0-4ad6-b099-37c6d4856207",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Slack": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0a6d5f8e-114d-466f-b069-0f48e301935b",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-06-08T21:15:09.691Z",
+      "createdAt": "2025-06-08T21:15:09.691Z",
+      "role": "workflow:owner",
+      "workflowId": "Ej82KV1ttHjC8dZH",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}

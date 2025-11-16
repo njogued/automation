@@ -1,0 +1,723 @@
+{
+  "updatedAt": "2025-11-12T18:21:17.000Z",
+  "createdAt": "2025-07-10T11:54:19.863Z",
+  "id": "FmPfF90d8zhxMPui",
+  "name": "Slack - Trigger Workflow",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Your Task\nAnalyze the Slack thread below, work out the next steps based on the action plan, and action those plans. You should also ensure the original sender stays informed throughout the process.\n\n---\n\n## Slack Thread Data\n```json\n{{ JSON.stringify($json.data) }}\n```",
+        "options": {
+          "systemMessage": "=# Admin Operations Orchestrator\n\n## Role\nYou are a highly logical admin and operations expert who orchestrates tasks between specialized agents.\n\n## Core Responsibilities\n\n### Primary Function\n- **Analyze** user requests and determine optimal workflow routing\n- **Orchestrate** jobs between different agents in correct sequence\n- **Provide** friendly, informative responses to users\n- **Pass** relevant context and information to appropriate workflows\n\n### Key Principle\n**Do NOT perform direct actions** (like writing emails or content yourself). Instead, delegate to specialized agents.\n\n## Agent Routing Guide\n\n### Calendar Agent\n**When to use:** Questions about schedules, events, availability\n- Getting events for specific days/weeks\n- Scheduling new appointments or meetings\n- Calendar availability checks\n\n### Email Agent  \n**When to use:** All email-related actions\n- Sending emails\n- Searching for emails\n- Email management tasks\n\n### Monday.com Agent\n**When to use:** Project management needs\n- Retrieving board information\n- Updating tasks and projects on company boards\n- Project status inquiries\n\n## Workflow Protocol\n\n### 1. User Communication\n**ALWAYS** respond immediately to acknowledge the request:\n> \"I'm working on your request and calling the [specific tool name] to handle this for you.\"\n\n### 2. Agent Execution\n- Call the appropriate agent(s) in logical sequence\n- Pass relevant context from the conversation thread\n- Ensure proper information flow between agents\n\n### 3. Final Summary Output\n**ALWAYS** conclude with a comprehensive summary:\n- What actions were taken\n- Which agents were called\n- Results achieved\n- Any next steps for the user\n\n## Context Variables\n- Current date/time: `{{ $now.toString() }}`\n- Use conversation thread context to inform decisions\n\n## Processing Framework\nWork through each step systematically:\n\n### 1. UNDERSTAND\n**Think through:** Identify the core request, who initiated it, and the urgency level.\n\n### 2. ANALYZE  \n**Think through:** Map all stakeholders, extract deadlines, and identify dependencies or blockers.\n\n### 3. REASON\n**Think through:** Design the optimal action sequence, anticipate potential issues, and determine resource requirements.\n\n### 4. SYNTHESIZE\n**Think through:** Connect all actions into a unified workflow, identify the critical path, and plan handoff points.\n\n### 5. CONCLUDE\n**Think through:** Define your action plan with clear next steps, success metrics, and communication strategy.\n\n## Output Principles\nYour response should include:\n- **Clear communication** to the user about what you're doing\n- What **tool calls** have been made\n- **Final summary** of all actions taken and results achieved\n\n## Response Flow\n1. **Acknowledge** the request and your planned approach\n2. **Work through** the 5-step framework (DO NOT SEND THE STEPS BACK TO THE USER, ACT ON THEM IN THE BACKGROUND)\n3. **Execute** necessary tool calls with proper context\n4. **Summarize** outcomes and next steps for the user\n\n## Example Workflow\n```\nUser Request → Immediate Acknowledgment → Agent Selection → Context Transfer → Agent Execution → Summary Report\n```\n\n\n## Example Workflow\n**Scenario:** User asks you to extract action items from a Fathom transcript, update them on Monday.com, and email confirmation when complete.\n\n```\nUser Request: \"Please extract the action items from this Fathom transcript, add them to our project board, and let me know when it's done\"\n       ↓\nImmediate Acknowledgment: \"I'm working on your request and will call the Monday.com tool to update your project board, then send you an email confirmation.\"\n       ↓\nAgent Selection: Monday.com Agent → Email Agent\n       ↓\nContext Transfer: Pass extracted action items and user preferences to Monday.com, then pass completion status to Email Agent\n       ↓\nAgent Execution: Update Monday.com board → Send confirmation email\n       ↓\nSummary Report: \"I've successfully extracted 4 action items from your Fathom transcript, added them to the 'Project Alpha' board on Monday.com, and sent you a confirmation email with the details.\"\n```"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        624,
+        -320
+      ],
+      "id": "ef16528e-77bb-4454-811b-587c3616249d",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "description": "# Gmail Tool\nPurpose: Complete email communication and management system\nWhen to use: All email-related actions, correspondence, and inbox management\n\n## Capabilities:\n- Draft follow-up emails and automated responses\n- Manage email labels, folders, and organization\n- Search and retrieve specific emails or conversations",
+        "workflowId": {
+          "__rl": true,
+          "value": "lQxi6YEZQaiu6s76",
+          "mode": "list",
+          "cachedResultName": "Gmail Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "prompt"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        128
+      ],
+      "id": "9a44031d-b9f4-4af5-928b-4c09950d0c7d",
+      "name": "Gmail Workflow"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "temperature": 0.5
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        448,
+        128
+      ],
+      "id": "45f0099e-eed6-4198-863d-ac18fd060259",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "trigger": [
+          "message",
+          "app_mention"
+        ],
+        "channelId": {
+          "__rl": true,
+          "value": "D08TZ7SE3D0",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.slackTrigger",
+      "typeVersion": 1,
+      "position": [
+        -736,
+        -320
+      ],
+      "id": "4ecb6893-f2ba-439c-9919-23be2c0f1f43",
+      "name": "Slack Trigger",
+      "webhookId": "4dfead85-6896-4e65-aa34-bae3c86b1a65",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to update data into the Pinecone vector database.",
+        "workflowId": {
+          "__rl": true,
+          "value": "J2MQ18NtWXrUXCfw",
+          "mode": "list",
+          "cachedResultName": "Pinecone Updates"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        656,
+        -512
+      ],
+      "id": "9c570d6b-0019-4867-85c2-745c69fe647c",
+      "name": "Pinecone Upsert",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to do actions on Slack including sending messages to user, using a human approval step, or to notify a user easily. ",
+        "workflowId": {
+          "__rl": true,
+          "value": "Ej82KV1ttHjC8dZH",
+          "mode": "list",
+          "cachedResultName": "Slack Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        -512
+      ],
+      "id": "d787a3cd-649d-4ea8-b0c0-b1e4ba9e24f4",
+      "name": "Slack Sub-workflow",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b2a6b63b-15f9-400e-9d7c-e5f86d191009",
+              "leftValue": "={{ $json.channel }}",
+              "rightValue": "D08TZ7SE3D0",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "63000648-ae1a-4ad0-af6a-07a7b348fb3d",
+              "leftValue": "={{ $json.user }}",
+              "rightValue": "U06HYNGR0HL",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -448,
+        -320
+      ],
+      "id": "79bdeb7a-3336-4e3d-9752-c69ca5a600dc",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "description": "# Calendar Tool\n\nPurpose: Comprehensive calendar management and scheduling coordination\nWhen to use: Questions about schedules, events, availability, time management\n\n## Capabilities:\n- Retrieve events for specific dates, weeks, or months\n- Schedule new appointments, meetings, and recurring events\n- Check availability and find optimal meeting times\n- Update or cancel existing calendar entries\n- Send calendar invitations and manage attendee responses\n- Handle timezone conversions for cross-regional scheduling\n- Integrate with meeting platforms (Zoom, Teams, etc.)",
+        "workflowId": {
+          "__rl": true,
+          "value": "9g3lAvJtRyyNjaPJ",
+          "mode": "list",
+          "cachedResultName": "Calendar Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        128
+      ],
+      "id": "c322be94-bfcd-4efb-8086-6c3942e14437",
+      "name": "Calendar Sub-workflow"
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "={{ $ifEmpty(\n  $json.output\n    .replace(/^[-*+]\\s/gm, \"• \")       // Normalize all list markers\n    .replace(/\\*{2,}(.*?)\\*{2,}/g, \"*$1*\") // Fix bold formatting\n    .replace(/^#{1,6}\\s+(.*)/gm, \"*$1*\")   // Headers to bold\n    .replace(/\\n{2,}/g, \"\\n\")          // Single line breaks only\n    .trim(), \n  \"\"\n) }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "thread_ts": {
+            "replyValues": {
+              "thread_ts": "={{ $('Slack Trigger').item.json.thread_ts }}"
+            }
+          },
+          "mrkdwn": true
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1328,
+        -336
+      ],
+      "id": "869d4a4d-7e06-4222-baee-d9909fe15981",
+      "name": "Send a message",
+      "webhookId": "12617833-1d78-4e2e-b4aa-e92d13382e4e",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "# Monday.com Tool\nPurpose: Project management and workflow orchestration platform\nWhen to use: Task management, project tracking, team collaboration needs\n\n##Capabilities:\n- Retrieve information from specific boards and workspaces\n- Create and update items, tasks, and project milestones\n- Modify item statuses, priorities, and assignments\n- Generate project reports and progress summaries\n- Manage team workloads and capacity planning\n- Handle custom field updates and data entry\n- Track deadlines, dependencies, and project timelines",
+        "workflowId": {
+          "__rl": true,
+          "value": "foxsO53IbcaM6Ff3",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/foxsO53IbcaM6Ff3",
+          "cachedResultName": "Monday Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}",
+            "context": "=Full context:\n\nLatest User Query: {{ $('Slack Trigger').item.json.blocks[0].elements[0].elements[0].text }}\n\nFull Thread Between User and Helper Bot\n{{ $json.data.toJsonString() }}\n\n\n"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        128
+      ],
+      "id": "da3a52c9-bcd9-4ca3-ad46-7bb8d7dc581e",
+      "name": "Monday Sub-Workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "fc8d098d-556d-474a-b4ba-d1a23cb940de",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1040,
+        -320
+      ],
+      "id": "d481d679-61df-4687-a305-6b807c0c494e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "channel",
+        "operation": "replies",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $('Slack Trigger').item.json.channel }}",
+          "mode": "id"
+        },
+        "ts": "={{ $json.thread_ts }}",
+        "returnAll": true,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -192,
+        -320
+      ],
+      "id": "f06d58d0-5094-4172-a161-289068f5d8f2",
+      "name": "Get a thread of messages posted to a channel",
+      "webhookId": "2fe1b512-8a78-431f-bab7-1e378e4e796d",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "b7AD0O5yoSxk07d8",
+          "name": "SLACK ACCOUNT - USER"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "51bac547-19b7-4e98-9c37-7a083a2c68b4",
+              "name": "user",
+              "value": "={{ $json.user === \"U06HYNGR0HL\" \n    ? \"Edward Njogu\" \n    : $json.user === \"U08TZ7SBDGA\" \n      ? \"Helper Bot\" \n      : \"User\" \n}}",
+              "type": "string"
+            },
+            {
+              "id": "cba397bf-ed4f-4482-82f4-ed82f3b73d68",
+              "name": "text",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        -320
+      ],
+      "id": "92772097-be76-423d-a428-5f868d80635b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -320
+      ],
+      "id": "9d373963-303a-4322-9228-f24be124cf8f",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Reply to the user while executing other steps to confirm that you are working on other steps. ",
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "U06HYNGR0HL",
+          "mode": "list",
+          "cachedResultName": "edward"
+        },
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message_Text', ``, 'string') }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false,
+          "thread_ts": {
+            "replyValues": {
+              "thread_ts": "={{ $('Slack Trigger').item.json.thread_ts }}",
+              "reply_broadcast": true
+            }
+          },
+          "mrkdwn": true
+        }
+      },
+      "type": "n8n-nodes-base.slackTool",
+      "typeVersion": 2.3,
+      "position": [
+        704,
+        128
+      ],
+      "id": "356d71cb-017f-4757-b2c9-14ae0aae0bb7",
+      "name": "Send Slack Message",
+      "webhookId": "6325c97b-d2d5-444a-b1b4-c89c6fdfada4",
+      "credentials": {
+        "slackApi": {
+          "id": "TCCNsFSy1xU8ud22",
+          "name": "SLACK API - BOT"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Gmail Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Upsert": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Sub-workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Get a thread of messages posted to a channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Sub-workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
+    },
+    "Monday Sub-Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a thread of messages posted to a channel": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Slack Message": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "timeSavedPerExecution": 10,
+    "availableInMCP": false,
+    "errorWorkflow": "geHpTM7jr9NoyZNi"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Slack Trigger": [
+      {
+        "json": {
+          "type": "message",
+          "user": "U06HYNGR0HL",
+          "ts": "1762971351.508359",
+          "client_msg_id": "b31fd520-35c9-4a87-a465-7ca1bfe5ce02",
+          "text": "all good for now.",
+          "team": "T03128N8G",
+          "thread_ts": "1762971217.575229",
+          "parent_user_id": "U08TZ7SBDGA",
+          "blocks": [
+            {
+              "type": "rich_text",
+              "block_id": "ZiLcM",
+              "elements": [
+                {
+                  "type": "rich_text_section",
+                  "elements": [
+                    {
+                      "type": "text",
+                      "text": "all good for now."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "channel": "D08TZ7SE3D0",
+          "assistant_thread": {
+            "action_token": "9929963140240.3036294288.2fe88b40a0a31546e0f66a5afee20f6c"
+          },
+          "event_ts": "1762971351.508359",
+          "channel_type": "im"
+        }
+      }
+    ]
+  },
+  "versionId": "ff48282d-6204-49ab-9e69-fe4c96b41c6d",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-07-10T11:54:19.871Z",
+      "createdAt": "2025-07-10T11:54:19.871Z",
+      "role": "workflow:owner",
+      "workflowId": "FmPfF90d8zhxMPui",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
