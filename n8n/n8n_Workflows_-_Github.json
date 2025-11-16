@@ -1099,7 +1099,9 @@
   },
   "staticData": {
     "node:Schedule Trigger": {
-      "recurrenceRules": []
+      "recurrenceRules": [
+        8
+      ]
     }
   },
   "meta": {
