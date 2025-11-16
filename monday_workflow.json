@@ -1,0 +1,427 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "prompt"
+            },
+            {
+              "name": "context"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [16, -352],
+      "id": "a84d0b97-ce7f-4f0d-ac35-2c61045dbb5f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Act per the below:\n{{ $json.chatInput || $json.prompt }}\n\nContext:\n{{ $json.context || \"\" }}",
+        "options": {
+          "systemMessage": "=# ROLE\nYou are a helpful assistant and a diligent partner in project management. \n\n# CONTEXT\nThe date today is {{ $now.toString() }}\n\nYou work with Monday.com to help track and manage projects and items on Monday boards. \nIf the next step is to create a Monday items, then assign the create_item boolean variable to true and ensure that the item output contains the item_name and description. Pass all these items to the Create Monday Item tool.\n\n# OPERATIONS AT STORIED\nEdward is the admin assistant, and he takes charge of most of the operations within the company. Therefore, a significant majority of the tasks MAY require you to create the task on his board. \n\nWhen creating items on Edward's board, the board ID is \"6038686507\" and the Group ID for the items to create is \"emailed_items54872\". \n\nIf the query does not require you to create any items on Monday boards, then return output with the   \"create_items\" parameter set to false. This will apply for instances where the user asks questions like, \"Search for Monday boards\", \"Fetch items on my Monday board\", etc..\n\n# OTHER BOARD IDS\nHere are a few key board ids for easy reference and the respective IDs:\n    { \"name\": \"Team: Weekly Priorities\", \"id\": 8080609962 },\n    { \"name\": \"Michael Margolis\", \"id\": 5749647658 },\n    { \"name\": \"Opportunities\", \"id\": 6322035424 },\n    { \"name\": \"Leads\", \"id\": 6322035430 },\n    { \"name\": \"Edward Njogu\", \"id\": 6038686507 }\n\nFor other boards not on this list, you should use the Get Many Boards on Monday.com node to find that particular board, and if that does not work, then use a custom API call. \n\n# ORDER OF OPERATIONS\nAlways think about operations sequentially and execute all necessary steps required to get to the ideal output. For example, if you are asked to find items on the IP group of the Legal and Compliance board, then you should:\n1. Use the Get Many Boards on Monday.com node to find the Legal and Compliance board's ID\n2. Use the Get Groups on a Monday.com Board node to find the ID of the IP Group\n3. Use the Get Many Items on a Monday.com Board node to find and return the items\n\n\nIMPORTANT: To avoid errors, please call the Get Groups function before calling the Get Many Items function.\n\nIf another step fails, analyze which ways can help fix it before finishing execution. If none of the options work, give feedback back to the user, letting the user know the issue, and if possible, what they need to do to fix it. \n\n# Processing Framework\nWork through each step systematically:\n\n## 1. UNDERSTAND\n**Think through:** Identify the core request.\n\n## 2. REASON\n**Think through:** Design the optimal action sequence and anticipate potential issues.\n\n## 3. SYNTHESIZE\n**Think through:** Connect all actions into a unified workflow and identify the critical path.\n\n## 4. CONCLUDE\n**Think through:** Define your action plan with clear next steps.\n\n# CREATING ITEMS\nWhen creating items on a Monday board, make sure to use the schema below. When other fields like the deadline and owner are not provided, just go ahead and ignore those fields. However, make sure to include the board id, name of the item, and the item description based on the user's request.\nThe board ID and the Group ID can be extracted from other nodes tied to this agent if these are not explicitly described.\n\n{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"title\": \"CreateNewItemsonMondayBoards\",\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"required\": [\"board_id\", \"create_items\", \"items\"],\n  \"properties\": {\n    \"board_id\": {\n      \"type\": \"integer\",\n      \"description\": \"Target board identifier\"\n    },\n    \"create_items\": {\n      \"type\": \"boolean\",\n      \"description\": \"Flag to create the listed items when true\"\n    },\n    \"items\": {\n      \"type\": \"array\",\n      \"minItems\": 1,\n      \"items\": {\n        \"$ref\": \"#/definitions/item\"\n      }\n    }\n  },\n  \"definitions\": {\n    \"item\": {\n      \"type\": \"object\",\n      \"additionalProperties\": false,\n      \"required\": [\n        \"item_name\",\n        \"deadline\",\n        \"description\",\n        \"owner\",\n        \"board\",\n        \"group_id\"\n      ],\n      \"properties\": {\n        \"item_name\": {\n          \"type\": \"string\",\n          \"description\": \"Name of the item to create\"\n        },\n        \"deadline\": {\n          \"type\": \"string\",\n          \"format\": \"date\",\n          \"description\": \"Due date in YYYY-MM-DD format\"\n        },\n        \"description\": {\n          \"type\": \"string\",\n          \"description\": \"Brief description of the item\"\n        },\n        \"owner\": {\n          \"type\": \"string\",\n          \"description\": \"Person responsible for the item\"\n        },\n        \"board\": {\n          \"type\": \"integer\",\n          \"description\": \"Board where the item belongs (redundant but explicit)\"\n        },\n        \"group_id\": {\n          \"type\": \"string\",\n          \"description\": \"Target group within the board\"\n        }\n      }\n    }\n  }\n}\n\n# CREATING UPDATES FOR ITEMS\nWhen updating an item on a Monday board, make sure to provide the item ID (which sometimes is the ID of the item created in a previous step, or you might have to find the item by getting all items on a board and selecting the most appropriate one) and the update text for the update to attach to that item. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [752, -352],
+      "id": "26909c77-db84-4451-9de6-3caa3bdefe49",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [384, 128],
+      "id": "35dbecb7-87b4-4434-b650-5571cca2ae1a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Need to solve for the following:\n\n* Approval workflow friction - make it internal\n\n* Dynamic selection - Edward or Michael's board\n\n* Search step on Monday - Get item and make update, or sth...\n\n",
+        "height": 320,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [1392, -320],
+      "typeVersion": 1,
+      "id": "b890fe39-4e77-4578-b224-73592dbec946",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "toolDescription": "This node takes action on Monday boards by using the Monday API. The Query Parameter should be formatted in proper GraphQL Syntax as defined by the Monday API documentation. For example, the query to get items from the board ID: 6038686507, using GraphQL is defined below. \nquery { boards (ids: 6038686507) { items_page { cursor items { id name } } } }\n\nAny operations apart from creating items on Monday boards can be performed using methods defined in Monday documentation using the Monday API. For example, you may be find a specific board, and return the first 10 items on that board. In that case, you should run a boards query, followed by an items_page query. \n\nMake sure to format the query using valid GraphQL syntax by escaping quotation strings. For example: \n{ \"query\": \"query { boards(ids: [6038686507]) { items_page(limit: 500, query_params: {order_by: [{column_id: \\\"date\\\", direction: desc}], rules: [{column_id: \\\"group\\\", compare_value: [\\\"topics\\\", \\\"emailed_items54872\\\", \\\"group_mknxbpdn\\\", \\\"group_title\\\"], operator: any_of}, {column_id: \\\"status\\\", compare_value: [10, 15, 1, 17, 1, 12, 11], operator: not_any_of}], operator: and}) { cursor items { id name group { id title } column_values(ids: [\\\"date\\\", \\\"status\\\", \\\"label\\\"]) { id text value } } } } }\" }\n\n",
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('JSON', ``, 'json') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [688, -640],
+      "id": "70b6551d-3de4-4fa5-90b3-572ab52bfd40",
+      "name": "HTTP Request",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to create Monday items when needed. You are required to send over an item's information in the format specified.\n\n\n",
+        "workflowId": {
+          "__rl": true,
+          "value": "ZdviP8rtlJinCRJT",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ZdviP8rtlJinCRJT",
+          "cachedResultName": "Monday Sub-Sub-Workflow (Creating Items)"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "output": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('output', ``, 'string') }}"
+          },
+          "matchingColumns": ["output"],
+          "schema": [
+            {
+              "id": "output",
+              "displayName": "output",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [432, -592],
+      "id": "e3e9b7e2-83b1-47fb-aeec-99390176a4c1",
+      "name": "Create Monday Item Worflow",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many board groups on a Monday.com board.",
+        "resource": "boardGroup",
+        "operation": "getAll",
+        "boardId": "={{ $fromAI('board_id', \"The Board ID for which to find board groups\", \"number\", 0) }}"
+      },
+      "type": "n8n-nodes-base.mondayComTool",
+      "typeVersion": 1,
+      "position": [688, 240],
+      "id": "0738c3bd-1264-4041-a014-bba589ad606a",
+      "name": "Get Groups on a Monday.com Board",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Get many items on a Monday.com board",
+        "resource": "boardItem",
+        "operation": "getAll",
+        "boardId": "={{ $fromAI('board_id', \"The Board ID for which to find items from\", \"number\", 0) }}",
+        "groupId": "={{ $fromAI('group_id', \"The Group ID for which to find board groups\", \"number\", 0) }}",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}"
+      },
+      "type": "n8n-nodes-base.mondayComTool",
+      "typeVersion": 1,
+      "position": [896, -656],
+      "id": "fe3c6109-c77f-438a-9798-87616e89aa96",
+      "name": "Get Many Items on a Monday.com Board",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}"
+      },
+      "type": "n8n-nodes-base.mondayComTool",
+      "typeVersion": 1,
+      "position": [960, 240],
+      "id": "e8a33ad9-121f-412d-a859-5e0d11b0e343",
+      "name": "Get Many Boards on Monday.com",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Edward's Subitems Board: https://storiedinc.monday.com/boards/6038686598",
+        "height": 192,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [1328, -560],
+      "typeVersion": 1,
+      "id": "d04883fd-2138-4ca3-afa4-cc03e7d10b14",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Add an update to an item in Monday.com. Ensure that you pass in the necessary item ID, for the item to add an update to, and the update text to add for that item. ",
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Item_ID', ``, 'string') }}",
+        "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Update_Text', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.mondayComTool",
+      "typeVersion": 1,
+      "position": [1456, 240],
+      "id": "e59d859f-e6a0-404a-90be-63e9a810f5f4",
+      "name": "Add an update to an item in Monday.com",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Create an item in Edward's high priority board group in Monday.com. Use this to create any items as requested, if they are to be created on Edward's board. ",
+        "resource": "boardItem",
+        "boardId": "6038686507",
+        "groupId": "emailed_items54872",
+        "name": "={{ $fromAI('name') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.mondayComTool",
+      "typeVersion": 1,
+      "position": [1216, 240],
+      "id": "4bd2db1a-551f-4120-9dc4-061274c970a9",
+      "name": "Create an item on Edward's Monday.com board",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "This node GETs active items on Edward's Monday board by using the Monday API. The Query Parameter should be formatted in proper GraphQL Syntax as defined by the Monday API documentation.\n\nMost other operations such as creating items on Monday boards can be performed using methods defined in Monday documentation using the Monday API.",
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{ \"query\": \"query { boards(ids: [6038686507]) { items_page(limit: 500, query_params: {order_by: [{column_id: \\\"date\\\", direction: desc}], rules: [{column_id: \\\"group\\\", compare_value: [\\\"topics\\\", \\\"emailed_items54872\\\", \\\"group_mknxbpdn\\\", \\\"group_title\\\"], operator: any_of}, {column_id: \\\"status\\\", compare_value: [10, 15, 1, 17, 1, 12, 11], operator: not_any_of}], operator: and}) { cursor items { id name group { id title } column_values(ids: [\\\"date\\\", \\\"status\\\", \\\"label\\\"]) { id text value } } } } }\" }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [1696, 240],
+      "id": "282fc1a3-b3c0-415d-bb2c-09beae3f969f",
+      "name": "Get Items on Edward's Monday Board",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [[]]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Monday Item Worflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Groups on a Monday.com Board": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Many Items on a Monday.com Board": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Many Boards on Monday.com": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add an update to an item in Monday.com": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an item on Edward's Monday.com board": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Items on Edward's Monday Board": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "query": {
+          "prompt": "Create a new item on Edward Njogu's board summarizing Michael's request: Research and provide guidance on migrating EOS tokens from Coinbase to a self-custodial wallet (Exodus) and swapping them for the new A token via the official migration portal. Include deadline: within the next week; not urgent.\n\nAfter creating the item, research the EOS token migration process, key terms, and actionable steps, then add these notes to the same item. Include:\n- Key terms: EOS, Token Migration, Vaulta (A), Self-custodial wallet, Exodus, Coinbase, Migration Portal, Compatible wallets.\n- Action Steps:\n  1. Move EOS tokens from Coinbase to self-custodial wallet (e.g. Exodus).\n  2. Access the official migration portal using provided links.\n  3. Follow the migration steps to swap EOS for A token.\n  4. Note: Coinbase will not auto-convert tokens; deadline is not set.\n  5. Reference official Coinbase support/help links for latest updates and support."
+        },
+        "prompt": "Create a new item on Edward Njogu's board summarizing Michael's request: Research and provide guidance on migrating EOS tokens from Coinbase to a self-custodial wallet (Exodus) and swapping them for the new A token via the official migration portal. Include deadline: within the next week; not urgent.\n\nAfter creating the item, research the EOS token migration process, key terms, and actionable steps, then add these notes to the same item. Include:\n- Key terms: EOS, Token Migration, Vaulta (A), Self-custodial wallet, Exodus, Coinbase, Migration Portal, Compatible wallets.\n- Action Steps:\n  1. Move EOS tokens from Coinbase to self-custodial wallet (e.g. Exodus).\n  2. Access the official migration portal using provided links.\n  3. Follow the migration steps to swap EOS for A token.\n  4. Note: Coinbase will not auto-convert tokens; deadline is not set.\n  5. Reference official Coinbase support/help links for latest updates and support.",
+        "context": "Full Context:\n\nEmail Subject Line: Fwd: Fwd: EOS TOKEN MIGRATION\n\nFrom: Edward Njogu<edward@storiedinc.com>\n\nBelow is a request from Michael to me.\n\n* Please create this item on my board.\n\n* Once created, research how to do this (including any key terms) and add those to the item you just created.\n\nThanks..\n\nMichael's request:\n\nEdward\n\nCan you research and guide me on how to do this. I have a bunch of EOS tokens in Coinbase that need to be transferred to my self custodial wallet Exodus.\n\nNot urgent, but good to do in the next week or so.\n\nEOS Token (EOS) Migration\n\nWe’re reaching out with an update regarding the migration of the EOS (EOS) token to Vaulta (A). If you hold these tokens, here’s what you need to know:\n*What's Happening?*\n\nThe EOS token is being replaced by A as part of a project upgrade.\n\nTo continue using your tokens, you’ll need to swap your EOS tokens for A through the official migration portal ( https://links.coinbase.com/s/c/ePPeOFRnDqaWdsJnwJVmskOPTrBQkKx9M9dOQK7NcPoLEi62rHFmpfJSv9ZM0k8xpzcOfZ_ZVyC5s86K1y7sYuPO0rTu7YwdQfFfcDXWdpeVm-Psa-T6CZR_klpJwSJoY_Tstk0KLnVUz5U8MF5DHa1S-hrZcPDQioMLJRrCc9AD12wHLgtTl3trRgIqizB9HHjsfx1oU3dLCOsCZihFBTi60WHQB4p4dDQWJ0REOjc1W97FWWKB7Xx5mM2YCFkqLK81rq9CZhsuvhxZmtJ85ov8Yr4GyLCuZKR3ADUIyGyKoes5UDs8RSzGC_A9WM7O6uy8uB-BAV5-AWq-Nq5P6pN-c_e7LICgfH7KFuT6ERnWRrERq36jn57dfgV3fYbX1q5nWZfiqoGMN7iV4-3LL22wYfviD8elC4owW-aoZ9T3k45S_8UlRw92ZN3DOTT_usdWnzyxqBiC-mG7H42m3yD42_cQUyRiYSQIjEdozj7mmB2iu9vLcgQxxO5QwQUkJJbVrtU-o6t63DygVXIVaau4oXKiHSawnal6sVMCfDOB928uEMIuvN5_5Gtm32w7z7Maqu2OniY-rfcvhkWrs_8/mtdy3U2zMG_u4gv6iBNit9Fb_b6uQ3G6/8 ). You can find more details about the migration and how to swap your tokens here ( https://links.coinbase.com/s/c/NRAvwLBUIhX4RRJP6XeWNHGYtGYcj1hqDMa_Q4eNFNUgMkC47J-C6f4pLthyKnJ2LVTk5DSibWR7_NxMkxI94B8WPPn5WvCP8S0JpKmsc2K5vQQ2fZx2XEdoajXAqjfxiTh4ocUJSUD9UKj4XhRa75boKQyouPzepN6mOUv2161Hv7247GaQIn8gX8YSaTGyfAsSmrHq4rUHbjB9gRzGKS1uHuhQrAyXm0TiXYPu3MfVe_gmXwg_swfCiqnmscnTyrDqISaz5tbu7ydDlTipTL06MzWfcqXIXriK9oe07A9mDQAUONXj-G98pc62zM5H0Wpmps3yrBTCUJOfH2-wow2qIES1gB5ITyqTdOpZyIE-mrdp9NQ4D0qvM3ow5T2T9Z2y4nPYu1GjCTK9GxCHkIxnWfsOcR8ZS-Se3F4_nTFoqKXG1DWDP5tifbj19lO8DEu1jpjJBFAZCKmFNySwzFBketem_QgM_k0WWM3WUxHyHuafGC1yqnyGz4U2HAgMFKBWOl05UJCNgQP0WWPVOB48EebK0-C-Hp157O3i5mrGCoj0fQ42AKPxE2mUNMyYRfMoE2ZQ0Wk3tGckuA/vjiI-VvwLkM7mdaQOse853E7S_2LHx0Z/8 ). A list of wallets compatible with the EOS Native network can be found here ( https://links.coinbase.com/s/c/y-FvBJr_0_o_jMkI1-Bof6mAtQ2pGfH2Fi3JIao8HjPLNY5JbJYGYA9D3KIUyYmX0LC5BmPc8gdc6DrVeuUDPFEwxXLKS_JM4c3Sth0_fl9iEj9MSMjWoP5Yr8GBchtpRP2kcbFKUjVlYaclg_RrOKIKVx2tdqe60fxhxNfRf66c0C020NGAmNUY2lG1rmIZ4dQfrxLuYVxzoIhsrShRkbU8vLN8OMUjvXs_nzuhbdw3Djg8LBSt9aMmTg9Oo_pGpSC_GSEkbk7LxDAvdIKFcWO3H2MheuAl1qvBgkk89hbCtA1bPq-Zju9NujvtDurPPAoBB2rSePu1e4tEjY4hXrthSdyl-4dPEY5OE0Yv00Cd3Sh960KJDYis6KxzqrIHR9r_Hu7Q2f7ZnX7Hepb8hY7lsrlDyQXsj7x4ONalDQx40SHQbtxsna0av65hUBa43zXyvZLTmy-U8V5XElItiaLhwf68voXthO5rQCoom5SjxHcLsM_DocgxNwZ1p6O7-Xk7/w7CYU89OMM_k5desr84tGJVyYGnCOiZm/8 ).\n\n*What This Means for You*\n\n* Coinbase will NOT automatically convert your tokens.\n\n* To swap your tokens, you’ll need to move them to a compatible self-custodial wallet before completing the migration.\n\n* There’s no set deadline right now, so you have time to make the switch.\n\n*How to Swap Your Tokens*\n\n1. Move your EOS tokens to a self-custodial wallet.\n\n2. Go to the official migration portal ( https://links.coinbase.com/s/c/VwX2LWHE5Li1L02Jvlr3Py-r8pZT94CuP-IkxxZf0QR4zMtxN0IxJK3lZkbeEACg8rfRjmX4Pzie11HlY48BLowSnsvVQIoNf3CBcLLm5m36gfUk3bX1JP__6WWkjcfCRh6QV5fKbZ7cj3aNN1EHGOtLeXCXyxVKMolweClJNc54-mpn-WgsPmsmLTqKsuCznzhy2KYoVEdkD0EwVeEWyfDWViGJ1EaW6KfN7bM3u1IWuZXWYozPsxCoqmMgVbhCafd1R3rO59es9Cd_OQtkgCbfbvjZtruC-JQSYStKwzwa4H3wAxPOZL2in4Tuxm0ZXFY1Akd7cIT4TGjVdkTAR4PUEwx-F180vsh9r8OruGoNV_T36WgmbxqalS9i_gRKpMFWZi8A71EZtYseyJqPciv-xoLHbgG_q4BfdSNqxikfHuaYMzv8hFDJaYtO6bUHzm9sntvKhoC0TRlOq0nDXtAdVfxJcISd8Pzb52gXogzTbqe_N_X6cAInqGBu3CBfheb-YrVA7Y9QuKHFDiCmbrnGD-c7eCJA-nKB_IxRbrMNCKspefUDMoVjCCK03tQr84mxsmbPorYJLfnTBH_a-v0/Qnqk_Asx-gE8xAb0EDywB1YTxOdQXDZk/8 ).\n\n3. Follow the steps to swap your EOS for A.\n\nOnce completed, you’ll now hold A, which replaces your old tokens.\n\nIf you have any questions regarding this update, please visit Coinbase Help ( https://comm.coinbase.com/CL0/https:%2F%2Flinks.coinbase.com%2Fs%2Fc%2F55xIkh24v27PO4xDb46euXXgpfjamxO9u8-a0jqjsbHexScoNtXmETNUK2eYkPirzV4Z-izgmBBQQHcEZ6Evxq4CI555_fRia4Uzs2I-ktn0NT9GOcP4mXEqB2J0HkVGwUPtba2RgLITATU59cy059ldQGvAVqx9WFgz8H8wbjD1-w2y91kaC3tI5F93-599g4u-9sFm5FR3o0QphKD_vyNz9IypDPszoG-zSir8qU9KY1fWlj9_mp9TirQ0xplQ3OWNGJnBOznHXRn0BKQAmQCbb88aFUTJl5eGW9MuMTKnKEYvsWUwYMTy3Unc48_hSqy2OVFUcMHgyH5cCoVTKWwoMwf18_bJgwSiaXxv7eOL8EceSUKjkzHdzaIGIKBNr-ErvRftHhnOxCtnddNH1kIzlOeItRR2HJ2Kmv2IBnD6bX2B69kv2wbJn45W7ySKpAjREoAd9gi8Ktb-ftT9zWRfsM3KihNsoNn7%2FiBAnlBB0QUE1TT2nI2CLp3h2g2bF2eDa%2F8/1/01000196d0311f77-a923b062-b3b0-4b63-b087-7c960cf7e90a-000000/hkSlul5D4C7ZF9GGXDhgv11O1edbXp1thiAnikG6xO0=405 ).\n\nCoinbase ( https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOBjT0BOZRfNcx9w_HKO3WQNYk4mTCyH_a5UR2Fs_-yr7uL6sd3TZkzEc7V1-zJv9kQL6RTXpQR-uDX49ZUzJFkuAGOrUUhXkAlzTq7XYYrl-Fg2sW7BISHxpHqVPO50GeAwMYMYZ0spEXivifyFkkp9nV_t_rpOTSotIFDk6DxpRwdy-ZmfyWo-wjxuzjhvcLWoS1QbFQwk46WKt7BjgqI_GO4DE7JTlMiSEHdb6UmYEkN58ow4NXMgiRA-svI8djwXp2A0_2AJdCxij_LCOfNoY-CVVbpyay4Yj7APdjBzI )\n© Coinbase 2025 | Coinbase Inc.\n\n248 3rd St #434\n\nOakland | CA 94607 | US\n\nwww. coinbase. com ( https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOHWg-dqwX2C6qKYY_f9yZ1wc19hvskxkk-HOYVATbHuIt7ZOj6pjefE17ytA3XuO1lvnirJV0wBP3-FvLufd96oDSKYV9uMOxSyvJ983JcyLDBuSwLUrO9RCCowfVlKswKNL4-u3Qg3ZcAFoV5Uvl-YBuJZSFDvG3jBZ7VkI8v3E2mA3ZT2T7hUUzwDq0dklRlVQeRRPVtSW-WiTFyibRiDpFZ3LZO51XT_2jdTR6_sSjAp0n6w1B1cWk4A3lk8sO12kSeFcgxrM-kRilho6PV7amwrdwqcG-kBqT_yQy4eO )\n\nGet in touch ( https://links.coinbase.com/s/c/8XC4m1nJJGLTGA2w1V_HegNb_IppIqNmRqm8i0f-a3IDU8ukg76jX7UDj02JviBNMl7OoLzm3hVRFfop4DH43xgPUWlhrSs4ix0f2qkCB9zwbISTzNc5UicYVki14E87us_z8wNk5m9-mGDXEWZUx-SlynsEVHl_mEWQObcG2DRwWKxKsh1RC78GxXyDALlvT5Crgde-IsoWQe28N3GNBJKIxyqE2oPCCtGsTFZB3SvDiKQBG7bh9w8mCbB3GbGdLz445TnZSkOLeDkJ0k-gOh3wKJAgYVJHX_g5ck6fbBRqLcyv0AGfUWDpRy1S5hOuZChMEEoqe-28PZoA8awVNINuwcRXUTqzFEhCMnsUHc-zgltUK9YarMqebTuan0rgEqa2ZCyJ2nQ5QS3WSvqBDgerUCV3gS9YMk0uBMDarVsDgnZ7fp-8rD_Olh5p5CLSgMWl3C04L2OLuRATmrs98kJbm0kDJKE0xj9XBSQ/DNG717UtR625W6q-yKF0oVwLD_9NliFp/8 )"
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2b2af1d320060dd21174bf49ad9a846f8842fbdc2355729bcc8d1ee957660c88"
+  }
+}
