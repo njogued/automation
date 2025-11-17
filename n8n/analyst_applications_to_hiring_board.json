@@ -1,0 +1,403 @@
+{
+  "updatedAt": "2025-11-17T13:27:53.000Z",
+  "createdAt": "2025-11-13T11:01:12.664Z",
+  "id": "KK2iWbAfLBXR2qlQ",
+  "name": "analyst applications to hiring board",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        112,
+        0
+      ],
+      "id": "e6667fde-375e-4fa6-b8b4-0063861a17f2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1xAn_YP-mVmZQGNFSMv6-G_218TkQ-yb48tmRW58EKng",
+          "mode": "list",
+          "cachedResultName": "Narrative Analyst Applications",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xAn_YP-mVmZQGNFSMv6-G_218TkQ-yb48tmRW58EKng/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 477551918,
+          "mode": "list",
+          "cachedResultName": "Narrative Analyst Application",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1xAn_YP-mVmZQGNFSMv6-G_218TkQ-yb48tmRW58EKng/edit#gid=477551918"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "d4ad329a-d887-4d3d-b021-4bbd74d002c0",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation ($value: String!) { change_simple_column_value(item_id: {{$json.id}}, board_id: 18377241989, column_id: \\\"long_text_mkxnbpqk\\\", value: $value) { id } }\",\n  \"variables\": {\n    \"value\": \"{{ $('Edit Fields').item.json.candidate_details.toJsonString().replaceAll('\"',\"'\").slice(0, 1999) }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1712,
+        -128
+      ],
+      "id": "7a004bc0-4e9a-461a-913e-01b374e12f33",
+      "name": "HTTP Request",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d7675f6b-75c8-4867-b9be-fd185e0e9f5e",
+              "name": "candidate_details",
+              "value": "=1. What are you working on right now? {{ $json[\"What are you doing or working on right now?\"] }}\n\n2. How do you work with AI, and to what extent? {{ $json['How do you work with AI, and to what extent?'] }}\n\n3. What types of client or project work have you done in the past? {{ $json['What types of client or project work have you done in the past?'] }}\n\n4. What can you uniquely bring or offer to this role at Storied? {{ $json['What can you uniquely bring or offer to this role at Storied?'] }}\n\n5. Are you looking for project-based, part-time, or full-time work? {{ $json['Are you looking for project-based, part-time, or full-time work?'] }}\n\n6. Time zone: {{ $json['What time zone are you in and where are you based?'] }}\n\n6. Where or how did you find this job post? {{ $json['Where or how did you find this job post?'] }}\n\n7. Anything else you want to share? {{ $json['Anything else you want to share?'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        752,
+        0
+      ],
+      "id": "a3a39cff-5aa1-4a39-bf22-4a74a46f09d0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getByColumnValue",
+        "boardId": "18377241989",
+        "columnId": "email",
+        "columnValue": "={{ $('Get row(s) in sheet').item.json[\"Your email address:\"] }}",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "d6e00ade-9a2b-462b-80d2-4f503aafbd3d",
+      "name": "Get items item by column value",
+      "alwaysOutputData": true,
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $('Get items item by column value').item.json.id }}",
+        "value": "={{ $('Edit Fields').item.json.candidate_details }}"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2080,
+        -128
+      ],
+      "id": "7576e07e-07a7-41eb-be65-c9ba04e50401",
+      "name": "Add an update to an item",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6b8ff51b-0c36-4597-a8cf-ba0a2046e79c",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b1fb8f59-8c2e-405c-9083-caa6317fd64e",
+              "leftValue": "={{ $json.column_values[10].text }}",
+              "rightValue": "=\"\"",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1360,
+        0
+      ],
+      "id": "88a820cd-ee39-4073-957b-872307813a39",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "18377241989",
+        "groupId": "group_mkxp51nz",
+        "name": "={{ $('Get row(s) in sheet').item.json['Full Name:'] }}",
+        "additionalFields": {
+          "columnValues": "={ \"columnValues\": \"{\\\"date4\\\":\\\"{{ $('Get row(s) in sheet').item.json['Submitted At'] }}\\\"}, {\\\"text_mkxnw49r\\\":\\\"{{ $('Get row(s) in sheet').item.json[\"Your phone number:\"].toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}, {\\\"email\\\":\\\"{{ $('Get row(s) in sheet').item.json['Your email address:'].toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}, {\\\"link7\\\":\\\"{{ $('Get row(s) in sheet').item.json['LinkedIn Profile:'].toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}, {\\\"text_mkxnzshf\\\":\\\"{{ $('Get row(s) in sheet').item.json.col_17.toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}, {\\\"text_mkxnwgvx\\\":\\\"{{ $('Get row(s) in sheet').item.json['What time zone are you in and where are you based?'].toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}, {\\\"text_mkxn5gwc\\\":\\\"{{ $('Get row(s) in sheet').item.json['Are you looking for project-based, part-time, or full-time work?'].toJsonString().replaceAll('\"',\"\").slice(0, 1999) }}\\\"}\" } "
+        }
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        112
+      ],
+      "id": "4ffd5ff6-1afc-4bd9-a839-24b6b0dfedc4",
+      "name": "Create an item in a board's group",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.monday.com/v2",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "mondayComApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query\": \"mutation ($itemId: Int!, $columnValues: JSON!) { change_multiple_column_values(item_id: $itemId, board_id: 18377241989, column_values: $columnValues) { id } }\",\n  \"variables\": {\n    \"itemId\": {{$json.id}},\n    \"columnValues\": {\n      \"date4\": \"{{ $('Get row(s) in sheet').item.json['Submitted At'] }}\",\n      \"text_mkxnw49r\": \"{{ $('Get row(s) in sheet').item.json['Your phone number:'].toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"email\": \"{{ $('Get row(s) in sheet').item.json['Your email address:'].toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"link7\": \"{{ $('Get row(s) in sheet').item.json['LinkedIn Profile:'].toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"text_mkxnzshf\": \"{{ $('Get row(s) in sheet').item.json.col_17.toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"text_mkxnwgvx\": \"{{ $('Get row(s) in sheet').item.json['What time zone are you in and where are you based?'].toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"text_mkxn5gwc\": \"{{ $('Get row(s) in sheet').item.json['Are you looking for project-based, part-time, or full-time work?'].toJsonString().replaceAll('\\\"','').slice(0, 1999) }}\",\n      \"long_text_mkxnbpqk\": \"{{ $('Edit Fields').item.json.candidate_details.toJsonString().replaceAll('\\\"','\\\\').slice(0, 1999) }}\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1984,
+        112
+      ],
+      "id": "ff2946e5-72f9-44a2-b284-5dfc82a45e7a",
+      "name": "HTTP Request1",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $('Get items item by column value').item.json.id }}",
+        "value": "={{ $('Edit Fields').item.json.candidate_details }}"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        2224,
+        112
+      ],
+      "id": "3dba923c-c780-4f4a-aee0-6f15877035c2",
+      "name": "Add an update to an item1",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Add an update to an item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Get items item by column value",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get items item by column value": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add an update to an item": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Create an item in a board's group": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Add an update to an item1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "18a630f5-b6fb-4667-8d0f-ffb9c7d04408",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-13T11:01:12.735Z",
+      "createdAt": "2025-11-13T11:01:12.735Z",
+      "role": "workflow:owner",
+      "workflowId": "KK2iWbAfLBXR2qlQ",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "tags": []
+}
