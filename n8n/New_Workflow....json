@@ -1,12 +1,445 @@
 {
-  "updatedAt": "2025-11-16T15:07:44.000Z",
+  "updatedAt": "2025-11-17T14:04:38.000Z",
   "createdAt": "2025-11-16T13:03:43.379Z",
   "id": "BvHTwy4Ue5TAPBBO",
   "name": "New Workflow...",
   "active": false,
   "isArchived": false,
-  "nodes": [],
-  "connections": {},
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 17
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        320
+      ],
+      "id": "962dc0e7-204a-49ca-aa32-649a36d13b68",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {
+          "q": "-label:fyi AND -label:me AND -label:dnr AND -label:teamfwd AND in:inbox ",
+          "readStatus": "unread",
+          "receivedAfter": "={{ $json.timestamp.toDateTime().minus(1, 'days')}}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        320
+      ],
+      "id": "c6138f18-29d5-41a1-b2ae-db5170376a52",
+      "name": "Get many messages",
+      "webhookId": "d7b44969-e209-4512-8e88-23242a468b4e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"action_taken_or_recommended\": {\n      \"type\": \"string\"\n    },\n    \"draft_or_no\": {\n      \"type\": \"boolean\"\n    },\n    \"draft_email\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1312,
+        672
+      ],
+      "id": "0f119370-1469-45b4-905c-2c4b024f221e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# REQUEST\n\nProcess the request below using the tools at your disposal:\nThis message was received {{ $json.headers.from }} on {{ $json.headers.date }}\n\n#CONTEXT EMAIL\nPlease note the following in analyzing the following email. If there are several emails between ai@storiedinc.com and any other address, any emails from ai@storiedinc.com are AI replies. Subsequent follow-up emails from any other email address directly to ai@storiedinc.com are the human's reply to the AI. You should reply to the latest human request while using the previous emails as context.\n\nEmail Subject: {{ $('Gmail Trigger').item.json.subject }}\nEmail Body: {{ $json.text }}\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=# ROLE\nYou are a helpful assistant primarily assisting with admin and operations tasks. \n\n# CONTEXT\nThe date and time now is {{ $now.toString() }}\n\n# PURPOSE\nYou are required to take the information passed by the user and determine the best course of action. Your job is to orchestrate jobs between different agents and formulate a friendly response back to the user. \n\n# EXECUTION\nYou are required to call agents in the correct order by passing in the correct information. This should not involve doing actions like writing emails or other content yourself. \n\nWhen you receive input, analyze it in the following ways:\n\n1. If you are asked to take an action, determine the correct tool to take action on the next steps. \nFor example:\n- If the email requires you to extract next steps from an email and add those next steps to Monday, then you will pass that context to the Monday subworkflow. \n- If you are asked to find meeting options on the calendar, then you shall call the calendar workflow node and use that to find times on the calendar based on the defined calendar management rules. \n\nFinally, after execution, return the final output of the execution to the user through the output. For example, if you were asked to find meeting slots, provide that output back to the user and tell them what slots are open. If a sub-workflow was required to create a task on Monday, confirm with the user if the task has or has not been created. \n\nWhen you are done running other tools or workflows, the next step in the workflow will send an email back to the user, which means you must provide output that is meaningful. \nThe body of the email will be the full text of the email body, which is the output of the execution workflow, including what has been done, what has not been done, any questions or blockers."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        720,
+        320
+      ],
+      "id": "91d37ed5-5caa-4940-94f4-dd1dc35648bc",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-5-mini"
+        },
+        "options": {
+          "reasoningEffort": "low",
+          "timeout": 120000
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        592,
+        576
+      ],
+      "id": "f17c5498-5d71-4d8e-b4e2-1d9c4bfe8205",
+      "name": "OpenAI Chat Model",
+      "notesInFlow": true,
+      "credentials": {
+        "openAiApi": {
+          "id": "O0zxMyVMsAWQNvxb",
+          "name": "OpenAi account"
+        }
+      },
+      "notes": "OpenAI"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to do actions on Slack including sending messages to user, using a human approval step, or to notify a user easily. ",
+        "workflowId": {
+          "__rl": true,
+          "value": "Ej82KV1ttHjC8dZH",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/Ej82KV1ttHjC8dZH",
+          "cachedResultName": "Slack Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "client",
+              "displayName": "client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "channel",
+              "displayName": "channel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        736,
+        688
+      ],
+      "id": "3ea6efe6-d56e-4380-8ef3-8997448fbca4",
+      "name": "Slack Sub-Workflow"
+    },
+    {
+      "parameters": {
+        "description": "Call this workflow for any actions on Monday.com including creating items on Monday.com, updating items on Monday.com, or getting items on Monday.com. Requests will typically come in as something like \"Create this item on Monday\" or \"Create these items on my Monday board\" or \"Find items due today on my board\".",
+        "workflowId": {
+          "__rl": true,
+          "value": "foxsO53IbcaM6Ff3",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/foxsO53IbcaM6Ff3",
+          "cachedResultName": "Monday Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}",
+            "context": "=Full Context:\n\nEmail Subject Line: {{ $('Only Allow Mail to Storied AI').item.json.subject }}\n\nFrom: {{ $('Only Allow Mail to Storied AI').item.json.from.value[0].name }}<{{ $('Only Allow Mail to Storied AI').item.json.from.value[0].address }}>\n\n{{ $('Only Allow Mail to Storied AI').item.json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        768
+      ],
+      "id": "c6394395-b646-480f-b1c7-88f96da64d3b",
+      "name": "Monday Sub-Workflow"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to take action on calendar action items. This tool will primarily be used to get calendar events or propose open calendar slots for scheduling sales calls or client calls. When providing output back to the user, notify them that the Zoom meeting may not be linked to the calendar event. ",
+        "workflowId": {
+          "__rl": true,
+          "value": "9g3lAvJtRyyNjaPJ",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/9g3lAvJtRyyNjaPJ",
+          "cachedResultName": "Calendar Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "prompt"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1008,
+        704
+      ],
+      "id": "36741dae-3f6e-44f5-9782-89c468a25743",
+      "name": "Calendar Sub-Workflow"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to execute email functions. You may be required to send emails or search for emails in Gmail or send using SMTP. Enough information must be passed to the tool that allow it to action properly and make actionable input.",
+        "workflowId": {
+          "__rl": true,
+          "value": "lQxi6YEZQaiu6s76",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/lQxi6YEZQaiu6s76",
+          "cachedResultName": "Gmail Subagent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "prompt": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('prompt', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "prompt"
+          ],
+          "schema": [
+            {
+              "id": "prompt",
+              "displayName": "prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1152,
+        656
+      ],
+      "id": "87f2b846-bd56-4543-aad0-7c707ffc3ab5",
+      "name": "Email Sub-Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "message": "={{ $json.output }}",
+        "options": {
+          "fromAlias": "ai@storiedinc.com",
+          "replyTo": "ai@storiedinc.com",
+          "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+          "sendTo": "={{ $('Gmail Trigger').item.json.from.value[0].address }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1344,
+        320
+      ],
+      "id": "56ea4ace-a30b-49a3-bb46-3b64d831ccc3",
+      "name": "Create a draft",
+      "webhookId": "9b7d0c52-2748-4e44-a034-09dc6f428b17",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Slack Sub-Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday Sub-Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Sub-Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Sub-Workflow": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {},
   "staticData": null,
   "meta": {
@@ -14,7 +447,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f28559e0-b058-4773-88f3-b9c24638476b",
+  "versionId": "7e151f8b-a118-46b3-b044-b6551d44d5ef",
   "triggerCount": 0,
   "shared": [
     {
