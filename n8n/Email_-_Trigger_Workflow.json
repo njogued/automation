@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-12T17:24:21.000Z",
+  "updatedAt": "2025-11-17T14:02:47.000Z",
   "createdAt": "2025-07-10T11:53:50.528Z",
   "id": "VtuaZAAvnvzQToaV",
   "name": "Email - Trigger Workflow",
@@ -77,8 +77,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        656,
-        -304
+        672,
+        -176
       ],
       "id": "fe069788-c4a4-483b-91ab-b0e20edc4511",
       "name": "Gmail Workflow",
@@ -135,8 +135,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        448,
-        -304
+        464,
+        -176
       ],
       "id": "52e75859-f8ac-49c3-be1e-e0bdb5ebb6ce",
       "name": "Pinecone Upsert",
@@ -186,8 +186,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        688,
-        624
+        672,
+        464
       ],
       "id": "ab694a9d-6410-4b99-bc35-616a5a1a7fcc",
       "name": "Monday Sub-Workflow"
@@ -229,7 +229,7 @@
       "typeVersion": 2.2,
       "position": [
         960,
-        432
+        320
       ],
       "id": "fbec491a-1c53-4203-8827-68ba7b407c9d",
       "name": "Email Sub-Workflow"
@@ -286,8 +286,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        560,
-        448
+        544,
+        384
       ],
       "id": "dea14681-c82e-47c1-bad3-9a9c89ebb9c4",
       "name": "Slack Sub-Workflow"
@@ -329,8 +329,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        880,
-        624
+        816,
+        400
       ],
       "id": "926b9945-b647-4961-99c6-d418fc686335",
       "name": "Calendar Sub-Workflow"
@@ -627,10 +627,10 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1763171315,
+        "lastTimeChecked": 1763397430,
         "possibleDuplicates": [
-          "19a85333a4a955d0",
-          "19a85161e2ca06f1"
+          "19a92ad8c3e040f5",
+          "19a929f08cf5d9aa"
         ]
       }
     }
@@ -700,7 +700,7 @@
       }
     ]
   },
-  "versionId": "54b12bda-6f9e-4385-a6c4-f1a9f41798d1",
+  "versionId": "935a3cba-5d4f-478e-a192-ee42e8d121f2",
   "triggerCount": 1,
   "shared": [
     {
