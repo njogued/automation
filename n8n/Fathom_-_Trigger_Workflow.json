@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-17T20:13:45.000Z",
+  "updatedAt": "2025-11-18T21:16:18.000Z",
   "createdAt": "2025-05-30T22:55:56.025Z",
   "id": "uzPwEoAKf3jx4T0k",
   "name": "Fathom - Trigger Workflow",
@@ -352,7 +352,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// // Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// for (const item of $input.all()) {\n//   item.json.myNewField = 1;\n// }\n\n// return $input.all();\n\nlet calls = {\n  \"OMD Systems x Storied\": { slack: \"C072MPKE2F7\", notion: \"2698fccff32181d0b509dae64c15741d\" },\n  \"Salesforce x Storied\": { slack: \"C075D8FAKF1\", notion: \"2698fccff32181658290f3e23965ae1d\" },\n  \"LG Ads x Storied\": { slack: \"C07EVSK6C4T\", notion: \"\" },\n  \"WPS x Storied\": { slack: \"C07H2LUHYN9\", notion: \"17a8fccff3218107b140c3a30ed97483\" },\n  \"AdventHealth x Storied\": { slack: \"C07N6NEEV1C\", notion: \"2698fccff32181f7acb4dbf8f7308987\" },\n  \"ROAR Africa x Storied\": { slack: \"C08BXE8SPAR\", notion: \"\" },\n  \"StoryPath AI x Storied\": { slack: \"C08CGJT6A0N\", notion: \"\" },\n  \"Syndio x Storied\": { slack: \"C08M93R9DSP\", notion: \"2698fccff3218101979bfc3d982d88a9\" },\n  \"WPS Tiger Team x Storied\": { slack: \"C0917R5858A\", notion: \"26a8fccff321815c98a9efd70842c45b\" },\n  \"Twitch x Storied\": { slack: \"C091R3HUBAA\", notion: \"2698fccff32181e18434d56c94023785\" },\n  \"ACLM x Storied\": { slack: \"C097TKBGJBS\", notion: \"2568fccff321811a95a3eb56bfc19c96\" },\n  \"Roche QSLT x Storied\": { slack: \"C07UW2X84MT\", notion: \"1658fccff32181328a43d1ec88f39304\" },\n  \"French Florist x Storied\": { slack: \"C09BZF3R7RU\", notion: \"2698fccff32181058a3eca8481e4ffd3\" },\n  \"Straddle x Storied\": { slack: \"C09BKFFA020\", notion: \"2568fccff32181aea169e6a703b81041\" },\n  \"Milken Institute x Storied\": { slack: \"C08P1M2EX2M\", notion: \"27f8fccff32181d5b50dce8a6bec8397\" }\n};\n\nlet ids = {};\n\nfor (const item of $input.all()) {\n  let call_title = item?.json?.body?.call_title;\n  ids = calls[call_title];\n}\n\nreturn { json: { ids } };"
+        "jsCode": "// // Loop over input items and add a new field called 'myNewField' to the JSON of each one\n// for (const item of $input.all()) {\n//   item.json.myNewField = 1;\n// }\n\n// return $input.all();\n\nlet calls = {\n  \"OMD Systems x Storied\": { slack: \"C072MPKE2F7\", notion: \"2698fccff32181d0b509dae64c15741d\" },\n  \"Salesforce x Storied\": { slack: \"C075D8FAKF1\", notion: \"2698fccff32181658290f3e23965ae1d\" },\n  \"LG Ads x Storied\": { slack: \"C07EVSK6C4T\", notion: \"\" },\n  \"WPS x Storied\": { slack: \"C07H2LUHYN9\", notion: \"17a8fccff3218107b140c3a30ed97483\" },\n  \"AdventHealth x Storied\": { slack: \"C07N6NEEV1C\", notion: \"2698fccff32181f7acb4dbf8f7308987\" },\n  \"ROAR Africa x Storied\": { slack: \"C08BXE8SPAR\", notion: \"\" },\n  \"StoryPath AI x Storied\": { slack: \"C08CGJT6A0N\", notion: \"\" },\n  \"Syndio x Storied\": { slack: \"C08M93R9DSP\", notion: \"2698fccff3218101979bfc3d982d88a9\" },\n  \"WPS Tiger Team x Storied\": { slack: \"C0917R5858A\", notion: \"26a8fccff321815c98a9efd70842c45b\" },\n  \"Twitch x Storied\": { slack: \"C091R3HUBAA\", notion: \"2698fccff32181e18434d56c94023785\" },\n  \"ACLM x Storied\": { slack: \"C097TKBGJBS\", notion: \"2568fccff321811a95a3eb56bfc19c96\" },\n  \"Roche QSLT x Storied\": { slack: \"C07UW2X84MT\", notion: \"1658fccff32181328a43d1ec88f39304\" },\n  \"French Florist x Storied\": { slack: \"C09BZF3R7RU\", notion: \"2698fccff32181058a3eca8481e4ffd3\" },\n  \"Straddle x Storied\": { slack: \"C09BKFFA020\", notion: \"2568fccff32181aea169e6a703b81041\" },\n  \"Milken Institute x Storied\": { slack: \"C08P1M2EX2M\", notion: \"27f8fccff32181d5b50dce8a6bec8397\" },\n  \"DNAstack x Storied\": { slack: \"C09P5TZS8BX\", notion: \"2af8fccff321815b8e9bfb7ba16c7a7e\" }\n};\n\nlet ids = {};\n\nfor (const item of $input.all()) {\n  let call_title = item?.json?.body?.call_title;\n  ids = calls[call_title];\n}\n\nreturn { json: { ids } };"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -1595,7 +1595,7 @@
     },
     {
       "parameters": {
-        "content": "# INTERNAL CALLS WORKFLOW -  ADD ACTION ITEMS TO MONDAY.COM",
+        "content": "# INTERNAL CALLS WORKFLOW -  ADD ACTION ITEMS TO MONDAY(.)COM",
         "height": 800,
         "width": 4384
       },
@@ -2302,7 +2302,7 @@
       }
     ]
   },
-  "versionId": "93001793-3189-4ca4-97f4-f76f300e399d",
+  "versionId": "f31c2b5f-7d7d-4ba7-9a56-8f370d5cde32",
   "triggerCount": 1,
   "shared": [
     {
