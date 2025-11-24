@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2025-11-24T11:07:45.800Z",
+  "updatedAt": "2025-11-24T11:08:20.000Z",
   "createdAt": "2025-11-24T11:07:45.800Z",
   "id": "zmRAO2AaunUEJrbd",
   "name": "n8n Workflows to Github",
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -1093,7 +1093,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
@@ -1117,7 +1121,7 @@
     ]
   },
   "versionId": "be780829-69d7-433d-8a5a-4eccb3b90506",
-  "triggerCount": 0,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2025-11-24T11:07:45.808Z",
