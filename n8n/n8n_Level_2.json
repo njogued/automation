@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-26T13:33:40.000Z",
+  "updatedAt": "2025-11-26T14:30:24.000Z",
   "createdAt": "2025-11-26T10:31:49.098Z",
   "id": "HgbPOjNT2heLaTMk",
   "name": "n8n Level 2",
@@ -235,7 +235,7 @@
     {
       "parameters": {
         "operation": "write",
-        "fileName": "={{ $('HTTP Request3').item.json.title }} v2.json",
+        "fileName": "=./.n8n/workflowBinary/{{ $('HTTP Request3').item.json.title.trim().replaceAll(\".\",\"\") }}.json",
         "options": {
           "append": false
         }
@@ -251,7 +251,7 @@
     },
     {
       "parameters": {
-        "fileSelector": "A Pretty Woman v2.json",
+        "fileSelector": "=./.n8n/workflowBinary/{{ $('HTTP Request3').item.json.title.trim().replaceAll(\".\",\"\") }}.json",
         "options": {}
       },
       "type": "n8n-nodes-base.readWriteFile",
@@ -265,7 +265,7 @@
     },
     {
       "parameters": {
-        "content": "## Read and Write Files to Disk\n* File Conversion (JSON to Binary)\n* Writing files to disk and reading said files\n* To access files, use the Read File functionality\n* Finding the file yourself is not easy, but if needed, you can also find the file in the **<MEDIA_FOLDER>/workflows/<WORKFLOW_ID>/executions/<EXECUTION_ID>/binary_data**",
+        "content": "## Read and Write Files to Disk\n* File Conversion (JSON to Binary)\n* Writing files to disk and reading said files\n* To access files, use the Read File functionality\n* Set the absolute path mapped in the volume config in yml file\n* Or use the path **<MEDIA_FOLDER>/workflows/<WORKFLOW_ID>/executions/<EXECUTION_ID>/binary_data**",
         "height": 624,
         "width": 896,
         "color": 3
@@ -383,7 +383,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "56973110-f7f4-4671-a0e0-789ac6988125",
+  "versionId": "81cea3df-5c7b-4ea9-9d19-4d7487cbac8b",
   "triggerCount": 0,
   "shared": [
     {
