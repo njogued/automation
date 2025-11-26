@@ -1,0 +1,65 @@
+{
+  "updatedAt": "2025-11-26T13:36:12.000Z",
+  "createdAt": "2025-11-26T10:31:48.778Z",
+  "id": "ZbQ1O3Tyhio3IRFf",
+  "name": "Contacts Outreach",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "var myContacts = [\n\t{\n\t\tjson: {\n\t\t\tname: 'Alice',\n\t\t\temail: {\n\t\t\t\tpersonal: 'alice@home.com',\n\t\t\t\twork: 'alice@wonderland.org'\n\t\t\t},\n\t\t}\n\t},\n\t{\n\t\tjson: {\n\t\t\tname: 'Bob',\n\t\t\temail: {\n\t\t\t\tpersonal: 'bob@mail.com',\n\t\t\t\twork: 'contact@thebuilder.com'\n\t\t\t\t},\n\t\t}\n\t},\n];\n\nreturn myContacts;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "eab8ab1f-1263-4697-93fc-9546c138356c",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "e76d793a-26b7-4aeb-9973-51aea5d4b54a",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "809fdd71-88df-495f-8271-2ae81ef33473",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-26T10:31:48.916Z",
+      "createdAt": "2025-11-26T10:31:48.916Z",
+      "role": "workflow:owner",
+      "workflowId": "ZbQ1O3Tyhio3IRFf",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
