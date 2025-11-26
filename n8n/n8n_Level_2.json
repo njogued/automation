@@ -1,0 +1,398 @@
+{
+  "updatedAt": "2025-11-26T13:33:40.000Z",
+  "createdAt": "2025-11-26T10:31:49.098Z",
+  "id": "HgbPOjNT2heLaTMk",
+  "name": "n8n Level 2",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        192
+      ],
+      "id": "e76d793a-26b7-4aeb-9973-51aea5d4b54a",
+      "name": "When clicking ‘Execute workflow’",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"items\": [\n    {\n      \"country\": \"Kenya\",\n      \"Pop\": 61\n    },\n    {\n      \"country\": \"Uganda\",\n      \"Pop\": 49\n    },\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -208
+      ],
+      "id": "b376a799-bf97-450d-95a4-edd3008b1119",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# Loop over input items and add a new field called 'my_new_field' to the JSON of each one\nfor item in _items:\n  print(item)\n  for i in item[\"json\"][\"items\"]:\n    i[\"President\"] = \"Dictator\"\nreturn _items"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        176,
+        -208
+      ],
+      "id": "eab8ab1f-1263-4697-93fc-9546c138356c",
+      "name": "Code in Python (Native) (Beta)"
+    },
+    {
+      "parameters": {
+        "url": "https://blog.n8n.io/",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        48,
+        192
+      ],
+      "id": "20f8c022-1c83-4247-a806-d43f05ea2eea",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "links",
+              "cssSelector": ".item-title a[href]",
+              "returnValue": "attribute",
+              "returnArray": true
+            },
+            {
+              "key": "titles",
+              "cssSelector": ".item-title a",
+              "returnValue": "html",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        192
+      ],
+      "id": "47baf99c-5aa8-4591-807c-fedf4a5145db",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "url": "https://pokeapi.co/api/v2/pokemon",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        48,
+        416
+      ],
+      "id": "cc444026-ee3d-4fd6-af92-452a6e51d8ea",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "content": "## Working with the Python Node\n\n* Iterating through Python input (_items now, docs not updated)\n* Use print statements to debug in the browser console\n* Check for json key when iterating",
+        "height": 400,
+        "width": 864,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "ead86b45-1350-45f8-96cf-873a8a7a8594",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Simple Craping\n* Use the **native HTML node** to parse through returned content\n* CSS selectors such as class, id, attribute type can extract specific content\n* Toggle Array On or Off to either get all items or just one item (resp.)\n* Also includes a JSON - XML conversion node",
+        "height": 624,
+        "width": 864,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -304,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "906681de-1e73-42ed-934e-bb209d660f24",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "mode": "jsonToxml",
+        "dataPropertyName": "=xml_output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.xml",
+      "typeVersion": 1,
+      "position": [
+        352,
+        416
+      ],
+      "id": "13ba8af2-bd1a-424c-900c-74272fb9156c",
+      "name": "XML"
+    },
+    {
+      "parameters": {
+        "operation": "addToDate",
+        "magnitude": "={{ $now.startOf('month') }}",
+        "timeUnit": "months",
+        "duration": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        1056,
+        -224
+      ],
+      "id": "6c392b98-8a67-4549-ab61-e541b551b87e",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "content": "## Date & Time Node\n* Get difference between dates in days,weeks, months, etc\n* Tip: Use expressions to go to start or end of month, week, etc",
+        "height": 400,
+        "width": 896
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        -432
+      ],
+      "typeVersion": 1,
+      "id": "923aedc8-9fb1-4397-b6c7-e741e900e20f",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        -224
+      ],
+      "id": "ae9062c9-a7b8-42c0-86fa-080665a5b5d8",
+      "name": "Schedule Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "https://poetrydb.org/random/1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        672,
+        208
+      ],
+      "id": "6dcdefb1-68c2-484d-a728-5c26abc71f9a",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1184,
+        208
+      ],
+      "id": "b06eb798-eda4-4000-b02f-383897e0be49",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('HTTP Request3').item.json.title }} v2.json",
+        "options": {
+          "append": false
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        688,
+        432
+      ],
+      "id": "51944c43-b3a3-4161-8787-59b4ca97b13c",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "fileSelector": "A Pretty Woman v2.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        432
+      ],
+      "id": "12be41f3-2ecf-4470-b76f-d9b2b1682b8e",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "content": "## Read and Write Files to Disk\n* File Conversion (JSON to Binary)\n* Writing files to disk and reading said files\n* To access files, use the Read File functionality\n* Finding the file yourself is not easy, but if needed, you can also find the file in the **<MEDIA_FOLDER>/workflows/<WORKFLOW_ID>/executions/<EXECUTION_ID>/binary_data**",
+        "height": 624,
+        "width": 896,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        592,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "9cbc7502-c1a1-4718-85e3-ae7308b91960",
+      "name": "Sticky Note3"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in Python (Native) (Beta)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "XML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "56973110-f7f4-4671-a0e0-789ac6988125",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-26T10:31:49.145Z",
+      "createdAt": "2025-11-26T10:31:49.145Z",
+      "role": "workflow:owner",
+      "workflowId": "HgbPOjNT2heLaTMk",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
