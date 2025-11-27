@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-26T14:30:24.000Z",
+  "updatedAt": "2025-11-27T21:34:14.000Z",
   "createdAt": "2025-11-26T10:31:49.098Z",
   "id": "HgbPOjNT2heLaTMk",
   "name": "n8n Level 2",
@@ -11,12 +11,11 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -240,
-        192
+        -256,
+        1072
       ],
       "id": "e76d793a-26b7-4aeb-9973-51aea5d4b54a",
-      "name": "When clicking ‘Execute workflow’",
-      "disabled": true
+      "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
@@ -278,6 +277,95 @@
       "typeVersion": 1,
       "id": "9cbc7502-c1a1-4718-85e3-ae7308b91960",
       "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "fieldsToMatchString": "email",
+        "joinMode": "keepNonMatches",
+        "outputDataFrom": "input1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        416,
+        992
+      ],
+      "id": "2ba63872-1bbc-4a13-a950-1879af5c6ef0",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "getAllPeople",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.n8nTrainingCustomerDatastore",
+      "typeVersion": 1,
+      "position": [
+        80,
+        816
+      ],
+      "id": "737b2cbe-d6c0-49ce-b5de-b47c800a0e1e",
+      "name": "Customer Datastore (n8n training)"
+    },
+    {
+      "parameters": {
+        "jsCode": "const arrayPpl = [\n  {\n    \"name\": \"Oga\",\n    \"email\":\"gatsby@west-egg.co\",\n    \"language\": \"English\",\n    \"country\": {\n        \"code\": \"CO\",\n        \"name\": \"Nigeria\"\n    }\n  },\n  {\n    \"name\": \"Xito\",\n    \"language\": \"Swati\",\n    \"email\": \"info@in-and-out-of-weeks.org\",\n    \"country\": {\n        \"code\": \"US\",\n        \"name\": \"Eswatini\"\n    \n    }\n  }\n]\n\nreturn arrayPpl"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        1232
+      ],
+      "id": "33a5c11b-5ad8-4d1a-b6a3-aeb87ffb5442",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$runIndex}}",
+              "value2": 2
+            }
+          ]
+        }
+      },
+      "name": "IF",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1136,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "00158d8e-b0a5-4be6-9b4b-c5ccceb86b30"
+    },
+    {
+      "parameters": {},
+      "name": "NoOp",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        672,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "792cd6d2-d4da-4780-b55c-0fdea937d3ce"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        880,
+        992
+      ],
+      "id": "f6f5fbde-3317-4a93-a31b-b3e311e26c9d",
+      "name": "Wait",
+      "webhookId": "f86c97a1-17dd-48ea-b3f0-837560dec885"
     }
   ],
   "connections": {
@@ -285,12 +373,12 @@
       "main": [
         [
           {
-            "node": "HTTP Request",
+            "node": "Customer Datastore (n8n training)",
             "type": "main",
             "index": 0
           },
           {
-            "node": "HTTP Request1",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -373,6 +461,73 @@
           }
         ]
       ]
+    },
+    "Customer Datastore (n8n training)": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "IF": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "NoOp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NoOp": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "IF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -383,7 +538,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "81cea3df-5c7b-4ea9-9d19-4d7487cbac8b",
+  "versionId": "a74f765e-1f03-4946-9cf0-226caece8995",
   "triggerCount": 0,
   "shared": [
     {
