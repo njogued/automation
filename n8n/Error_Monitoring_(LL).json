@@ -1,0 +1,81 @@
+{
+  "updatedAt": "2025-11-28T09:39:36.000Z",
+  "createdAt": "2025-11-28T09:30:29.101Z",
+  "id": "lcqJzGkY4MX35CJE",
+  "name": "Error Monitoring (LL)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c2582e3d-820c-44f9-b745-251c8db2bd1a",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "content": "=The workflow {{ $json.workflow.name }} failed, with the error message: {{ $json.execution.error.message }}. Last node executed: {{ $json.execution.lastNodeExecuted }}. Check this workflow execution here: {{ $json.execution.url }}. My Unique ID: 3998e70dc5fd00cd54cbe90bc0448c60",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "93418e01-7ca9-4d0d-821c-f0f8409d454c",
+      "name": "Discord",
+      "webhookId": "a89c3251-6296-4dbb-8063-03a4b23023bf",
+      "credentials": {
+        "discordWebhookApi": {
+          "id": "jZk5gcvzPbzOmjGe",
+          "name": "Discord Webhook account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "ad24b635-97b4-4385-baa4-844d09ef04c3",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-28T09:30:29.113Z",
+      "createdAt": "2025-11-28T09:30:29.113Z",
+      "role": "workflow:owner",
+      "workflowId": "lcqJzGkY4MX35CJE",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
