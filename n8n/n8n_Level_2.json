@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-28T09:30:02.000Z",
+  "updatedAt": "2025-11-28T09:43:17.000Z",
   "createdAt": "2025-11-26T10:31:49.098Z",
   "id": "HgbPOjNT2heLaTMk",
   "name": "n8n Level 2",
@@ -738,7 +738,7 @@
             }
           ]
         },
-        "joinMode": "enrichInput1",
+        "joinMode": "enrichInput2",
         "options": {}
       },
       "type": "n8n-nodes-base.merge",
@@ -1295,7 +1295,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "6574e267-f778-4ef9-98c5-9434f3daf8d3",
+  "versionId": "d537c23f-9127-4ebf-b80d-2f478ab6b51b",
   "triggerCount": 0,
   "shared": [
     {
