@@ -1,0 +1,73 @@
+{
+  "updatedAt": "2025-11-29T21:37:44.000Z",
+  "createdAt": "2025-11-29T21:35:30.813Z",
+  "id": "s2YGBFAZsjGcODqR",
+  "name": "Apify Scraper",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        0
+      ],
+      "id": "dfeff3f1-6042-4934-aa83-e760974cdb5e",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "Scrape single URL"
+      },
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0bf9262c-c417-4880-b5b5-1e7d7a45b373",
+      "name": "Scrape single URL",
+      "credentials": {
+        "apifyApi": {
+          "id": "zoVv964gxr4vqj5J",
+          "name": "Apify account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Scrape single URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "92fbca88-de07-489d-9826-2c565fcf5b08",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-29T21:35:30.820Z",
+      "createdAt": "2025-11-29T21:35:30.820Z",
+      "role": "workflow:owner",
+      "workflowId": "s2YGBFAZsjGcODqR",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
