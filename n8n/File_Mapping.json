@@ -1,0 +1,272 @@
+{
+  "updatedAt": "2025-11-29T20:55:31.000Z",
+  "createdAt": "2025-11-29T20:00:26.213Z",
+  "id": "sYJYwSCA8vPFloej",
+  "name": "File Mapping",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "list",
+        "path": "/EDWARD/Promotion",
+        "returnAll": true,
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "de390c7d-a534-42b6-b98c-9eceb4419788",
+      "name": "List a folder",
+      "credentials": {
+        "dropboxApi": {
+          "id": "7reH9kma8akYJihs",
+          "name": "Dropbox account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "path": "={{ $json.pathDisplay }}"
+      },
+      "type": "n8n-nodes-base.dropbox",
+      "typeVersion": 1,
+      "position": [
+        720,
+        304
+      ],
+      "id": "685f56e1-d680-4d14-b59d-03651e48206b",
+      "name": "Download a file",
+      "credentials": {
+        "dropboxApi": {
+          "id": "7reH9kma8akYJihs",
+          "name": "Dropbox account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "089ef1e1-4724-4d28-9899-dcfb899523c1",
+              "leftValue": "={{ $json.type }}",
+              "rightValue": "folder",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        64,
+        -64
+      ],
+      "id": "b4ce2322-cb6a-477d-a9e8-92b4a37649bc",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1cb5024f-4ac9-4dfb-8b7e-623d5babee48",
+              "leftValue": "={{ $json.contentSize }}",
+              "rightValue": 1048576,
+              "operator": {
+                "type": "number",
+                "operation": "lt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        400,
+        320
+      ],
+      "id": "4bf0e747-276c-4fb8-b530-674537f1e318",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.name }}",
+                    "rightValue": ".pdf",
+                    "operator": {
+                      "type": "string",
+                      "operation": "endsWith"
+                    },
+                    "id": "517fa3f5-50f6-4d8d-8df8-6d551d1acff3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        992,
+        304
+      ],
+      "id": "8a88abd7-a81a-4668-9ecf-10e9cb5b7d59",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1248,
+        304
+      ],
+      "id": "737d5620-7945-4df5-93ab-6e1e577feca5",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -64
+      ],
+      "id": "2764cfcd-2b86-4289-abf2-8d43d7c4eeb0",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "connections": {
+    "List a folder": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Download a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download a file": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "List a folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "9acc4a10-30ac-43ed-8630-f5b7f1862035",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-29T20:00:26.316Z",
+      "createdAt": "2025-11-29T20:00:26.316Z",
+      "role": "workflow:owner",
+      "workflowId": "sYJYwSCA8vPFloej",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
