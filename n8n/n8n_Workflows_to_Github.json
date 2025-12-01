@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-24T11:08:20.000Z",
+  "updatedAt": "2025-12-01T13:49:28.000Z",
   "createdAt": "2025-11-24T11:07:45.800Z",
   "id": "zmRAO2AaunUEJrbd",
   "name": "n8n Workflows to Github",
@@ -1103,26 +1103,8 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Schedule Trigger": [
-      {
-        "json": {
-          "timestamp": "2025-11-16T20:40:07.164-08:00",
-          "Readable date": "November 16th 2025, 8:40:07 pm",
-          "Readable time": "8:40:07 pm",
-          "Day of week": "Sunday",
-          "Year": "2025",
-          "Month": "November",
-          "Day of month": "16",
-          "Hour": "20",
-          "Minute": "40",
-          "Second": "07",
-          "Timezone": "America/Los_Angeles (UTC-08:00)"
-        }
-      }
-    ]
-  },
-  "versionId": "be780829-69d7-433d-8a5a-4eccb3b90506",
+  "pinData": {},
+  "versionId": "898b7d6d-7034-45fd-8731-cfa300a7144b",
   "triggerCount": 1,
   "shared": [
     {
