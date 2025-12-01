@@ -1,0 +1,385 @@
+{
+  "updatedAt": "2025-12-01T09:31:39.000Z",
+  "createdAt": "2025-12-01T08:52:58.695Z",
+  "id": "jR6DybaSPOMHRlZu",
+  "name": "Video Intake & Analysis",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Analyze this video and extract the game/offer names mentioned in the video and the payout structure. ",
+        "videoUrls": "={{ $json['Video URL'] }}",
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        144,
+        -144
+      ],
+      "id": "06c626bb-f869-434b-bdd2-64b36117ef61",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Video Intake",
+        "formDescription": "Provide a link to the video or image.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Media Type",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Image"
+                  },
+                  {
+                    "option": "Video"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "URL",
+              "requiredField": true
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "be3a5213-306d-43f0-a45b-af04563df5c4",
+      "name": "On form submission",
+      "webhookId": "35ca2e8d-ae41-467b-ad1e-d7d0586609a0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "96b1ccdc-f1a0-488d-8a64-dcd79aa467a2",
+              "leftValue": "={{ $json['Media Type'] }}",
+              "rightValue": "Video",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        0
+      ],
+      "id": "27f4739c-8cb6-4a81-b616-432077ba18d8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        128,
+        112
+      ],
+      "id": "2711430e-dc44-4e1f-bc26-eb4dcacd2805",
+      "name": "Download Image",
+      "notes": "Get the image from the url as a binary file"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the input data below and provide an analysis of what the image contents are. I would like to obtain details on the game in the image, the offers, and the payout structure.\n\n{{ $binary.data }}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        336,
+        112
+      ],
+      "id": "fd8bff7f-0713-4a70-a294-14c9585e5742",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        384,
+        432
+      ],
+      "id": "448eefcb-6733-46b2-8f06-64965b11076c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        192,
+        416
+      ],
+      "id": "43d87c55-e4c4-47df-8d75-d3615efa024d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"game\": \"Swag Bucks\",\n\t\"offers\": [\"paid surveys\", \"lottery\"],\n  \"payout_structure\": \"monthly\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        432
+      ],
+      "id": "fd921ca2-7e61-4337-8c13-9a1d04a64c54",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Game": "={{ $json.output.game }}",
+            "Offers": "={{ $json.output.offers }}",
+            "Payout Structure": "={{ $json.output.payout_structure }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        816,
+        112
+      ],
+      "id": "66c70762-35f9-4a09-9344-782d3c0ee02e",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "304c510a-4abe-4881-a46a-35802f511026",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-01T08:53:00.684Z",
+      "createdAt": "2025-12-01T08:53:00.684Z",
+      "role": "workflow:owner",
+      "workflowId": "jR6DybaSPOMHRlZu",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}
