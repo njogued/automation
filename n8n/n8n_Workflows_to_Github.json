@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-02T11:54:38.000Z",
+  "updatedAt": "2025-12-02T11:55:32.000Z",
   "createdAt": "2025-11-14T22:43:00.588Z",
   "id": "nyxwnS6B3f0GS4sI",
   "name": "n8n Workflows to Github",
@@ -855,7 +855,7 @@
             {
               "id": "8a4874dc-5399-437f-9ae4-501cb67904e3",
               "leftValue": "={{ $binary.data.fileName }}",
-              "rightValue": "ConvertKit_Stats_-_Weekly",
+              "rightValue": "ConvertKit_Stats_-_Weekly.json",
               "operator": {
                 "type": "string",
                 "operation": "notEquals"
@@ -1152,7 +1152,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "621fa40e-91de-4283-b8fb-fbd7ff90cf21",
+  "versionId": "6322cd34-c2cc-41b0-a232-8480d9336e4f",
   "triggerCount": 1,
   "shared": [
     {
