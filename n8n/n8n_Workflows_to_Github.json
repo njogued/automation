@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2025-12-01T13:49:28.000Z",
-  "createdAt": "2025-11-24T11:07:45.800Z",
-  "id": "zmRAO2AaunUEJrbd",
+  "updatedAt": "2025-11-17T13:28:05.000Z",
+  "createdAt": "2025-11-14T22:43:00.588Z",
+  "id": "nyxwnS6B3f0GS4sI",
   "name": "n8n Workflows to Github",
   "active": true,
   "isArchived": false,
@@ -21,10 +21,10 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        176,
-        64
+        -384,
+        -48
       ],
-      "id": "343ad886-2b16-4929-9788-44a3d6430dd8",
+      "id": "c10ca563-f6a0-4500-9aff-18be112ca76d",
       "name": "Schedule Trigger"
     },
     {
@@ -55,14 +55,14 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        496,
-        608
+        -64,
+        496
       ],
-      "id": "988ccffc-c014-4d0f-8c26-4e4415d63548",
+      "id": "02ade0a0-d9ca-491e-b30b-2add89332c00",
       "name": "Message a model",
       "credentials": {
         "openAiApi": {
-          "id": "tjf9ytf3xLEqDCRr",
+          "id": "O0zxMyVMsAWQNvxb",
           "name": "OpenAi account"
         }
       }
@@ -89,15 +89,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        960,
-        848
+        400,
+        736
       ],
-      "id": "2ed5aea1-0f43-46b2-a246-1de46a2319c6",
+      "id": "17d18f40-e25f-4a54-9071-b05c8d395728",
       "name": "Create a file",
       "webhookId": "af1a453b-db41-4a8f-baa9-95b28849c06e",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -119,10 +119,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        512,
-        352
+        -48,
+        240
       ],
-      "id": "951d0213-bd6b-4c50-8739-aa57473094e3",
+      "id": "5550d7ee-582b-43bf-9d25-aa17a2aab812",
       "name": "Edit Fields"
     },
     {
@@ -148,15 +148,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        528,
-        64
+        -32,
+        -48
       ],
-      "id": "8282bdd1-ad96-4978-81bb-dd08ad6a4a70",
+      "id": "df781103-6adb-47d7-9d78-24a2b68233a7",
       "name": "List files",
       "webhookId": "1c17a39c-7667-4705-bf7c-a4dd7983f02e",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -175,10 +175,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        848,
-        64
+        288,
+        -48
       ],
-      "id": "d08dcf98-4535-4584-be68-c5322c4c5c47",
+      "id": "c7d8d610-3a8f-4b20-a7cd-dc032906062e",
       "name": "Aggregate"
     },
     {
@@ -238,10 +238,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        848,
-        352
+        288,
+        240
       ],
-      "id": "c3403ea4-1a73-47ea-9df1-7db309dc6c2c",
+      "id": "fe8020fa-cf60-4eaf-a553-23d3d7aa31e5",
       "name": "Switch"
     },
     {
@@ -269,15 +269,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        960,
-        608
+        400,
+        496
       ],
-      "id": "e6721494-2063-4ae8-8736-bbcd3b0bc967",
+      "id": "25d9854e-f50d-4c39-a4d7-1f6972f72f45",
       "name": "Edit a file",
       "webhookId": "0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -306,15 +306,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        1152,
-        336
+        592,
+        224
       ],
-      "id": "033be4cf-ce15-47d0-b09a-d9cbe41d6f6c",
+      "id": "72dae206-845d-44de-ad13-77e5a5258c71",
       "name": "Get a file",
       "webhookId": "3040be33-3e0b-47d7-aabe-49814827f32c",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -327,10 +327,10 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        192,
-        608
+        -368,
+        496
       ],
-      "id": "ba2905c2-9aa0-4433-96bf-7986f24ff70e",
+      "id": "81a55671-a35a-492b-abce-7b953c4c1924",
       "name": "Extract from File"
     },
     {
@@ -361,17 +361,17 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        192,
-        848
+        -368,
+        736
       ],
-      "id": "55f64f11-4993-44ea-82ff-1e37263bcdb7",
+      "id": "e3244598-6cbd-4c37-b6f3-3b1290378545",
       "name": "Message a model1",
       "retryOnFail": true,
       "waitBetweenTries": 5000,
       "maxTries": 5,
       "credentials": {
         "openAiApi": {
-          "id": "tjf9ytf3xLEqDCRr",
+          "id": "O0zxMyVMsAWQNvxb",
           "name": "OpenAi account"
         }
       }
@@ -384,14 +384,14 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        1136,
-        64
+        576,
+        -48
       ],
-      "id": "c2621b12-40e3-47cb-b6f2-bdc6a39a6023",
+      "id": "510b3e21-13c8-4cca-91fe-bfb0ddd582b9",
       "name": "Get many workflows",
       "credentials": {
         "n8nApi": {
-          "id": "O5eUF4InQFmNoPB5",
+          "id": "1OxszQwe707RlHDg",
           "name": "n8n account"
         }
       }
@@ -423,10 +423,10 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        192,
-        352
+        -368,
+        240
       ],
-      "id": "8fc3f8f9-4cc6-4ede-ad42-3f4529eb3cf2",
+      "id": "be35cfb4-b542-4ce0-8ef2-acf7cf8e678f",
       "name": "Filter"
     },
     {
@@ -451,15 +451,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        1200,
-        2176
+        640,
+        2064
       ],
-      "id": "27f5f198-3272-42c3-a2e7-399f3cebb987",
+      "id": "346f9beb-7056-46ca-b5ff-03f02fd69c85",
       "name": "Create a file1",
       "webhookId": "af1a453b-db41-4a8f-baa9-95b28849c06e",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       },
@@ -482,10 +482,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        192,
-        1664
+        -368,
+        1552
       ],
-      "id": "326ae4c6-457e-407b-bd2d-736d3852b199",
+      "id": "4b20d9f6-7329-4db2-9fbb-92dacb270903",
       "name": "Edit Fields1"
     },
     {
@@ -511,15 +511,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        544,
-        1376
+        -16,
+        1264
       ],
-      "id": "87c4e234-e8fa-4ba6-b866-300f8a64cc12",
+      "id": "444f6736-7abf-4da0-a83a-e0434cf631e7",
       "name": "List files1",
       "webhookId": "1c17a39c-7667-4705-bf7c-a4dd7983f02e",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -538,10 +538,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        864,
-        1376
+        304,
+        1264
       ],
-      "id": "8a5ea247-2507-4ac2-adb5-47e9a6951139",
+      "id": "027346fb-2f31-4f53-8306-cf9da0ad8ceb",
       "name": "Aggregate1"
     },
     {
@@ -601,10 +601,10 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.3,
       "position": [
-        544,
-        1664
+        -16,
+        1552
       ],
-      "id": "bf094d19-7d25-4f5c-8563-52968bb62c98",
+      "id": "263ce293-c391-427d-90e3-fb28742df3af",
       "name": "Switch1"
     },
     {
@@ -631,15 +631,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        880,
-        1648
+        320,
+        1536
       ],
-      "id": "25c56de7-787a-44ec-aca2-651113a003e7",
+      "id": "785d3ec4-1388-4bc8-895d-8899df5bacf4",
       "name": "Get a file1",
       "webhookId": "3040be33-3e0b-47d7-aabe-49814827f32c",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -672,17 +672,17 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        208,
-        2176
+        -352,
+        2064
       ],
-      "id": "eb91b6c4-18cc-4789-8745-4fe0d123e75e",
+      "id": "27995f9c-86b8-47cc-8ad7-d50e7e653f88",
       "name": "Message a model3",
       "retryOnFail": true,
       "maxTries": 5,
       "waitBetweenTries": 5000,
       "credentials": {
         "openAiApi": {
-          "id": "tjf9ytf3xLEqDCRr",
+          "id": "O0zxMyVMsAWQNvxb",
           "name": "OpenAi account"
         }
       }
@@ -695,14 +695,14 @@
       "type": "n8n-nodes-base.n8n",
       "typeVersion": 1,
       "position": [
-        1152,
-        1376
+        592,
+        1264
       ],
-      "id": "d4d25d30-96fb-453e-9391-e571ad49bd2a",
+      "id": "c200635d-9275-437f-b6f1-497cd7f06e88",
       "name": "Get many workflows1",
       "credentials": {
         "n8nApi": {
-          "id": "O5eUF4InQFmNoPB5",
+          "id": "1OxszQwe707RlHDg",
           "name": "n8n account"
         }
       }
@@ -712,10 +712,10 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        192,
-        1376
+        -368,
+        1264
       ],
-      "id": "320cac2f-e904-449a-884b-1535663234dc",
+      "id": "02b54815-eae6-4719-b4cc-7403dd11e2c6",
       "name": "When clicking ‘Execute workflow’"
     },
     {
@@ -743,15 +743,15 @@
       "type": "n8n-nodes-base.github",
       "typeVersion": 1.1,
       "position": [
-        1200,
-        1920
+        640,
+        1808
       ],
-      "id": "29d4f1c9-f6fb-486b-af3a-eaf632be0453",
+      "id": "ae13ee43-5b08-454e-9cc5-4fc52fc36ae7",
       "name": "Edit a file1",
       "webhookId": "0c6f49d9-0eb4-4c45-a86c-e1d9bf203d38",
       "credentials": {
         "githubApi": {
-          "id": "95qFLriSOUXwIi39",
+          "id": "gXXV3FNOXoKqeD9d",
           "name": "GitHub account"
         }
       }
@@ -784,14 +784,14 @@
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 2,
       "position": [
-        208,
-        1920
+        -352,
+        1808
       ],
-      "id": "4dd2c29e-d060-4f9d-81f8-6bdf10db3a2f",
+      "id": "82f54432-8c72-4af5-aa05-0036fcf91fd1",
       "name": "Message a model2",
       "credentials": {
         "openAiApi": {
-          "id": "tjf9ytf3xLEqDCRr",
+          "id": "O0zxMyVMsAWQNvxb",
           "name": "OpenAi account"
         }
       }
@@ -804,10 +804,10 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        1168,
-        1648
+        608,
+        1536
       ],
-      "id": "55fbc447-4195-4d0f-adff-ea266ab3e13d",
+      "id": "67bcdca7-cef0-467e-af4a-440589f0e1d5",
       "name": "Extract from File1"
     },
     {
@@ -819,11 +819,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        48,
-        1232
+        -512,
+        1120
       ],
       "typeVersion": 1,
-      "id": "6989444d-8acc-411f-ace4-8f57e4f14e1b",
+      "id": "d4c3a716-fdc4-4d7c-93bd-44ae4a66fff9",
       "name": "Sticky Note"
     },
     {
@@ -835,11 +835,11 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        48,
-        -80
+        -512,
+        -192
       ],
       "typeVersion": 1,
-      "id": "d68e397b-b0f8-488b-a30d-8311cfa05b2a",
+      "id": "3b0a5561-860e-4642-b1cb-c453a2000618",
       "name": "Sticky Note1"
     }
   ],
@@ -1091,28 +1091,50 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "geHpTM7jr9NoyZNi",
+    "timeSavedPerExecution": 5
   },
   "staticData": {
     "node:Schedule Trigger": {
       "recurrenceRules": [
-        20
+        0
       ]
     }
   },
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "898b7d6d-7034-45fd-8731-cfa300a7144b",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-11-16T20:40:07.164-08:00",
+          "Readable date": "November 16th 2025, 8:40:07 pm",
+          "Readable time": "8:40:07 pm",
+          "Day of week": "Sunday",
+          "Year": "2025",
+          "Month": "November",
+          "Day of month": "16",
+          "Hour": "20",
+          "Minute": "40",
+          "Second": "07",
+          "Timezone": "America/Los_Angeles (UTC-08:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "53590815-f85d-4554-b9c7-ac49e18e5c48",
   "triggerCount": 1,
   "shared": [
     {
-      "updatedAt": "2025-11-24T11:07:45.808Z",
-      "createdAt": "2025-11-24T11:07:45.808Z",
+      "updatedAt": "2025-11-14T22:43:00.596Z",
+      "createdAt": "2025-11-14T22:43:00.596Z",
       "role": "workflow:owner",
-      "workflowId": "zmRAO2AaunUEJrbd",
-      "projectId": "DukkafP5uTjGrfTt"
+      "workflowId": "nyxwnS6B3f0GS4sI",
+      "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
   "tags": []
