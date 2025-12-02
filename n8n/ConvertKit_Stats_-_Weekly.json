@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-07-26T00:27:03.000Z",
+  "updatedAt": "2025-12-02T01:34:41.000Z",
   "createdAt": "2025-07-25T22:14:32.801Z",
   "id": "Bo5fd5wJLIMfglJ5",
   "name": "ConvertKit Stats - Weekly",
@@ -170,6 +170,35 @@
           "name": "SLACK API - BOT"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "=https://app.kit.com/publications/13346791/reports/opened?page=eJxVyrERACAIA8CFLBKCEM7997LV9u-xuCNdu1eoMgxYB482MLQwn5rhJOe_o1Z2dl0A8hGQ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "ck_device=V2pUc0FreTRJVzlQZ2J4cVVwcHRITHRTTTJac0hqaFBoVUZuM1c5Q3dHajJ5UUx5RkVZSHlQemVxV2pOZXhCdW5tUDcwYTNCdXJNcW1QZUtlMzU2ZGJTeDNsdml5eVA2cEFKSTFDaDFJMmxDSGt4QWZqYTlBdVVpTVF4NUNFbjJ0R3RsM2RieTZ4K1RXTlAxZmxZSWpvT29rWS9MaEdtMTY5N3pLeUlWMVJnPS0tY2hmUCtmL3dCekNvR3V4c01pQ1VkZz09--49bd384d93c694386cfb69168cd860c933c32916; cf_clearance=kAZaOZpEPUe.99TPQmqj5z9SCh0j3i4J_zNcZy7ugh0-1753809584-1.2.1.1-KB2G3a63yPjjt8kz1fDyDoWv37iQQ88bIQGKfHs5C3f5iUeNSDI2OWzVlzcxofCVwN6Y1GUPMIwrIV5FeWgQCw_wRwC44WczDZxFttTcYprLuAkA2sQKHqfPAyIiYb.RkuIzZtRbxFwlu7zuC0yuvgwx3a3nC4Nc__Cl2TECRf68UFEILk7RxAK81.jqnk9NHqr9izToWJa1nPsugQCVXAfVvp5HliVQ7yV2YT4G.fQ; __stripe_mid=96e93a87-fa0d-49c6-bacb-cb14ad76a1723c33fa; ajs_anonymous_id=gT4225a29BVi9HuzNY1QtQ7m; remember_user_token=eyJfcmFpbHMiOnsibWVzc2FnZSI6Ilcxc3hNRGsyTnpnNVhTd2lKREpoSkRFd0pIRm9NRFYxUVV4bVlrcERkMWhaVkdwS1pUTTJZMlVpTENJeE56WXdOamN5TnpNNExqUTNOVE0zTVRnaVhRPT0iLCJleHAiOiIyMDI2LTEwLTE3VDAzOjQ1OjM4LjQ3NVoiLCJwdXIiOm51bGx9fQ%3D%3D--62428425d466096c855ac798ee4cd84df666e5fb; _mailapp_session=2dfed12a1f86a13c623e1c1015718f71; __stripe_sid=fb842263-cd68-4329-9031-ad23162c9986da33a5; __cf_bm=VqmgWSgC.MPkHbSeBpB_IHqIq4b6DieQU5AXU65eY.8-1764637587-1.0.1.1-8t5caSlKgZyAi9IESxTd9Mo5duzpAu1WofWY4RKfb0m3GeiiAzuWBmhiakwvu3bZdXWSqPELoqC72MbAVP_WVcroIH51_J3wfipQ0oiRE.U; XSRF-TOKEN=joKveZ-V85jJQXIAPGvqJu2-h4QXGZElqk06t-mzPX2wSUI9f3DZNu83JlJAtSdncbMS1zwV6iqNK5rNHaZykQ"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -944,
+        208
+      ],
+      "id": "bf6702dd-6850-411f-a0c3-091d058e28b4",
+      "name": "Get Subscriber Stats for Broadcast"
     }
   ],
   "connections": {
@@ -243,7 +272,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "ea284d77-c2e5-44e2-a0d6-b879b4df53ae",
+  "versionId": "f5e78549-512c-42d9-8a1a-e029e2cf8ec2",
   "triggerCount": 1,
   "shared": [
     {
