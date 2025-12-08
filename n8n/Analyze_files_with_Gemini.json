@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-05T14:04:03.000Z",
+  "updatedAt": "2025-12-08T11:38:54.000Z",
   "createdAt": "2025-12-01T08:52:58.695Z",
   "id": "jR6DybaSPOMHRlZu",
   "name": "Analyze files with Gemini",
@@ -62,7 +62,7 @@
       "typeVersion": 2.3,
       "position": [
         640,
-        -304
+        -288
       ],
       "id": "be3a5213-306d-43f0-a45b-af04563df5c4",
       "name": "On form submission",
@@ -194,7 +194,8 @@
           "value": {
             "Game": "={{ $json.gameName }}",
             "Offers": "={{ $json.offers }}",
-            "Payout Structure": "={{ $json.payoutStructure }}"
+            "Payout Structure": "={{ $json.payoutStructure }}",
+            "Timestamp": "={{ $now.toString() }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -241,6 +242,16 @@
             {
               "id": "PlayStore ID (Android)",
               "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -492,14 +503,15 @@
       "parameters": {
         "sendTo": "njogued@gmail.com",
         "subject": "NEW GAME ALERT!",
-        "message": "=New Game Added to the Spreadsheet.\n\nGame Details:\nName: {{ $('Code in JavaScript').item.json.gameName }}\n\nOffers: {{ $('Code in JavaScript').item.json.offers }}\n\nPayout Structure: {{ $('Code in JavaScript').item.json.payoutStructure }}\n",
+        "emailType": "text",
+        "message": "=New Game Added to the Spreadsheet.\n\nGame Details:\nName: {{ $('Code in JavaScript').item.json.gameName }}\n\nOffers: {{ $('Code in JavaScript').item.json.offers }}\n\nPayout Structure: {{ $('Code in JavaScript').item.json.payoutStructure }}",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        6064,
-        -352
+        6720,
+        -128
       ],
       "id": "31f5a342-04e4-4c61-bf99-8b53f65416a0",
       "name": "Send a message",
@@ -540,44 +552,6 @@
       ],
       "id": "cfb71f75-808f-4320-90fd-0dafdf73d39f",
       "name": "Google Gemini Chat Model1",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Dcm6ikEvNE1dhGxo",
-          "name": "Gemini API - Personal"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        4240,
-        -304
-      ],
-      "id": "3044b0c0-0dc6-4856-a90a-5ecab6154a22",
-      "name": "Google Gemini Chat Model2",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Dcm6ikEvNE1dhGxo",
-          "name": "Gemini API - Personal"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        4208,
-        208
-      ],
-      "id": "c2179ecb-8375-48cb-b8f4-0ba227b21b26",
-      "name": "Google Gemini Chat Model3",
       "credentials": {
         "googlePalmApi": {
           "id": "Dcm6ikEvNE1dhGxo",
@@ -991,7 +965,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpQueryAuth",
         "sendHeaders": true,
@@ -1017,15 +991,15 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        2016,
-        -288
+        2112,
+        -112
       ],
       "id": "0905ed99-918c-4cfd-b7ad-3412cfc76eb1",
       "name": "Analyze",
       "credentials": {
         "httpQueryAuth": {
-          "id": "CZHUfV9qSxpvy0iG",
-          "name": "Gemini Query Auth - Storied"
+          "id": "6Yqr0HmtxtByNFXX",
+          "name": "Gemini Query Auth Personal"
         }
       }
     },
@@ -1061,13 +1035,13 @@
       "parameters": {
         "content": "## Update sheet and notify",
         "height": 1136,
-        "width": 1344,
+        "width": 2160,
         "color": 6
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        4816,
-        -736
+        4800,
+        -720
       ],
       "typeVersion": 1,
       "id": "d8871fae-7a33-4a9c-a384-973210cc1ff3",
@@ -1087,69 +1061,6 @@
       "typeVersion": 1,
       "id": "e4aae337-4af7-432d-bfd3-8c9ee9b37090",
       "name": "Sticky Note4"
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.URL }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notEmpty",
-                      "singleValue": true
-                    },
-                    "id": "c79dca4f-3b87-4d87-a2f0-b9b54e89b26c"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "51f8b42d-69fc-4d83-92d9-246fa904e093",
-                    "leftValue": "={{ $json[\"Upload file\"].filename }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "string",
-                      "operation": "notEmpty",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.3,
-      "position": [
-        1040,
-        -304
-      ],
-      "id": "dd68cabb-0761-4ff9-a379-a4513c86c30c",
-      "name": "Switch"
     },
     {
       "parameters": {
@@ -1175,8 +1086,8 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        1440,
-        -128
+        1584,
+        224
       ],
       "id": "ff903fd1-d53d-45bf-a56f-031f8329c949",
       "name": "Upload Binary File to Analyze",
@@ -1195,15 +1106,15 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1,
       "position": [
-        1472,
-        -416
+        1648,
+        -224
       ],
       "id": "188c52cb-b0ad-419d-ba5c-fbec5e5d0ab0",
       "name": "Upload File to Analyze as URL",
       "credentials": {
         "googlePalmApi": {
-          "id": "ICsyOYGneyPY6hP2",
-          "name": "Gemini - STORIED"
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
         }
       }
     },
@@ -1214,306 +1125,11 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2480,
-        -288
+        2464,
+        -112
       ],
       "id": "affb12ac-1f6d-42c6-9e35-46dc6b91d849",
       "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        4432,
-        272
-      ],
-      "id": "dddad6c3-4b58-4dfd-9cef-26ebccff04f1",
-      "name": "Google Gemini Chat Model4",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Dcm6ikEvNE1dhGxo",
-          "name": "Gemini API - Personal"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
-          "mode": "list",
-          "cachedResultName": "Competitor Analysis",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "GAMES/OFFERS",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Game": "={{ $('Code in JavaScript').item.json.gameName }}",
-            "PlayStore ID (Android)": "={{ $('AI Agent1').item.json.output.gameID }}"
-          },
-          "matchingColumns": [
-            "Game"
-          ],
-          "schema": [
-            {
-              "id": "Game",
-              "displayName": "Game",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Offers",
-              "displayName": "Offers",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Payout Structure",
-              "displayName": "Payout Structure",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "App Store ID (iOS)",
-              "displayName": "App Store ID (iOS)",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "PlayStore ID (Android)",
-              "displayName": "PlayStore ID (Android)",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        5712,
-        -480
-      ],
-      "id": "8158d674-6ea1-4efe-9221-c1cc84273490",
-      "name": "Append or update row in sheet",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "n434ebqBlO2QBh7B",
-          "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
-      "position": [
-        4416,
-        -144
-      ],
-      "id": "4e26b423-d542-42c7-b151-2c12c2fb24b3",
-      "name": "Google Gemini Chat Model5",
-      "credentials": {
-        "googlePalmApi": {
-          "id": "Dcm6ikEvNE1dhGxo",
-          "name": "Gemini API - Personal"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.isEmpty() && $('AI Agent1').item.json.output.gameID.length > 0 }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "boolean",
-                      "operation": "true",
-                      "singleValue": true
-                    },
-                    "id": "4a31d56a-296e-47dd-aee0-a787ed53d048"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "42af322a-2d41-4b6f-b9cf-da1ee71047d6",
-                    "leftValue": "={{ $json.isEmpty() && $('AI Agent2').item.json.output.gameID.length > 0 }}",
-                    "rightValue": "",
-                    "operator": {
-                      "type": "boolean",
-                      "operation": "true",
-                      "singleValue": true
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.3,
-      "position": [
-        5376,
-        -304
-      ],
-      "id": "c7ba8807-deff-466d-b12b-d4c911479325",
-      "name": "Switch1"
-    },
-    {
-      "parameters": {
-        "operation": "appendOrUpdate",
-        "documentId": {
-          "__rl": true,
-          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
-          "mode": "list",
-          "cachedResultName": "Competitor Analysis",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
-        },
-        "sheetName": {
-          "__rl": true,
-          "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "GAMES/OFFERS",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Game": "={{ $('Code in JavaScript').item.json.gameName }}",
-            "App Store ID (iOS)": "={{ $('AI Agent2').item.json.output.gameID }}"
-          },
-          "matchingColumns": [
-            "Game"
-          ],
-          "schema": [
-            {
-              "id": "Game",
-              "displayName": "Game",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
-            {
-              "id": "Offers",
-              "displayName": "Offers",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "Payout Structure",
-              "displayName": "Payout Structure",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            },
-            {
-              "id": "App Store ID (iOS)",
-              "displayName": "App Store ID (iOS)",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "PlayStore ID (Android)",
-              "displayName": "PlayStore ID (Android)",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleSheets",
-      "typeVersion": 4.7,
-      "position": [
-        5712,
-        -208
-      ],
-      "id": "3b0988f4-6163-47d5-9546-796d79f1775a",
-      "name": "Append or update row in sheet1",
-      "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "n434ebqBlO2QBh7B",
-          "name": "Google Sheets account"
-        }
-      }
     },
     {
       "parameters": {
@@ -1560,8 +1176,8 @@
         "filtersUI": {
           "values": [
             {
-              "lookupColumn": "PlayStore ID (Android)",
-              "lookupValue": "={{ $json.output.gameID }}"
+              "lookupColumn": "App Store ID (iOS)",
+              "lookupValue": "={{ $json.gameID[1] }}"
             }
           ]
         },
@@ -1570,8 +1186,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5040,
-        -512
+        5408,
+        -304
       ],
       "id": "94f5a4d7-0839-400c-88b6-5321c529dd21",
       "name": "Get row(s) in sheet2",
@@ -1602,8 +1218,8 @@
         "filtersUI": {
           "values": [
             {
-              "lookupColumn": "App Store ID (iOS)",
-              "lookupValue": "={{ $json.output.gameID }}"
+              "lookupColumn": "PlayStore ID (Android)",
+              "lookupValue": "={{ $('Aggregate3').item.json.gameID[0] }}"
             }
           ]
         },
@@ -1612,8 +1228,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        5040,
-        32
+        5872,
+        -288
       ],
       "id": "9c112e66-d7d4-43ca-8c61-4f4fec6237b2",
       "name": "Get row(s) in sheet",
@@ -1644,6 +1260,785 @@
       ],
       "id": "070b826e-8545-4499-9ef1-767022cf6c7a",
       "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json[\"App Store ID (iOS)\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5648,
+        -304
+      ],
+      "id": "4a5cc009-dcda-487e-a676-7fc0736ffa21",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json['PlayStore ID (Android)'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6112,
+        -288
+      ],
+      "id": "2a0569d5-926d-465a-b7ef-0396cd6e4e83",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "PlayStore ID (Android)",
+              "lookupValue": "={{ $('Aggregate3').item.json.gameID[0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5872,
+        -544
+      ],
+      "id": "21ff5f9d-5813-44a3-a390-b8761f6fb40b",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6112,
+        -544
+      ],
+      "id": "1396b363-6bdb-4121-8fef-f5ce0ee3bf41",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}"
+          },
+          "matchingColumns": [
+            "App Store ID (iOS)"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6384,
+        -528
+      ],
+      "id": "d9c88823-1813-4c4b-8188-f9055efa6a65",
+      "name": "Append or update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}"
+          },
+          "matchingColumns": [
+            "PlayStore ID (Android)"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6400,
+        -352
+      ],
+      "id": "c9a10a20-c356-4631-b97e-77e82c9462f2",
+      "name": "Append or update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}",
+            "Timestamp": "={{ $('Append row in sheet').item.json.Timestamp }}"
+          },
+          "matchingColumns": [
+            "Timestamp"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6400,
+        -128
+      ],
+      "id": "406a8d6a-8009-4497-9a4a-980052aaeb6b",
+      "name": "Append or update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4fbf940d-8fb3-44ec-948c-66d09fac0ce6",
+                    "leftValue": "={{ $json.URL.includes(\"youtube\") || $json.URL.includes(\"https://youtu.be\") }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.URL }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "c79dca4f-3b87-4d87-a2f0-b9b54e89b26c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "51f8b42d-69fc-4d83-92d9-246fa904e093",
+                    "leftValue": "={{ $json[\"Upload file\"].filename }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        912,
+        -304
+      ],
+      "id": "dd68cabb-0761-4ff9-a379-a4513c86c30c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "# Role: You are a Senior User Acquisition Analyst for mobile gaming.\n\n## Task: Analyze the provided media (marketing creative) and reverse-engineer the offer being presented to the user.\n\n### Extraction Rules:\n- Game Name: Identify the exact name of the app or game being advertised; if it is a platform, name the platform.\n- Offers: List the specific actions the user must take with precise language (e.g., \"Reach Level 50\", \"Complete Chapter 2\").\n- Payout Structure: Identify the reward, including currency or points (e.g., \"$50 for reaching level 10\"); if tiered, summarize as \"Tiered rewards up to [Total Amount]\".\n\n## Output Format: Return ONLY the JSON object required by the output parser, and use \"Not Specified\" for missing values.",
+        "videoUrls": "={{ $('On form submission').item.json.URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -464
+      ],
+      "id": "a4dbc582-02bb-426f-a3e3-298d915820bc",
+      "name": "Analyze video1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assume the input text is in $json.text\nconst rawText = $input.first().json.output\n\n// Parse the JSON string\nlet parsed;\ntry {\n  parsed = JSON.parse(rawText);\n} catch (e) {\n  throw new Error(\"Invalid JSON: \" + e.message);\n}\n\n// Return as n8n output\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        -464
+      ],
+      "id": "4b2b4728-6482-4b76-b9a5-6d7b10143a94",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4224,
+        -288
+      ],
+      "id": "dcf99f35-db1f-4e1d-86d1-30b1bcb2021f",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4240,
+        224
+      ],
+      "id": "cc1816b4-45fd-4e41-a92e-52863409123b",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4432,
+        -144
+      ],
+      "id": "cc193173-e7d7-4e42-89b4-09d05f7e42f9",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4400,
+        304
+      ],
+      "id": "8dc4ea83-a995-4001-8af8-0489cfe95aa2",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://play.google.com/store/apps/details?id={{ $json.output.gameID }}&hl=en",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4880,
+        -640
+      ],
+      "id": "16c0679b-3c4c-485e-8d55-cc7d6627a555",
+      "name": "HTTP Request",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('On form submission').item.json.URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1184,
+        -288
+      ],
+      "id": "ef782c15-5274-4eee-a331-03581bd76bf0",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b9ce8d9e-8279-4db6-9368-152885925f11",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        -208
+      ],
+      "id": "5c0619ed-4160-4c01-9b28-2153da0420f9",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.toJsonString() }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"gameName\": {\n      \"type\": \"string\"\n    },\n    \"offers\": {\n      \"type\": \"string\"\n    },\n    \"payoutStructure\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"gameName\",\n    \"offers\",\n    \"payoutStructure\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        -464
+      ],
+      "id": "6b012ba3-77cf-40c9-b837-f19d6c0dbea6",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1904,
+        -272
+      ],
+      "id": "fb3e03d9-d06e-4b7e-a1a3-800609e54c1e",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "connections": {
@@ -1801,6 +2196,11 @@
             "node": "Merge",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -1865,28 +2265,6 @@
           {
             "node": "AI Agent3",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model2": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model3": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -2036,24 +2414,6 @@
         []
       ]
     },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "Upload File to Analyze as URL",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Upload Binary File to Analyze",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Download Image": {
       "main": [
         [
@@ -2098,68 +2458,6 @@
         ]
       ]
     },
-    "Google Gemini Chat Model4": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Structured Output Parser3",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Append or update row in sheet": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Google Gemini Chat Model5": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "Structured Output Parser2",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Switch1": {
-      "main": [
-        [
-          {
-            "node": "Append or update row in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Append or update row in sheet1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Append or update row in sheet1": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Filter out Irrelevant Playstore Links": {
       "main": [
         [
@@ -2186,8 +2484,235 @@
       "main": [
         [
           {
-            "node": "Switch1",
+            "node": "Get row(s) in sheet2",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append or update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Analyze video1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload Binary File to Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video1": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Upload File to Analyze as URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -2265,109 +2790,9 @@
           }
         }
       }
-    ],
-    "Upload File to Analyze as URL": [
-      {
-        "json": {
-          "fileUri": "https://generativelanguage.googleapis.com/v1beta/files/xebpaoi0mszt",
-          "mimeType": "image/jpeg"
-        }
-      }
-    ],
-    "Analyze": [
-      {
-        "json": {
-          "body": {
-            "candidates": [
-              {
-                "content": {
-                  "parts": [
-                    {
-                      "text": "{\n  \"gameName\": \"Dice Dreams\",\n  \"offers\": \"Not Specified\",\n  \"payoutStructure\": \"Not Specified\"\n}",
-                      "thoughtSignature": "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"
-                    }
-                  ],
-                  "role": "model"
-                },
-                "finishReason": "STOP",
-                "index": 0
-              }
-            ],
-            "usageMetadata": {
-              "promptTokenCount": 1280,
-              "candidatesTokenCount": 33,
-              "totalTokenCount": 3548,
-              "promptTokensDetails": [
-                {
-                  "modality": "IMAGE",
-                  "tokenCount": 1110
-                },
-                {
-                  "modality": "TEXT",
-                  "tokenCount": 170
-                }
-              ],
-              "thoughtsTokenCount": 2235
-            },
-            "modelVersion": "gemini-3-pro-preview",
-            "responseId": "m-Iyaa29KLKijrEP-bKrwQs"
-          },
-          "headers": {
-            "content-type": "application/json; charset=UTF-8",
-            "vary": "Origin, X-Origin, Referer",
-            "date": "Fri, 05 Dec 2025 13:48:11 GMT",
-            "server": "scaffolding on HTTPServer2",
-            "x-xss-protection": "0",
-            "x-frame-options": "SAMEORIGIN",
-            "x-content-type-options": "nosniff",
-            "server-timing": "gfet4t7; dur=42631",
-            "connection": "close",
-            "transfer-encoding": "chunked"
-          },
-          "statusCode": 200,
-          "statusMessage": "OK"
-        }
-      }
-    ],
-    "Code in JavaScript": [
-      {
-        "json": {
-          "gameName": "Dice Dreams",
-          "offers": "Not Specified",
-          "payoutStructure": "Not Specified"
-        }
-      }
-    ],
-    "On form submission": [
-      {
-        "json": {
-          "URL": "https://www.gamigion.com/wp-content/uploads/2025/02/Interesting-Approach-by-Dice-Dreams.jpg",
-          "Upload file": null,
-          "submittedAt": "2025-12-05T16:47:27.960+03:00",
-          "formMode": "test"
-        }
-      }
-    ],
-    "AI Agent1": [
-      {
-        "json": {
-          "output": {
-            "gameID": "com.superplaystudios.dicedreams"
-          }
-        }
-      }
-    ],
-    "AI Agent2": [
-      {
-        "json": {
-          "output": {
-            "gameID": "id1484468651"
-          }
-        }
-      }
     ]
   },
-  "versionId": "b12a42f4-830b-4b15-81ff-3f6e43bcb8c7",
+  "versionId": "091a6a03-8266-4f21-b1a5-bf89ae7a340d",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
