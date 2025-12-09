@@ -1,0 +1,866 @@
+{
+  "updatedAt": "2025-12-09T13:36:27.000Z",
+  "createdAt": "2025-12-09T13:04:12.886Z",
+  "id": "brOxsQNc7Yga2wsk",
+  "name": "Following Up on Orders (LL)",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 18
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        -112
+      ],
+      "id": "0f165025-52b3-4022-acb4-0f72046b20c1",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "resource": "order",
+        "operation": "getAll",
+        "returnAll": true,
+        "options": {
+          "after": "={{ $json.timestamp.toDateTime().minus(3, 'days') }}",
+          "before": "={{ $json.timestamp.toDateTime().minus(2, 'days') }}",
+          "orderBy": "date"
+        }
+      },
+      "type": "n8n-nodes-base.wooCommerce",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        -112
+      ],
+      "id": "6b5c9b3b-3b35-4f96-89cd-2e58164f2752",
+      "name": "Get many orders",
+      "alwaysOutputData": true,
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "Z3GlvWiUIpM5bOIO",
+          "name": "WooCommerce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "cscott@cynthiascott.net",
+        "subject": "Checking in on Orders",
+        "emailType": "text",
+        "message": "=Hi Cynthia - \n\nChecking in on the status of {{ $('Aggregate').item.json.data.length }} order(s) from 2 days ago.\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nPlease reply back with shipping confirmation. \n\nThank you,\nEdward\n\n",
+        "options": {
+          "appendAttribution": false,
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {}
+            ]
+          },
+          "bccList": "njogued@gmail.com",
+          "senderName": "Edward Njogu"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        976,
+        112
+      ],
+      "id": "0c53ed6b-3b7c-4042-b768-9eba4d7d62a3",
+      "name": "Send a message",
+      "webhookId": "3c180822-8ccc-4d21-86a3-a8d65d1fb07b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "c3iKg7fkmFbTwlnB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        112
+      ],
+      "id": "2169db25-425c-4a0e-844b-0b139f640bf5",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "folderId": "=14UrpUiA99ZHG1IsGKpXUfTmlo5O1BYzA",
+        "title": "=Orders FollowUp - {{ $now.format('yyyy/MM/dd') }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        16,
+        112
+      ],
+      "id": "6264ba9c-1fa6-46b4-9f43-b8bc6b8bdcb7",
+      "name": "Create a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "a0JiMS8xcmx4P6st",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "insert",
+              "text": "=Orders Pending:\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nTotal Amount Paid: ${{\n$('Aggregate').item.json.data\n  .map(order => Number(order.amount) || 0)\n  .reduce((sum, value) => sum + value, 0)\n}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        272,
+        112
+      ],
+      "id": "8204f1b8-4642-4c41-bb65-464c375d4bd6",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "a0JiMS8xcmx4P6st",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.documentId }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            }
+          },
+          "fileName": "=Orders FollowUp - {{ $now.format('yyyy-MM-dd') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        672,
+        112
+      ],
+      "id": "07b5dbf4-934d-4e19-b19d-7ba9ba33789a",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "0wiQ3avym1XshEaG",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "43334a68-0c02-4e36-9df8-73ebe13962d6",
+              "name": "name",
+              "value": "={{ $json.billing.first_name }} {{ $json.billing.last_name }}",
+              "type": "string"
+            },
+            {
+              "id": "f3488715-6a68-4de2-88bc-d8bf15d8bb6f",
+              "name": "company",
+              "value": "={{ $json.billing.company }}",
+              "type": "string"
+            },
+            {
+              "id": "509560b4-1593-451f-8ed7-9ae8eccecee5",
+              "name": "items",
+              "value": "={{ $json.line_items.map(item => item.name) }}",
+              "type": "string"
+            },
+            {
+              "id": "7c0896f3-ad94-4291-b6d9-602c5935e0d6",
+              "name": "shipping",
+              "value": "={{\n$json.shipping && $json.shipping.address_1\n  ? $json.shipping.address_1 + \", \" +\n    $json.shipping.city + \"  \" +\n    $json.shipping.state + \", \" +\n    $json.shipping.country + \" \" +\n    $json.shipping.postcode\n  : \"No shipping address provided.\"\n}}\n",
+              "type": "string"
+            },
+            {
+              "id": "f47cec2e-2b5c-44ad-a827-81810e2f28a2",
+              "name": "date",
+              "value": "={{ $json.date_created.toDateTime().format('yyyy-MM-dd') }}",
+              "type": "string"
+            },
+            {
+              "id": "1ce58aac-a0a8-47ad-ba64-96834a36e71e",
+              "name": "amount",
+              "value": "={{ $json.total }}",
+              "type": "string"
+            },
+            {
+              "id": "3627095f-a5b4-4012-a070-aed1c61ed994",
+              "name": "item_ids",
+              "value": "={{ $json.line_items.map(item => item.sku) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        656,
+        -96
+      ],
+      "id": "ace15abc-a7e8-426d-a398-427be1f6fb16",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0333ffc4-32e7-4622-8f13-de86a544aa8c",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -112
+      ],
+      "id": "501d48da-0b20-419a-b86a-432c49e3ac94",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0489b033-ac84-419b-b019-003874a858af",
+              "leftValue": "={{ $json.item_ids }}",
+              "rightValue": "=TVE001A",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "dc991fcf-eb2e-44a6-a9e0-221ca56b61e4",
+              "leftValue": "={{ $json.item_ids }}",
+              "rightValue": "TVE001B",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        -96
+      ],
+      "id": "dcb4facd-6d48-42b4-ab7d-5bcc85ad8fec",
+      "name": "If1"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get many orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many orders": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Create a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a document": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Schedule Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6379618a-4ff9-4241-b79b-73aff567755f",
+  "activeVersionId": "6379618a-4ff9-4241-b79b-73aff567755f",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-12-09T13:04:13.032Z",
+      "createdAt": "2025-12-09T13:04:13.032Z",
+      "role": "workflow:owner",
+      "workflowId": "brOxsQNc7Yga2wsk",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2025-12-09T13:36:00.518Z",
+    "createdAt": "2025-12-09T13:36:00.518Z",
+    "versionId": "6379618a-4ff9-4241-b79b-73aff567755f",
+    "workflowId": "brOxsQNc7Yga2wsk",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 18
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -288,
+          -112
+        ],
+        "id": "0f165025-52b3-4022-acb4-0f72046b20c1",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "order",
+          "operation": "getAll",
+          "returnAll": true,
+          "options": {
+            "after": "={{ $json.timestamp.toDateTime().minus(3, 'days') }}",
+            "before": "={{ $json.timestamp.toDateTime().minus(2, 'days') }}",
+            "orderBy": "date"
+          }
+        },
+        "type": "n8n-nodes-base.wooCommerce",
+        "typeVersion": 1,
+        "position": [
+          -16,
+          -112
+        ],
+        "id": "6b5c9b3b-3b35-4f96-89cd-2e58164f2752",
+        "name": "Get many orders",
+        "alwaysOutputData": true,
+        "credentials": {
+          "wooCommerceApi": {
+            "id": "Z3GlvWiUIpM5bOIO",
+            "name": "WooCommerce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "cscott@cynthiascott.net",
+          "subject": "Checking in on Orders",
+          "emailType": "text",
+          "message": "=Hi Cynthia - \n\nChecking in on the status of {{ $('Aggregate').item.json.data.length }} order(s) from 2 days ago.\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nPlease reply back with shipping confirmation. \n\nThank you,\nEdward\n\n",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            },
+            "bccList": "njogued@gmail.com",
+            "senderName": "Edward Njogu"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          976,
+          112
+        ],
+        "id": "0c53ed6b-3b7c-4042-b768-9eba4d7d62a3",
+        "name": "Send a message",
+        "webhookId": "3c180822-8ccc-4d21-86a3-a8d65d1fb07b",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "c3iKg7fkmFbTwlnB",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          -272,
+          112
+        ],
+        "id": "2169db25-425c-4a0e-844b-0b139f640bf5",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "folderId": "=14UrpUiA99ZHG1IsGKpXUfTmlo5O1BYzA",
+          "title": "=Orders FollowUp - {{ $now.format('yyyy/MM/dd') }}"
+        },
+        "type": "n8n-nodes-base.googleDocs",
+        "typeVersion": 2,
+        "position": [
+          16,
+          112
+        ],
+        "id": "6264ba9c-1fa6-46b4-9f43-b8bc6b8bdcb7",
+        "name": "Create a document",
+        "credentials": {
+          "googleDocsOAuth2Api": {
+            "id": "a0JiMS8xcmx4P6st",
+            "name": "Google Docs account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentURL": "={{ $json.id }}",
+          "actionsUi": {
+            "actionFields": [
+              {
+                "action": "insert",
+                "text": "=Orders Pending:\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nTotal Amount Paid: ${{\n$('Aggregate').item.json.data\n  .map(order => Number(order.amount) || 0)\n  .reduce((sum, value) => sum + value, 0)\n}}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.googleDocs",
+        "typeVersion": 2,
+        "position": [
+          272,
+          112
+        ],
+        "id": "8204f1b8-4642-4c41-bb65-464c375d4bd6",
+        "name": "Update a document",
+        "credentials": {
+          "googleDocsOAuth2Api": {
+            "id": "a0JiMS8xcmx4P6st",
+            "name": "Google Docs account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.documentId }}",
+            "mode": "id"
+          },
+          "options": {
+            "googleFileConversion": {
+              "conversion": {
+                "docsToFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              }
+            },
+            "fileName": "=Orders FollowUp - {{ $now.format('yyyy-MM-dd') }}"
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          672,
+          112
+        ],
+        "id": "07b5dbf4-934d-4e19-b19d-7ba9ba33789a",
+        "name": "Download file",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "0wiQ3avym1XshEaG",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "43334a68-0c02-4e36-9df8-73ebe13962d6",
+                "name": "name",
+                "value": "={{ $json.billing.first_name }} {{ $json.billing.last_name }}",
+                "type": "string"
+              },
+              {
+                "id": "f3488715-6a68-4de2-88bc-d8bf15d8bb6f",
+                "name": "company",
+                "value": "={{ $json.billing.company }}",
+                "type": "string"
+              },
+              {
+                "id": "509560b4-1593-451f-8ed7-9ae8eccecee5",
+                "name": "items",
+                "value": "={{ $json.line_items.map(item => item.name) }}",
+                "type": "string"
+              },
+              {
+                "id": "7c0896f3-ad94-4291-b6d9-602c5935e0d6",
+                "name": "shipping",
+                "value": "={{\n$json.shipping && $json.shipping.address_1\n  ? $json.shipping.address_1 + \", \" +\n    $json.shipping.city + \"  \" +\n    $json.shipping.state + \", \" +\n    $json.shipping.country + \" \" +\n    $json.shipping.postcode\n  : \"No shipping address provided.\"\n}}\n",
+                "type": "string"
+              },
+              {
+                "id": "f47cec2e-2b5c-44ad-a827-81810e2f28a2",
+                "name": "date",
+                "value": "={{ $json.date_created.toDateTime().format('yyyy-MM-dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "1ce58aac-a0a8-47ad-ba64-96834a36e71e",
+                "name": "amount",
+                "value": "={{ $json.total }}",
+                "type": "string"
+              },
+              {
+                "id": "3627095f-a5b4-4012-a070-aed1c61ed994",
+                "name": "item_ids",
+                "value": "={{ $json.line_items.map(item => item.sku) }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          656,
+          -96
+        ],
+        "id": "ace15abc-a7e8-426d-a398-427be1f6fb16",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "0333ffc4-32e7-4622-8f13-de86a544aa8c",
+                "leftValue": "={{ $json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          256,
+          -112
+        ],
+        "id": "501d48da-0b20-419a-b86a-432c49e3ac94",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "0489b033-ac84-419b-b019-003874a858af",
+                "leftValue": "={{ $json.item_ids }}",
+                "rightValue": "=TVE001A",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              },
+              {
+                "id": "dc991fcf-eb2e-44a6-a9e0-221ca56b61e4",
+                "leftValue": "={{ $json.item_ids }}",
+                "rightValue": "TVE001B",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          944,
+          -96
+        ],
+        "id": "dcb4facd-6d48-42b4-ab7d-5bcc85ad8fec",
+        "name": "If1"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Get many orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many orders": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Create a document",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a document": {
+        "main": [
+          [
+            {
+              "node": "Update a document",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a document": {
+        "main": [
+          [
+            {
+              "node": "Download file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download file": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Edward Njogu",
+    "name": null,
+    "description": null
+  },
+  "tags": []
+}
