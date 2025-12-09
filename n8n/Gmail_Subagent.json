@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-07-21T15:27:25.000Z",
+  "updatedAt": "2025-12-08T23:04:20.000Z",
   "createdAt": "2025-06-03T15:55:12.742Z",
   "id": "lQxi6YEZQaiu6s76",
   "name": "Gmail Subagent",
@@ -19,8 +19,8 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -340,
-        20
+        -336,
+        32
       ],
       "id": "119e6a85-be1f-492b-b832-34f4fde061ec",
       "name": "When Executed by Another Workflow"
@@ -39,7 +39,7 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
-        280,
+        288,
         -240
       ],
       "id": "6ab215a9-22a6-4749-9170-3eb3f00b0b22",
@@ -66,8 +66,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -20,
-        280
+        -16,
+        288
       ],
       "id": "965bbe58-d070-4b67-8414-65afa33d7891",
       "name": "OpenAI Chat Model1",
@@ -90,8 +90,8 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
-        100,
-        -200
+        112,
+        -208
       ],
       "id": "26290cbb-8ef6-4857-b8f6-2391b645904e",
       "name": "Reply to a message in Gmail",
@@ -120,7 +120,7 @@
       "type": "n8n-nodes-base.emailSendTool",
       "typeVersion": 2.1,
       "position": [
-        380,
+        384,
         400
       ],
       "id": "31ad13c8-0779-4349-8d5e-476f067adcdd",
@@ -144,8 +144,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        60,
-        20
+        64,
+        32
       ],
       "id": "150ef459-ff50-4d02-a6d7-2570f66838e0",
       "name": "Email Agent"
@@ -169,12 +169,39 @@
       "type": "n8n-nodes-base.gmailTool",
       "typeVersion": 2.1,
       "position": [
-        200,
-        380
+        208,
+        384
       ],
       "id": "dfed88c3-0283-4369-aa44-a29bd7fae476",
       "name": "Get many messages in Gmail",
       "webhookId": "25d66d5c-accc-4ada-8992-c9252e773cfa",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "fromAlias": "edward@storiedinc.com",
+          "replyTo": "edward@storiedinc.com",
+          "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To_Email', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        544,
+        384
+      ],
+      "id": "d410a8bb-2470-4294-af82-9333492984bd",
+      "name": "Create a draft in Gmail",
+      "webhookId": "031e268b-cdbd-470b-bd4a-176cc969b1f1",
       "credentials": {
         "gmailOAuth2": {
           "id": "aLqiTFR2cLtIBYK6",
@@ -254,6 +281,17 @@
           }
         ]
       ]
+    },
+    "Create a draft in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Email Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -264,7 +302,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "bbc08481-f845-4619-92c0-30cd077b782b",
+  "versionId": "1a72e10b-462e-476b-94cc-4e9998ba008e",
+  "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
     {
@@ -275,5 +314,6 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
