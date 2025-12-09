@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-11T12:50:00.000Z",
+  "updatedAt": "2025-12-08T21:29:09.000Z",
   "createdAt": "2025-06-08T21:56:21.420Z",
   "id": "9g3lAvJtRyyNjaPJ",
   "name": "Calendar Subagent",
@@ -364,8 +364,8 @@
       "type": "n8n-nodes-base.evaluation",
       "typeVersion": 4.8,
       "position": [
-        -464,
-        320
+        -432,
+        384
       ],
       "id": "77c33b00-20ba-4858-b4bf-8e3a6d29d61b",
       "name": "Evaluation",
@@ -386,8 +386,8 @@
       "type": "n8n-nodes-base.evaluation",
       "typeVersion": 4.8,
       "position": [
-        -256,
-        320
+        -208,
+        384
       ],
       "id": "068193f1-ca4d-46b8-a40e-87521e88c0d8",
       "name": "Evaluation1"
@@ -405,8 +405,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -16,
-        512
+        -64,
+        624
       ],
       "id": "cd746503-3781-4cd2-9e9a-2d44b3078f4f",
       "name": "OpenAI Chat Model",
@@ -445,7 +445,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -752,
+        -672,
         400
       ],
       "id": "e2e0085d-340e-442b-a61e-30457ff9bcde",
@@ -565,13 +565,7 @@
     },
     "Calendar AI Agent": {
       "main": [
-        [
-          {
-            "node": "If",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Evaluation": {
@@ -629,7 +623,8 @@
       }
     ]
   },
-  "versionId": "3933ffbe-cfaf-4540-9c2e-2ea16a3577f7",
+  "versionId": "648bac22-de56-4ac7-95ca-eaaed533e7ec",
+  "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
     {
@@ -640,5 +635,6 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
