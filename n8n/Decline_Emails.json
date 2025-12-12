@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-12T00:38:39.000Z",
+  "updatedAt": "2025-12-12T00:56:47.000Z",
   "createdAt": "2025-12-12T00:37:19.239Z",
   "id": "JgDAln97VeztgN3G",
   "name": "Decline Emails",
@@ -52,7 +52,13 @@
     },
     {
       "parameters": {
-        "options": {}
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Full Name'] }}<{{ $('Get row(s) in sheet').item.json.Email }}>",
+        "subject": "Update on your Narrative Analyst application",
+        "message": "=Hi {{ $('Get row(s) in sheet').item.json['First Name'] }} -\n<br><br>\nThank you again for applying to the Narrative Analyst role at Storied. \n<br><br>\nAfter reviewing your application, we have decided not to move forward. We are grateful for your interest in our work, and if a future role feels more closely aligned with your background, we hope you will consider applying again.\n<br>\n<br>\nRegards,\n<br>\nEdward ",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Edward Njogu"
+        }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
@@ -68,8 +74,7 @@
           "id": "aLqiTFR2cLtIBYK6",
           "name": "Gmail account"
         }
-      },
-      "disabled": true
+      }
     },
     {
       "parameters": {
@@ -89,7 +94,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        352,
+        320,
         -128
       ],
       "id": "22bf9e92-5006-4068-8241-a125d85b9ed6",
@@ -116,7 +121,7 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Ready": "Set",
+            "Ready": "Go",
             "Email": "={{ $('Get row(s) in sheet').item.json.Email }}"
           },
           "matchingColumns": [
@@ -261,7 +266,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "d5917c03-bb22-4ac1-a25a-9f6efae85681",
+  "versionId": "cd059590-8b90-446f-a05b-2932911fd73e",
   "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
