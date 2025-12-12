@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-07-26T00:27:03.000Z",
+  "updatedAt": "2025-12-02T11:50:58.000Z",
   "createdAt": "2025-07-25T22:14:32.801Z",
   "id": "Bo5fd5wJLIMfglJ5",
   "name": "ConvertKit Stats - Weekly",
@@ -170,6 +170,35 @@
           "name": "SLACK API - BOT"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "=https://app.kit.com/publications/13346791/reports/opened?page=eJxVyrERACAIA8CFLBKCEM7997LV9u-xuCNdu1eoMgxYB482MLQwn5rhJOe_o1Z2dl0A8hGQ",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Cookie",
+              "value": "insert_cookie_here"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -944,
+        208
+      ],
+      "id": "bf6702dd-6850-411f-a0c3-091d058e28b4",
+      "name": "Get Subscriber Stats for Broadcast"
     }
   ],
   "connections": {
@@ -243,7 +272,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "ea284d77-c2e5-44e2-a0d6-b879b4df53ae",
+  "versionId": "2f50f148-a04f-422f-8090-493ccd76a150",
   "triggerCount": 1,
   "shared": [
     {

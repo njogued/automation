@@ -1,0 +1,210 @@
+{
+  "updatedAt": "2025-11-24T11:00:57.000Z",
+  "createdAt": "2025-11-24T10:19:20.414Z",
+  "id": "fSF98TDTn8FCDtSX",
+  "name": "Subscribe",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "subscribe",
+        "responseMode": "lastNode",
+        "options": {
+          "allowedOrigins": "*",
+          "ignoreBots": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0d644e4c-8c95-435a-b6ff-2429eef3676d",
+      "name": "Webhook",
+      "webhookId": "3bcc2054-cbfa-4978-8d83-8f34f83c0583"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "10wrsz1rngAwZPaX0YwpH09EfznwqbeBET20xd8fN4D0",
+          "mode": "list",
+          "cachedResultName": "SUBSCRIBERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10wrsz1rngAwZPaX0YwpH09EfznwqbeBET20xd8fN4D0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/10wrsz1rngAwZPaX0YwpH09EfznwqbeBET20xd8fN4D0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.body.email }}",
+            "Date": "={{ $now.toLocaleString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        0
+      ],
+      "id": "a64f856f-b96d-42eb-94c4-927f40520379",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "edward@liteloops.com",
+        "subject": "New Subscriber!",
+        "emailType": "text",
+        "message": "=New subscriber on liteloops.com. Email address: {{ $('Webhook').item.json.body.email }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Liteloops"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "d4ad2ae6-3c52-4e68-b032-4ac98514875f",
+      "name": "Send a message",
+      "webhookId": "34ca4e05-e2e5-45f3-a72c-566d1adb4310",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "c3iKg7fkmFbTwlnB",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "timeSavedPerExecution": 1
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.liteloops.com",
+            "origin": "http://127.0.0.1:5500",
+            "x-real-ip": "172.69.46.148",
+            "x-forwarded-proto": "https",
+            "connection": "close",
+            "content-length": "29",
+            "priority": "u=1, i",
+            "x-forwarded-for": "102.208.164.122",
+            "sec-ch-ua-platform": "\"Android\"",
+            "user-agent": "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Mobile Safari/537.36",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Brave\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "content-type": "application/json",
+            "sec-ch-ua-mobile": "?1",
+            "accept": "*/*",
+            "sec-gpc": "1",
+            "accept-language": "en-GB,en;q=0.7",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "referer": "http://127.0.0.1:5500/",
+            "accept-encoding": "gzip, br",
+            "cf-ray": "9a3838133a657930-DAR",
+            "cdn-loop": "cloudflare; loops=1",
+            "cf-connecting-ip": "102.208.164.122",
+            "cf-ipcountry": "KE",
+            "cf-visitor": "{\"scheme\":\"https\"}"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "email": "njogued@gmail.com"
+          },
+          "webhookUrl": "https://n8n.liteloops.com/webhook/subscribe",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "versionId": "81dcf1ed-096a-4bb2-a7ee-d8c2d479d654",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2025-11-24T10:19:20.419Z",
+      "createdAt": "2025-11-24T10:19:20.419Z",
+      "role": "workflow:owner",
+      "workflowId": "fSF98TDTn8FCDtSX",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}

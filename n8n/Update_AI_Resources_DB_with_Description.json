@@ -1,9 +1,9 @@
 {
-  "updatedAt": "2025-07-24T16:49:03.000Z",
+  "updatedAt": "2025-12-07T10:14:33.000Z",
   "createdAt": "2025-07-23T14:03:01.310Z",
   "id": "Ouw1PkfKSfNBYWrr",
   "name": "Update AI Resources DB with Description",
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -208,10 +208,7 @@
   },
   "staticData": {
     "node:Notion Trigger": {
-      "lastTimeChecked": "2025-11-14T20:03:00.000Z",
-      "possibleDuplicates": [
-        "2578fccf-f321-8012-9757-d07346f1bfc7"
-      ]
+      "lastTimeChecked": "2025-12-07T10:12:00.000Z"
     }
   },
   "meta": {
@@ -219,6 +216,7 @@
   },
   "pinData": {},
   "versionId": "6615041f-c7d3-42de-835d-6bdd8276ba4c",
+  "activeVersionId": null,
   "triggerCount": 1,
   "shared": [
     {
@@ -229,5 +227,6 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }

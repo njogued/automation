@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-14T19:16:20.000Z",
+  "updatedAt": "2025-11-19T14:33:48.000Z",
   "createdAt": "2025-10-03T22:08:38.570Z",
   "id": "m9ojEo33NPBMuYIZ",
   "name": "n8n auto-update",
@@ -97,7 +97,8 @@
         -688,
         544
       ],
-      "typeVersion": 2.2
+      "typeVersion": 2.2,
+      "disabled": true
     },
     {
       "parameters": {
@@ -824,7 +825,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f4bcac52-f589-4ee9-a2b8-fa33bbd6a555",
+  "versionId": "b59cad1c-b379-476c-ae49-d3b8c58b41c4",
   "triggerCount": 1,
   "shared": [
     {

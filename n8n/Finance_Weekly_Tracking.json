@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-07T21:55:07.000Z",
+  "updatedAt": "2025-11-21T20:48:21.000Z",
   "createdAt": "2025-11-03T11:28:34.520Z",
   "id": "v6bXXPBmzQtKrMQj",
   "name": "Finance Weekly Tracking",
@@ -125,7 +125,7 @@
             {
               "id": "a0eadfb8-1b3a-4849-b931-3f2b20b63320",
               "leftValue": "={{ $json.text }}",
-              "rightValue": "AR REPORT",
+              "rightValue": "REPORT",
               "operator": {
                 "type": "string",
                 "operation": "contains"
@@ -704,8 +704,26 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "9a7e3455-5d89-4263-bcae-12186b1396c8",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-11-21T08:00:52.055-08:00",
+          "Readable date": "November 21st 2025, 8:00:52 am",
+          "Readable time": "8:00:52 am",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "November",
+          "Day of month": "21",
+          "Hour": "08",
+          "Minute": "00",
+          "Second": "52",
+          "Timezone": "America/Los_Angeles (UTC-08:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "4aac1615-3214-4ca5-b4e2-55fbfd3728d9",
   "triggerCount": 1,
   "shared": [
     {

@@ -1,0 +1,48 @@
+{
+  "updatedAt": "2025-11-28T09:46:16.000Z",
+  "createdAt": "2025-11-28T09:30:29.101Z",
+  "id": "lcqJzGkY4MX35CJE",
+  "name": "Error Monitoring (LL)",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c2582e3d-820c-44f9-b745-251c8db2bd1a",
+      "name": "Error Trigger"
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "f73e1291-a690-4129-b6ba-1b1caaf51da5",
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-11-28T09:30:29.113Z",
+      "createdAt": "2025-11-28T09:30:29.113Z",
+      "role": "workflow:owner",
+      "workflowId": "lcqJzGkY4MX35CJE",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "tags": []
+}

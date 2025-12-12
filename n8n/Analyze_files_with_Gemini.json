@@ -1,0 +1,2809 @@
+{
+  "updatedAt": "2025-12-08T11:38:54.000Z",
+  "createdAt": "2025-12-01T08:52:58.695Z",
+  "id": "jR6DybaSPOMHRlZu",
+  "name": "Analyze files with Gemini",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "**Role:** You are a Senior User Acquisition Analyst for mobile gaming.  \n**Task:** Analyze the provided media (marketing creative). Your goal is to reverse-engineer the offer being presented to the user.\n\n### Extraction Rules:\n- **Game Name:** Identify the exact name of the app or game being advertised. If it is a platform (like Swagbucks/Freecash), name the platform.\n- **Offers:** List the specific actions the user must take. Be precise (e.g., instead of \"play games,\" use \"Reach Level 50\" or \"Complete Chapter 2\").\n- **Payout Structure:** Identify the specific reward. Look for currency symbols ($, £, €) or points.  \n  - Examples: \"$50 for reaching level 10\" or \"10,000 coins for install.\"  \n  - If the payout is tiered (e.g., small amounts for early levels), summarize it as **\"Tiered rewards up to [Total Amount].\"**\n\n### Output Format:\nReturn **ONLY** the JSON object required by the output parser.  \nIf a value is not visible/mentioned, return `\"Not Specified\"`.\n",
+        "videoUrls": "={{ $('On form submission').item.json.URL }}",
+        "simplify": false,
+        "options": {
+          "maxOutputTokens": 300
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        2880,
+        656
+      ],
+      "id": "06c626bb-f869-434b-bdd2-64b36117ef61",
+      "name": "Analyze video",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formTitle": "Video Intake",
+        "formDescription": "Provide a link to the video or image or upload it",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "URL"
+            },
+            {
+              "fieldLabel": "Upload file",
+              "fieldType": "file",
+              "multipleFiles": false
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        640,
+        -288
+      ],
+      "id": "be3a5213-306d-43f0-a45b-af04563df5c4",
+      "name": "On form submission",
+      "webhookId": "35ca2e8d-ae41-467b-ad1e-d7d0586609a0"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=**Role:** You are a Senior User Acquisition Analyst for mobile gaming.  \n**Task:** Analyze the provided media (marketing creative). Your goal is to reverse-engineer the offer being presented to the user.\n\n### Extraction Rules:\n- **Game Name:** Identify the exact name of the app or game being advertised. If it is a platform (like Swagbucks/Freecash), name the platform.\n- **Offers:** List the specific actions the user must take. Be precise (e.g., instead of \"play games,\" use \"Reach Level 50\" or \"Complete Chapter 2\").\n- **Payout Structure:** Identify the specific reward. Look for currency symbols ($, £, €) or points.  \n  - Examples: \"$50 for reaching level 10\" or \"10,000 coins for install.\"  \n  - If the payout is tiered (e.g., small amounts for early levels), summarize it as **\"Tiered rewards up to [Total Amount].\"**\n\n### Output Format:\nReturn **ONLY** the JSON object required by the output parser.  \nIf a value is not visible/mentioned, return `\"Not Specified\"`.\n\n{{ $binary.data }}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        3600,
+        672
+      ],
+      "id": "fd8bff7f-0713-4a70-a294-14c9585e5742",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3696,
+        896
+      ],
+      "id": "448eefcb-6733-46b2-8f06-64965b11076c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5.1",
+          "mode": "list",
+          "cachedResultName": "gpt-5.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        3600,
+        1088
+      ],
+      "id": "43d87c55-e4c4-47df-8d75-d3615efa024d",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"OfferExtractionSchema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"game\": {\n      \"type\": \"string\",\n      \"description\": \"Exact name of the game/app/platform being advertised. Use 'Not Specified' if unavailable.\"\n    },\n    \"offers\": {\n      \"type\": \"array\",\n      \"description\": \"List of specific actions the user must take.\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"payout_structure\": {\n      \"type\": \"string\",\n      \"description\": \"Clear payout or reward structure. Use 'Not Specified' if unavailable.\"\n    }\n  },\n  \"required\": [\"game\", \"offers\", \"payout_structure\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3792,
+        1088
+      ],
+      "id": "fd921ca2-7e61-4337-8c13-9a1d04a64c54",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "=https://apps.apple.com/us/iphone/search?term={{ $('Code in JavaScript').item.json.gameName }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3200,
+        -16
+      ],
+      "id": "a103bb6e-422c-4b7b-95e6-8bbefcec574a",
+      "name": "Get iOS App"
+    },
+    {
+      "parameters": {
+        "url": "=https://play.google.com/store/search?q={{ $('Code in JavaScript').item.json.gameName }}&c=apps",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3216,
+        -512
+      ],
+      "id": "ea1c3438-9d6b-43e6-bad0-7beadac58d65",
+      "name": "Get Android App"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Game": "={{ $json.gameName }}",
+            "Offers": "={{ $json.offers }}",
+            "Payout Structure": "={{ $json.payoutStructure }}",
+            "Timestamp": "={{ $now.toString() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2752,
+        -288
+      ],
+      "id": "66c70762-35f9-4a09-9344-782d3c0ee02e",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "links",
+              "cssSelector": "a",
+              "returnValue": "attribute",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        3472,
+        -16
+      ],
+      "id": "64d128c2-7341-46b3-9213-55dfbbb7557f",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "links",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        4112,
+        688
+      ],
+      "id": "3affa9e7-2e9d-4840-b1ad-408a4f11d1dd",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "04aabf3b-3181-4c73-932a-87f1083fc49c",
+              "leftValue": "={{ $json.links.href.includes(\"id\") }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4448,
+        688
+      ],
+      "id": "b69432d8-835b-4b2e-8444-2e3017670bd1",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4768,
+        672
+      ],
+      "id": "ec85ebcb-162c-4292-ac7e-2e0f84feb9f7",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "links",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4016,
+        -16
+      ],
+      "id": "c57ecb60-d796-4f10-9158-a2beb0054a27",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "links",
+              "cssSelector": "a",
+              "returnValue": "attribute",
+              "returnArray": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        3488,
+        -512
+      ],
+      "id": "aa8aba4b-7368-4c27-b983-cfde72ebfecc",
+      "name": "HTML1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "links",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4016,
+        -512
+      ],
+      "id": "21b43cc3-13d6-4fff-a29f-db0f01eb7ea7",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n# TASK\nFind the most appropriate ID based on the following game name and the provided list of IDs. The ID will be the query parameter whose key is 'id'. \n\nFor example, if the game name is \"Dice Dreams\" and the list of hrefs is: [{\"href\":\"/store/apps/details?id=com.superplaystudios.dicedreams\",\"class\":\"Qfxief\"},{\"class\":\"Si6A0c Gy4nib\",\"href\":\"/store/apps/details?id=com.screenshake.dominodreams\"}]. Then the relevant href is \"/store/apps/details?id=com.superplaystudios.dicedreams\", and the id for the game Dice Dreams is com.superplaystudios.dicedreams from the URL. Therefore the value to return is com.superplaystudios.dicedreams.\n\n## GAME NAME\n{{ $('Code in JavaScript').item.json.gameName }}\n\n## LIST OF LINKS\n{{ $json.links.toJsonString() }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        4256,
+        -512
+      ],
+      "id": "c49564ac-80da-4888-a0c1-7f85b12dc7c2",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n# TASK\nFind the most appropriate ID based on the following game name and the provided list of IDs. The ID will be the last slug of the URL that starts with 'id'\n\nFor example, if the game name is \"Dice Dreams\" and the list of hrefs is: \n[{\"aria-label\":\"View Dice Dreams™\",\"href\":\"https://apps.apple.com/us/app/dice-dreams/id1484468651\",\"data-test-id\":\"internal-link\"},{\"aria-label\":\"View Dice Dreams™\",\"href\":\"https://apps.apple.com/us/app/domino-dreams/id6444043291\",\"data-test-id\":\"internal-link\"},{\"aria-label\":\"View Coin Master\",\"href\":\"https://apps.apple.com/us/app/coin-master/id406889139\",\"data-test-id\":\"internal-link\"},{\"aria-label\":\"View Board Kings-Board Dice Games\",\"href\":\"https://apps.apple.com/us/app/board-kings-board-dice-games/id1116488672\",\"data-test-id\":\"internal-link\"}]\n\nThen the relevant href is \"https://apps.apple.com/us/app/dice-dreams/id1484468651\", and the id for the game Dice Dreams is id1484468651 from the URL. Therefore the value to return is id1484468651.\n\n## GAME NAME\n{{ $('Code in JavaScript').item.json.gameName }}\n\n## LIST OF LINKS\n{{ $json.links.toJsonString() }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        4256,
+        -16
+      ],
+      "id": "6b01a784-3d02-4c7a-afd9-ae9be6327310",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        4912,
+        -304
+      ],
+      "id": "58d8af14-0a32-4ddc-a33a-d7d319d89a4f",
+      "name": "Merge",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "91bcfda2-5dcc-4b51-8afd-f78de46e91dd",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4368,
+        992
+      ],
+      "id": "967269b0-322b-489f-9b0e-c0b31cf6c6b6",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "sendTo": "njogued@gmail.com",
+        "subject": "NEW GAME ALERT!",
+        "emailType": "text",
+        "message": "=New Game Added to the Spreadsheet.\n\nGame Details:\nName: {{ $('Code in JavaScript').item.json.gameName }}\n\nOffers: {{ $('Code in JavaScript').item.json.offers }}\n\nPayout Structure: {{ $('Code in JavaScript').item.json.payoutStructure }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        6720,
+        -128
+      ],
+      "id": "31f5a342-04e4-4c61-bf99-8b53f65416a0",
+      "name": "Send a message",
+      "webhookId": "b9fbe4c8-e217-4f2a-8bcb-b3997ee5584e",
+      "executeOnce": true,
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "c3iKg7fkmFbTwlnB",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "**Role:** You are a Senior User Acquisition Analyst for mobile gaming.  \n**Task:** Analyze the provided media (marketing creative). Your goal is to reverse-engineer the offer being presented to the user.\n\n### Extraction Rules:\n- **Game Name:** Return **only the exact name of the game/app**, with **no extra wording, descriptions, or context**.  \n  - Example: If the media says \"The main highlighted game is Dice Dreams and you can earn…\", the correct output is **\"Dice Dreams\"** only.\n  - If it is a platform (e.g., Swagbucks, Freecash), return the platform name only.\n- **Offers:** List the specific actions the user must take. Be precise (e.g., “Reach Level 50,” “Complete Chapter 2”).\n- **Payout Structure:** Identify the specific reward. Look for $, £, €, or points.  \n  - Examples: \"$50 for reaching level 10\", \"10,000 coins for install\".  \n  - If tiered: return **\"Tiered rewards up to [Total Amount]\"**.\n\n### Output Format:\nReturn **ONLY** the JSON object required by the output parser.  \nIf a value is not visible/mentioned, return `\"Not Specified\"`.\n\n# INPUT VIDEO URL\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        3168,
+        560
+      ],
+      "id": "81c69f6d-30ef-47e0-806f-c46af75fda6e",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        768
+      ],
+      "id": "cfb71f75-808f-4320-90fd-0dafdf73d39f",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"gameID\": {\n\t\t\t\"type\": \"string\"\n\t\t}\n\t}\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4432,
+        -304
+      ],
+      "id": "88e3031e-4f0e-491f-b62a-bd72c153a34e",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"gameID\": {\n\t\t\t\"type\": \"string\"\n\t\t}\n\t}\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        4400,
+        160
+      ],
+      "id": "a48c9346-82db-48e8-b41f-ad0107310252",
+      "name": "Structured Output Parser3"
+    },
+    {
+      "parameters": {},
+      "id": "73a8cac8-26f2-4674-b40c-177581cc4425",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        1808,
+        800
+      ],
+      "webhookId": "7d0cd0c0-ce85-4372-b7a5-b0be061fc2b9",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "url": "={{ $('On form submission').item.json.URL }}",
+        "options": {}
+      },
+      "id": "c00dcac2-658d-4710-b63b-09c93093404b",
+      "name": "Download video",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2896,
+        960
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files?key={{ $vars.GeminiKey }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start, upload, finalize"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "={{ $binary.data.fileSize }}"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Type",
+              "value": "=video/{{ $binary.data.fileExtension }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "video/mp4"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "=data",
+        "options": {}
+      },
+      "id": "d0475da6-b47e-48cc-91ff-f4f8bc7d738e",
+      "name": "Upload video Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1584,
+        800
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={{ $vars.GeminiKey }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"contents\": [\n        {\n            \"role\": \"user\",\n            \"parts\": [\n                {\n                    \"fileData\": {\n                        \"fileUri\": \"{{ $json.file.uri }}\",\n                        \"mimeType\": \"{{ $json.file.mimeType }}\"\n                    }\n                },\n                {\n                    \"text\": \"Describe in detail what is visually happening in the video, including key elements, actions, colors, and branding. Note the style, tone, and any notable creative techniques being used.\"\n                }\n            ]\n        }\n    ],\n    \"generationConfig\": {\n        \"temperature\": 1.4,\n        \"topK\": 40,\n        \"topP\": 0.95,\n        \"maxOutputTokens\": 8192,\n        \"responseModalities\": [\"Text\"]\n    }\n}\n",
+        "options": {}
+      },
+      "id": "bfdfd2c1-7c62-4805-8a7c-9fd8a4adf18f",
+      "name": "Analyze video Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2032,
+        800
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ea390b9-3371-4a3a-8741-bd6ec74dc64b",
+              "name": "videoDescription",
+              "type": "string",
+              "value": "={{ $json.candidates[0].content.parts[0].text }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1e8d38c3-b174-4c9a-8bf0-8ef6d0c9370b",
+      "name": "Get Result",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        2240,
+        800
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "content": "## Video Analysis with Gemini AI\n\nThis workflow demonstrates how to analyze video content using Google's Gemini API:\n1. Capture user uploaded media or URL\n2. Upload media to Gemini's servers\n3. Process the media with AI to generate a description with structured output\n4. Extract the analysis results\n\nOUTPUT: The workflow produces a description of the video content including the game name, offers, and the payout structue. \n\n⚙️ **Before using this workflow**, make sure to set the `GeminiKey` Query Auth with your Gemini API key.  \nThis ensures your API key is securely managed and not hardcoded in the workflow.",
+        "height": 344,
+        "width": 2080,
+        "color": 4
+      },
+      "id": "bbc5973d-c93f-488b-a637-a3ee3287506f",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1920,
+        -1104
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Media Processing Pipeline\n\nThis section handles the complete media processing workflow:\n\n1. UPLOAD: We send the binary image/video data to Gemini's servers where it's stored temporarily for AI processing\n\n2. ANALYZE: We request Gemini's AI to analyze the content. You can customize the prompt in the \"Analyze\" node to focus on specific aspects of the video content you're interested in\n",
+        "height": 1132,
+        "width": 1508,
+        "color": 4
+      },
+      "id": "4e7e0a4d-2a11-4e01-b438-2a1fc0b2797a",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        -720
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0b881ee8-5080-4ea6-9dce-8c4645a59ac4",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "youtube.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "21bde914-fe17-4969-b29e-f30c53ecad73",
+              "leftValue": "={{ $json.URL }}",
+              "rightValue": "youtu.be",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2560,
+        816
+      ],
+      "id": "aa2d350e-7a61-4d10-95b7-a9d65bf22e2d",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"$schema\": \"https://json-schema.org/draft/2020-12/schema\",\n  \"title\": \"OfferExtractionSchema\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"game\": {\n      \"type\": \"string\",\n      \"description\": \"Exact name of the game/app/platform being advertised. Use 'Not Specified' if unavailable.\"\n    },\n    \"offers\": {\n      \"type\": \"array\",\n      \"description\": \"List of specific actions the user must take.\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"payout_structure\": {\n      \"type\": \"string\",\n      \"description\": \"Clear payout or reward structure. Use 'Not Specified' if unavailable.\"\n    }\n  },\n  \"required\": [\"game\", \"offers\", \"payout_structure\"],\n  \"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        3312,
+        768
+      ],
+      "id": "dfe266e9-1765-4613-8806-eac6528d84c7",
+      "name": "Structured Output Parser4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "X-Goog-Upload-Protocol",
+              "value": "resumable"
+            },
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Type",
+              "value": "124"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "234"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"file\":{\n    \"display_name\":\"filename\"\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        3296,
+        960
+      ],
+      "id": "8d0bc57b-733d-4ad8-9bfe-33044b0066d7",
+      "name": "Initiated Gemini Upload",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "YbYFlplSWxlmVqtk",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Goog-Upload-Protocol",
+              "value": "resumable"
+            },
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "start"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Length",
+              "value": "={{ $binary.data.fileSize.split(\" \")[0]*1000 }}"
+            },
+            {
+              "name": "X-Goog-Upload-Header-Content-Type",
+              "value": "={{ $binary.data.mimeType }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"file\":{\n    \"display_name\":\" {{ $binary.data.fileName }}\"\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1968,
+        1200
+      ],
+      "id": "5a71300c-6ee2-43b4-ba92-6e0919fc0f76",
+      "name": "initiateUpload",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "CZHUfV9qSxpvy0iG",
+          "name": "Gemini Query Auth - Storied"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('initiateUpload').item.json.headers['x-goog-upload-url'] }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Length",
+              "value": "={{ $binary.data.fileSize.split(\" \")[0]*1000 }}"
+            },
+            {
+              "name": "X-Goog-Upload-Offset",
+              "value": "0"
+            },
+            {
+              "name": "X-Goog-Upload-Command",
+              "value": "upload, finalize"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2704,
+        1200
+      ],
+      "id": "5302b67d-18e6-4bea-a394-de192f3e6f40",
+      "name": "Upload",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "6Yqr0HmtxtByNFXX",
+          "name": "Gemini Query Auth Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return{\n  json: {},\n  binary: $('Download Image').item.binary\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2368,
+        1200
+      ],
+      "id": "5bf5166f-eb53-4303-8608-a71bfaa641b0",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"fileData\": {\n            \"mimeType\": \"{{ $json.mimeType }}\",\n            \"fileUri\": \"{{ $json.fileUri }}\"\n          }\n        },\n        {\n          \"text\": \"Role: You are a Senior User Acquisition Analyst for mobile gaming.\\nTask: Analyze the provided media (marketing creative) and reverse-engineer the offer being presented to the user.\\nExtraction Rules:\\n- Game Name: Identify the exact name of the app or game being advertised; if it is a platform, name the platform.\\n- Offers: List the specific actions the user must take with precise language (e.g., \\\"Reach Level 50\\\", \\\"Complete Chapter 2\\\").\\n- Payout Structure: Identify the reward, including currency or points (e.g., \\\"$50 for reaching level 10\\\"); if tiered, summarize as \\\"Tiered rewards up to [Total Amount]\\\".\\nOutput Format: Return ONLY the JSON object required by the output parser, and use \\\"Not Specified\\\" for missing values.\"\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"responseMimeType\": \"application/json\",\n    \"responseJsonSchema\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"gameName\": {\n          \"type\": \"string\"\n        },\n        \"offers\": {\n          \"type\": \"string\"\n        },\n        \"payoutStructure\": {\n          \"type\": \"string\"\n        }\n      },\n      \"required\": [\n        \"gameName\",\n        \"offers\",\n        \"payoutStructure\"\n      ]\n    }\n  }\n}",
+        "options": {
+          "response": {
+            "response": {
+              "fullResponse": true
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2112,
+        -112
+      ],
+      "id": "0905ed99-918c-4cfd-b7ad-3412cfc76eb1",
+      "name": "Analyze",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "6Yqr0HmtxtByNFXX",
+          "name": "Gemini Query Auth Personal"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3024,
+        1200
+      ],
+      "id": "27eb8307-b804-4d95-a54d-4e071d9b6222",
+      "name": "Wait1",
+      "webhookId": "f332191a-a4cf-4c4e-9290-38fcbcfb779a"
+    },
+    {
+      "parameters": {
+        "content": "## AppStore and Play Store ID\n Get apps store and playstore iIDs",
+        "height": 1136,
+        "width": 2368,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2400,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "af580632-5981-4824-9dc3-1f81e87d8f82",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Update sheet and notify",
+        "height": 1136,
+        "width": 2160,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4800,
+        -720
+      ],
+      "typeVersion": 1,
+      "id": "d8871fae-7a33-4a9c-a384-973210cc1ff3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## ARCHIVE ZONE\n",
+        "height": 896,
+        "width": 3536
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1504,
+        480
+      ],
+      "typeVersion": 1,
+      "id": "e4aae337-4af7-432d-bfd3-8c9ee9b37090",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1600,
+        1200
+      ],
+      "id": "2711430e-dc44-4e1f-bc26-eb4dcacd2805",
+      "name": "Download Image",
+      "notes": "Get the image from the url as a binary file"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "inputType": "binary",
+        "binaryPropertyName": "Upload_file"
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1584,
+        224
+      ],
+      "id": "ff903fd1-d53d-45bf-a56f-031f8329c949",
+      "name": "Upload Binary File to Analyze",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "ICsyOYGneyPY6hP2",
+          "name": "Gemini - STORIED"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileUrl": "={{ $json.URL }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        -224
+      ],
+      "id": "188c52cb-b0ad-419d-ba5c-fbec5e5d0ab0",
+      "name": "Upload File to Analyze as URL",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assume the input text is in $json.text\nconst rawText = $input.first().json.body.candidates[0].content.parts[0].text;\n\n// Parse the JSON string\nlet parsed;\ntry {\n  parsed = JSON.parse(rawText);\n} catch (e) {\n  throw new Error(\"Invalid JSON: \" + e.message);\n}\n\n// Return as n8n output\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2464,
+        -112
+      ],
+      "id": "affb12ac-1f6d-42c6-9e35-46dc6b91d849",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "jsCode": "const links = $input.first().json.links\n\nconst cleaned = [];\nconst appId = '?id';\n\nfor (const link of links) {\n  const href = link.href || '';\n  if (href.includes('search')) continue;\n  if (!href.includes(appId)) continue;\n  const sanitized = Object.fromEntries(Object.entries(link).filter(([key]) => key !== 'jslog'));\n\n  cleaned.push(sanitized);\n}\n\nconst output = cleaned;\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3744,
+        -512
+      ],
+      "id": "1a01b299-dda7-4097-8204-7f2544b42deb",
+      "name": "Filter out Irrelevant Playstore Links"
+    },
+    {
+      "parameters": {
+        "jsCode": "const links = $input.first().json.links;\n\nconst cleaned = [];\nconst appId = '/id';\n\nfor (const link of links) {\n  const href = link.href || '';\n  const testId = link['data-test-id'] || '';\n\n  if (href.includes('search')) continue;\n  if (testId.includes('other-language')) continue;\n\n  if (!href.includes(appId)) continue;\n\n  cleaned.push(link);\n}\n\nconst output = cleaned;\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3728,
+        -16
+      ],
+      "id": "3c61ef04-4279-41dc-9dba-d172ac499e1c",
+      "name": "Filter out Irrelevant App Store Links"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "App Store ID (iOS)",
+              "lookupValue": "={{ $json.gameID[1] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5408,
+        -304
+      ],
+      "id": "94f5a4d7-0839-400c-88b6-5321c529dd21",
+      "name": "Get row(s) in sheet2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "PlayStore ID (Android)",
+              "lookupValue": "={{ $('Aggregate3').item.json.gameID[0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5872,
+        -288
+      ],
+      "id": "9c112e66-d7d4-43ca-8c61-4f4fec6237b2",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "output.gameID"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        5168,
+        -304
+      ],
+      "id": "070b826e-8545-4499-9ef1-767022cf6c7a",
+      "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json[\"App Store ID (iOS)\"] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5648,
+        -304
+      ],
+      "id": "4a5cc009-dcda-487e-a676-7fc0736ffa21",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json['PlayStore ID (Android)'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6112,
+        -288
+      ],
+      "id": "2a0569d5-926d-465a-b7ef-0396cd6e4e83",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "PlayStore ID (Android)",
+              "lookupValue": "={{ $('Aggregate3').item.json.gameID[0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        5872,
+        -544
+      ],
+      "id": "21ff5f9d-5813-44a3-a390-b8761f6fb40b",
+      "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "529b77dd-f243-4fad-b345-5f604f44ad89",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6112,
+        -544
+      ],
+      "id": "1396b363-6bdb-4121-8fef-f5ce0ee3bf41",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}"
+          },
+          "matchingColumns": [
+            "App Store ID (iOS)"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6384,
+        -528
+      ],
+      "id": "d9c88823-1813-4c4b-8188-f9055efa6a65",
+      "name": "Append or update row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}"
+          },
+          "matchingColumns": [
+            "PlayStore ID (Android)"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6400,
+        -352
+      ],
+      "id": "c9a10a20-c356-4631-b97e-77e82c9462f2",
+      "name": "Append or update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs",
+          "mode": "list",
+          "cachedResultName": "Competitor Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "GAMES/OFFERS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oseH0iifhwegtlBU00PIzi9SF9MSbeop4V4hcxqVCfs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "PlayStore ID (Android)": "={{ $('Aggregate3').item.json.gameID[0] }}",
+            "App Store ID (iOS)": "={{ $('Aggregate3').item.json.gameID[1] }}",
+            "Timestamp": "={{ $('Append row in sheet').item.json.Timestamp }}"
+          },
+          "matchingColumns": [
+            "Timestamp"
+          ],
+          "schema": [
+            {
+              "id": "Game",
+              "displayName": "Game",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Payout Structure",
+              "displayName": "Payout Structure",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "App Store ID (iOS)",
+              "displayName": "App Store ID (iOS)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "PlayStore ID (Android)",
+              "displayName": "PlayStore ID (Android)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        6400,
+        -128
+      ],
+      "id": "406a8d6a-8009-4497-9a4a-980052aaeb6b",
+      "name": "Append or update row in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4fbf940d-8fb3-44ec-948c-66d09fac0ce6",
+                    "leftValue": "={{ $json.URL.includes(\"youtube\") || $json.URL.includes(\"https://youtu.be\") }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.URL }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    },
+                    "id": "c79dca4f-3b87-4d87-a2f0-b9b54e89b26c"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "51f8b42d-69fc-4d83-92d9-246fa904e093",
+                    "leftValue": "={{ $json[\"Upload file\"].filename }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        912,
+        -304
+      ],
+      "id": "dd68cabb-0761-4ff9-a379-a4513c86c30c",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "# Role: You are a Senior User Acquisition Analyst for mobile gaming.\n\n## Task: Analyze the provided media (marketing creative) and reverse-engineer the offer being presented to the user.\n\n### Extraction Rules:\n- Game Name: Identify the exact name of the app or game being advertised; if it is a platform, name the platform.\n- Offers: List the specific actions the user must take with precise language (e.g., \"Reach Level 50\", \"Complete Chapter 2\").\n- Payout Structure: Identify the reward, including currency or points (e.g., \"$50 for reaching level 10\"); if tiered, summarize as \"Tiered rewards up to [Total Amount]\".\n\n## Output Format: Return ONLY the JSON object required by the output parser, and use \"Not Specified\" for missing values.",
+        "videoUrls": "={{ $('On form submission').item.json.URL }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        -464
+      ],
+      "id": "a4dbc582-02bb-426f-a3e3-298d915820bc",
+      "name": "Analyze video1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Dcm6ikEvNE1dhGxo",
+          "name": "Gemini API - Personal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Assume the input text is in $json.text\nconst rawText = $input.first().json.output\n\n// Parse the JSON string\nlet parsed;\ntry {\n  parsed = JSON.parse(rawText);\n} catch (e) {\n  throw new Error(\"Invalid JSON: \" + e.message);\n}\n\n// Return as n8n output\nreturn [{ json: parsed }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        -464
+      ],
+      "id": "4b2b4728-6482-4b76-b9a5-6d7b10143a94",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4224,
+        -288
+      ],
+      "id": "dcf99f35-db1f-4e1d-86d1-30b1bcb2021f",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4240,
+        224
+      ],
+      "id": "cc1816b4-45fd-4e41-a92e-52863409123b",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4432,
+        -144
+      ],
+      "id": "cc193173-e7d7-4e42-89b4-09d05f7e42f9",
+      "name": "OpenAI Chat Model4",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        4400,
+        304
+      ],
+      "id": "8dc4ea83-a995-4001-8af8-0489cfe95aa2",
+      "name": "OpenAI Chat Model5",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://play.google.com/store/apps/details?id={{ $json.output.gameID }}&hl=en",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        4880,
+        -640
+      ],
+      "id": "16c0679b-3c4c-485e-8d55-cc7d6627a555",
+      "name": "HTTP Request",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('On form submission').item.json.URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1184,
+        -288
+      ],
+      "id": "ef782c15-5274-4eee-a331-03581bd76bf0",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "b9ce8d9e-8279-4db6-9368-152885925f11",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        -208
+      ],
+      "id": "5c0619ed-4160-4c01-9b28-2153da0420f9",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.toJsonString() }}",
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"gameName\": {\n      \"type\": \"string\"\n    },\n    \"offers\": {\n      \"type\": \"string\"\n    },\n    \"payoutStructure\": {\n      \"type\": \"string\"\n    }\n  },\n  \"required\": [\n    \"gameName\",\n    \"offers\",\n    \"payoutStructure\"\n  ]\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.2,
+      "position": [
+        1920,
+        -464
+      ],
+      "id": "6b012ba3-77cf-40c9-b837-f19d6c0dbea6",
+      "name": "Information Extractor"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1904,
+        -272
+      ],
+      "id": "fb3e03d9-d06e-4b7e-a1a3-800609e54c1e",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "tjf9ytf3xLEqDCRr",
+          "name": "OpenAi account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        []
+      ]
+    },
+    "Get Android App": {
+      "main": [
+        [
+          {
+            "node": "HTML1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get Android App",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get iOS App",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get iOS App": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Filter out Irrelevant App Store Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        []
+      ]
+    },
+    "HTML1": {
+      "main": [
+        [
+          {
+            "node": "Filter out Irrelevant Playstore Links",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser3": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Analyze video Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download video": {
+      "main": [
+        [
+          {
+            "node": "Initiated Gemini Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload video Gemini": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video Gemini": {
+      "main": [
+        [
+          {
+            "node": "Get Result",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Analyze video",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Download video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser4": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "initiateUpload": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        []
+      ]
+    },
+    "Download Image": {
+      "main": [
+        [
+          {
+            "node": "initiateUpload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File to Analyze as URL": {
+      "main": [
+        [
+          {
+            "node": "Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Binary File to Analyze": {
+      "main": [
+        [
+          {
+            "node": "Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter out Irrelevant Playstore Links": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter out Irrelevant App Store Links": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Append or update row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append or update row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Analyze video1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Upload Binary File to Analyze",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze video1": {
+      "main": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Upload File to Analyze as URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Information Extractor": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Information Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Upload video Gemini": [
+      {
+        "json": {
+          "file": {
+            "uri": "https://generativelanguage.googleapis.com/v1beta/files/7whopq8rwtt8",
+            "name": "files/7whopq8rwtt8",
+            "state": "PROCESSING",
+            "source": "UPLOADED",
+            "mimeType": "video/mp4",
+            "sizeBytes": "933141",
+            "createTime": "2025-04-28T18:12:40.864881Z",
+            "sha256Hash": "MWQwYmQ2YWViYmRiNDNjZTYyY2I2ODhkOWRlNzdlMzkyZDJkMTU0NTM5NTE1OWM2MTJlMWRiNTNhNTIyZDVmZA==",
+            "updateTime": "2025-04-28T18:12:40.864881Z",
+            "expirationTime": "2025-04-30T18:12:40.834671218Z"
+          }
+        }
+      }
+    ],
+    "Analyze video Gemini": [
+      {
+        "json": {
+          "candidates": [
+            {
+              "content": {
+                "role": "model",
+                "parts": [
+                  {
+                    "text": "Okay, here's a detailed description of the video:\n\n**Overview**\nThe video is a promotional piece for Advanced Sim Racing, featuring a high-end BMW-branded racing simulator setup at a BMW dealership event. It also highlights the presence of a well-known personality: Georges St-Pierre (GSP). The video mixes detailed close-ups of the equipment, shots of people interacting with the simulator, and branding elements.\n\n**Detailed Description:**\n\n*   **0:00-0:01:** Opens with a dynamic shot of someone using the advanced racing simulator. We see triple monitors displaying a race, and the participant grips the steering wheel with intent. The seat is black, with \"OMP\" branded at the top, \"ADVANCED Sim Racing\" and a large BMW logo prominently displayed on its back.\n\n*   **0:01-0:03:** Tight focus on the steering wheel, emphasizing its sophisticated design and multiple buttons.  We see the brand name \"OMP\" on the wheel itself, while the backboard is adorned with the company’s slogan, “ADVANCED Sim Racing”.\n\n*   **0:03-0:07:** We shift to show the simulator being used at a BMW dealership.  A group of people gathers around with the hood open of a BMW car, seemingly intrigued and looking at the person experiencing the simulator.\n\n*   **0:07-0:11:** George St-Pierre appears among the crowd.\n\n*   **0:11-0:13:** Close-up of the SimuCube motor\n\n*   **0:13-0:15:** George St-Pierre gets onto the simulator while people assist him.\n\n*   **0:15-0:21:** Focus on the haptic feedback engine and the back of an employee’s t-shirt that says “ADVANCED Sim Racing DBOX SIMUCUBE”\n\n*   **0:22-0:24:** Small lego replica of the BMW 3 series next to one of the monitor’s along with the car’s front side view with distinct headlights.\n\n*   **0:24-0:25:** The outside of the event, labeled BMW Laval with the BMW logo, ice cream booth nearby.\n\n*   **0:25-0:27:** More participants getting on the simulator\n\n*   **0:27-0:29:** The ranking for different drivers\n\n*   **0:29-0:33:** View of the racing pedals and the race seat with the “OMP” brand.\n\n**Key Elements & Equipment**\n*   **Sim Racing Rig:** A highly advanced racing simulator is central to the video.  It is equipped with a racing seat, steering wheel, pedals, multiple monitors and a SimuCube haptic engine for feedback\n*   **BMW Branding:** The presence of the BMW logo and the incorporation of BMW vehicles underscore the affiliation.\n\n**Style & Tone:**\n*   **High-Tech:**  The video conveys a sense of sophisticated technology and realistic immersion in simulated racing.\n*   **Promotional/Enthusiastic:**  The music and the editing suggest excitement and interest in the product.\n*   **Stylish:** Use of slow-motion shots, close-ups and selective focus adds a modern, visually appealing look.\n\nI hope this helps!"
+                  }
+                ]
+              },
+              "avgLogprobs": -1.1206862455033986,
+              "finishReason": "STOP"
+            }
+          ],
+          "modelVersion": "gemini-2.0-flash-exp",
+          "usageMetadata": {
+            "totalTokenCount": 10149,
+            "promptTokenCount": 9441,
+            "promptTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 36
+              },
+              {
+                "modality": "AUDIO",
+                "tokenCount": 825
+              },
+              {
+                "modality": "VIDEO",
+                "tokenCount": 8580
+              }
+            ],
+            "candidatesTokenCount": 708,
+            "candidatesTokensDetails": [
+              {
+                "modality": "TEXT",
+                "tokenCount": 708
+              }
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "091a6a03-8266-4f21-b1a5-bf89ae7a340d",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-01T08:53:00.684Z",
+      "createdAt": "2025-12-01T08:53:00.684Z",
+      "role": "workflow:owner",
+      "workflowId": "jR6DybaSPOMHRlZu",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}

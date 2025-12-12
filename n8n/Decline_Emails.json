@@ -1,0 +1,283 @@
+{
+  "updatedAt": "2025-12-12T00:56:47.000Z",
+  "createdAt": "2025-12-12T00:37:19.239Z",
+  "id": "JgDAln97VeztgN3G",
+  "name": "Decline Emails",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        -144
+      ],
+      "id": "43260935-6e76-416c-9afc-ed86becd9e17",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A",
+          "mode": "list",
+          "cachedResultName": "Declines",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1814291539,
+          "mode": "list",
+          "cachedResultName": "narrative analyst rec",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A/edit#gid=1814291539"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -160,
+        -144
+      ],
+      "id": "17686619-578d-43a7-8331-da2df0efdc09",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Get row(s) in sheet').item.json['Full Name'] }}<{{ $('Get row(s) in sheet').item.json.Email }}>",
+        "subject": "Update on your Narrative Analyst application",
+        "message": "=Hi {{ $('Get row(s) in sheet').item.json['First Name'] }} -\n<br><br>\nThank you again for applying to the Narrative Analyst role at Storied. \n<br><br>\nAfter reviewing your application, we have decided not to move forward. We are grateful for your interest in our work, and if a future role feels more closely aligned with your background, we hope you will consider applying again.\n<br>\n<br>\nRegards,\n<br>\nEdward ",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Edward Njogu"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        -128
+      ],
+      "id": "2493d0ae-dccb-4c34-b995-bd410993783d",
+      "name": "Send a message",
+      "webhookId": "ad4ad962-ac9b-4461-b36b-d009e54e76b7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        48,
+        -144
+      ],
+      "id": "c533d02f-60d4-4d91-b5cb-6095d20c0d8f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        -128
+      ],
+      "id": "22bf9e92-5006-4068-8241-a125d85b9ed6",
+      "name": "Wait",
+      "webhookId": "d77c392a-afe0-482d-afe9-ea44719afe8c"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A",
+          "mode": "list",
+          "cachedResultName": "Declines",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1814291539,
+          "mode": "list",
+          "cachedResultName": "narrative analyst rec",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MaXQ5Jxp_p1Rdrh_gsdHVKOpIEChgS4gec31RAfHt0A/edit#gid=1814291539"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ready": "Go",
+            "Email": "={{ $('Get row(s) in sheet').item.json.Email }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Full Name",
+              "displayName": "Full Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Ready",
+              "displayName": "Ready",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        -128
+      ],
+      "id": "b1ba8e05-4e63-48f8-801b-75345148a840",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "cd059590-8b90-446f-a05b-2932911fd73e",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-12T00:37:19.301Z",
+      "createdAt": "2025-12-12T00:37:19.301Z",
+      "role": "workflow:owner",
+      "workflowId": "JgDAln97VeztgN3G",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
