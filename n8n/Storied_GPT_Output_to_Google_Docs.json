@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-17T00:01:24.000Z",
+  "updatedAt": "2025-12-17T17:23:32.000Z",
   "createdAt": "2025-10-23T17:55:17.882Z",
   "id": "8u8RTVnqFpQFY14G",
   "name": "Storied GPT Output to Google Docs",
@@ -22,6 +22,20 @@
               "fieldType": "textarea",
               "placeholder": "Enter Body Copy",
               "requiredField": true
+            },
+            {
+              "fieldLabel": "Template",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Storied"
+                  },
+                  {
+                    "option": "Veridical"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -40,7 +54,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://script.google.com/macros/s/AKfycbx5daEj6eFWGKMMEu7DhTzz5RoUNt9d1yXFb-OR4j4Yslr1G36deFKFX8KdNOtFJVdw/exec",
+        "url": "https://script.google.com/macros/s/AKfycbwtWdsCfcLTeihqOkqeddTYGt-ZrJ6AYyCjLV3Sw6jJycKXA7dakqQcAlUtMJMNAJ9r/exec",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -64,6 +78,10 @@
             {
               "name": "content",
               "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
+            },
+            {
+              "name": "tempType",
+              "value": "={{ $json.Template }}"
             }
           ]
         },
@@ -112,6 +130,105 @@
           "name": "SLACK API - BOT"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+            },
+            {
+              "name": "accept-language",
+              "value": "en-GB,en;q=0.9"
+            },
+            {
+              "name": "cache-control",
+              "value": "max-age=0"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "document"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "navigate"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "none"
+            },
+            {
+              "name": "sec-fetch-user",
+              "value": "?1"
+            },
+            {
+              "name": "sec-gpc",
+              "value": "1"
+            },
+            {
+              "name": "upgrade-insecure-requests",
+              "value": "1"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Cookie",
+              "value": "loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "0730992d-74d3-4e30-aae6-e3226a1d4368",
+      "name": "Reddit Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -160,
+        272
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "curl 'https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json' \\ -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8' \\ -H 'accept-language: en-GB,en;q=0.9' \\ -H 'cache-control: max-age=0' \\ -b 'loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh' \\ -H 'priority: u=0, i' \\ -H 'sec-ch-ua: \"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"' \\ -H 'sec-ch-ua-mobile: ?0' \\ -H 'sec-ch-ua-platform: \"macOS\"' \\ -H 'sec-fetch-dest: document' \\ -H 'sec-fetch-mode: navigate' \\ -H 'sec-fetch-site: none' \\ -H 'sec-fetch-user: ?1' \\ -H 'sec-gpc: 1' \\ -H 'upgrade-insecure-requests: 1' \\ -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        128,
+        272
+      ],
+      "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "D3sPlVcppZzCh4fv",
+          "name": "SSH Private Key account"
+        }
+      }
     }
   ],
   "connections": {
@@ -136,6 +253,17 @@
           }
         ]
       ]
+    },
+    "Reddit Request": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -149,20 +277,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "On form submission": [
-      {
-        "json": {
-          "Title": "V / VC Brand Positioning",
-          "Body": "## **1. Internal Meaning Doc. V / VC**\r\n\r\n**What V / VC Means**\r\n\r\nThe V / VC mark represents Veridical\"s point of view on venture. Venture precedes venture capital. Belief precedes allocation. Narrative precedes execution. The slash is intentional. It signals contrast, not category. We operate above the mechanics of capital and focus on the upstream conditions that make capital effective. V is worldview. VC is instrument. Our work lives in the tension between the two. We do not reject venture capital. We contextualize it. The mark stands for a belief that early-stage investing is fundamentally about shaping conviction, coherence, and shared belief systems long before metrics stabilize. Capital follows clarity. Returns follow narrative fidelity. The logo is a reminder. We are not allocating money into stories. We are allocating belief into futures.\r\n## **2. Veridical Ventures Positioning Strategy**\r\n\r\n**Working Doc for Fund Identity, Narrative, and GTM**\r\n\r\n### **Core Positioning**\r\n\r\nVeridical Ventures is not a traditional venture firm.  \r\n We treat narrative as infrastructure and belief as a first-order input to company formation, category definition, and long-term value creation.\r\n\r\n### **Category Stance**\r\n\r\n* Venture is a belief allocation business\r\n* Capital is downstream of conviction\r\n* Narrative is the operating system of early-stage companies\r\n* Language compounds earlier than metrics\r\n\r\n### **Why We Do Not Rename to \"Veridical VC\"**\r\n\r\n* VC names signal instrument-level identity\r\n* Ventures signals actor-level identity\r\n* High-status firms assume the category\r\n* Differentiation comes from POV, not labels\r\n* “VC” narrows narrative altitude\r\n\r\n### **Role of the V / VC Mark**\r\n\r\n* Symbolic contrast, not literal descriptor\r\n* Venture over venture capital\r\n* POV over mechanism\r\n* Belief over allocation\r\n* Worldview over vehicle\r\n\r\nThe mark is not explained publicly.  \r\n It is earned through repetition of thesis, language, and behavior.\r\n\r\n### **Our Contrarian Advantage**\r\n\r\nWe are not anti-VC.  \r\n We are post-mechanics VC.\r\n\r\nWe focus on:\r\n\r\n* Conviction formation before capital deployment\r\n* Narrative coherence before scale\r\n* Category definition before competition\r\n* Language ownership before product sprawl\r\n\r\nThis creates narrative alpha across:\r\n\r\n* Founders shaping belief early\r\n* Operators aligning execution\r\n* Investors improving odds, not certainty\r\n\r\n### **GTM Narrative Spine**\r\n\r\nThis is the story we socialize consistently.\r\n\r\n* Early-stage venture is misunderstood\r\n* Most failure is narrative failure, not technical failure\r\n* Belief systems determine speed, alignment, and resilience\r\n* Veridical invests where belief can be made durable\r\n* We operate at the moment belief is still malleable\r\n\r\n### **Audience-Specific Emphasis**\r\n\r\n**Founders**\r\n\r\n* We help you name the thing you are actually building\r\n* We help you align belief before scaling execution\r\n* We help you avoid narrative debt\r\n\r\n**Operators**\r\n\r\n* Narrative is a coordination system\r\n* Language reduces friction and decision drag\r\n* Coherence scales faster than control\r\n\r\n**LPs and Investors**\r\n\r\n* Narrative is a risk-reduction tool\r\n* Conviction improves capital efficiency\r\n* Belief quality predicts outcome ranges\r\n\r\n### **Language Guardrails**\r\n\r\n* Never shorthand the firm as “VC”\r\n* Always lead with Ventures in formal contexts\r\n* Use “venture” as worldview, not category\r\n* Treat narrative as infrastructure, not storytelling\r\n* Avoid over-explaining the mark\r\n\r\n### **Success Criteria**\r\n\r\nThis strategy is working if:\r\n\r\n* People quote the thesis back to us\r\n* Founders reference belief, not pitch decks\r\n* “Narrative” becomes associated with operating leverage\r\n* The logo becomes recognizable without explanation\r\n* Veridical is seen as a school of thought, not just a fund\r\nIf you want next, I can:\r\n\r\n* Turn this into a 2-page PDF for partner alignment\r\n* Create a one-slide fund positioning visual\r\n* Draft the verbal shorthand Greg can use in LP conversations\r\n* Map this directly to your Operating Partner Narrative role language\r\n\r\n=== Code Execution Successful ===",
-          "submittedAt": "2025-12-16T10:51:41.110-08:00",
-          "formMode": "production"
-        }
-      }
-    ]
-  },
-  "versionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
-  "activeVersionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
+  "pinData": {},
+  "versionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
+  "activeVersionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
   "triggerCount": 1,
   "shared": [
     {
@@ -174,9 +291,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-17T00:01:24.388Z",
-    "createdAt": "2025-12-17T00:01:24.388Z",
-    "versionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
+    "updatedAt": "2025-12-17T17:23:32.504Z",
+    "createdAt": "2025-12-17T17:23:32.504Z",
+    "versionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
     "workflowId": "8u8RTVnqFpQFY14G",
     "nodes": [
       {
@@ -195,6 +312,20 @@
                 "fieldType": "textarea",
                 "placeholder": "Enter Body Copy",
                 "requiredField": true
+              },
+              {
+                "fieldLabel": "Template",
+                "fieldType": "dropdown",
+                "fieldOptions": {
+                  "values": [
+                    {
+                      "option": "Storied"
+                    },
+                    {
+                      "option": "Veridical"
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -213,7 +344,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "https://script.google.com/macros/s/AKfycbx5daEj6eFWGKMMEu7DhTzz5RoUNt9d1yXFb-OR4j4Yslr1G36deFKFX8KdNOtFJVdw/exec",
+          "url": "https://script.google.com/macros/s/AKfycbwtWdsCfcLTeihqOkqeddTYGt-ZrJ6AYyCjLV3Sw6jJycKXA7dakqQcAlUtMJMNAJ9r/exec",
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
@@ -237,6 +368,10 @@
               {
                 "name": "content",
                 "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
+              },
+              {
+                "name": "tempType",
+                "value": "={{ $json.Template }}"
               }
             ]
           },
@@ -285,6 +420,105 @@
             "name": "SLACK API - BOT"
           }
         }
+      },
+      {
+        "parameters": {
+          "url": "https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+              },
+              {
+                "name": "accept-language",
+                "value": "en-GB,en;q=0.9"
+              },
+              {
+                "name": "cache-control",
+                "value": "max-age=0"
+              },
+              {
+                "name": "sec-ch-ua",
+                "value": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\""
+              },
+              {
+                "name": "sec-ch-ua-mobile",
+                "value": "?0"
+              },
+              {
+                "name": "sec-ch-ua-platform",
+                "value": "\"macOS\""
+              },
+              {
+                "name": "sec-fetch-dest",
+                "value": "document"
+              },
+              {
+                "name": "sec-fetch-mode",
+                "value": "navigate"
+              },
+              {
+                "name": "sec-fetch-site",
+                "value": "none"
+              },
+              {
+                "name": "sec-fetch-user",
+                "value": "?1"
+              },
+              {
+                "name": "sec-gpc",
+                "value": "1"
+              },
+              {
+                "name": "upgrade-insecure-requests",
+                "value": "1"
+              },
+              {
+                "name": "user-agent",
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+              },
+              {
+                "name": "Cookie",
+                "value": "loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh"
+              }
+            ]
+          },
+          "options": {
+            "redirect": {
+              "redirect": {}
+            }
+          }
+        },
+        "id": "0730992d-74d3-4e30-aae6-e3226a1d4368",
+        "name": "Reddit Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          -160,
+          272
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "privateKey",
+          "command": "curl 'https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json' \\ -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8' \\ -H 'accept-language: en-GB,en;q=0.9' \\ -H 'cache-control: max-age=0' \\ -b 'loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh' \\ -H 'priority: u=0, i' \\ -H 'sec-ch-ua: \"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"' \\ -H 'sec-ch-ua-mobile: ?0' \\ -H 'sec-ch-ua-platform: \"macOS\"' \\ -H 'sec-fetch-dest: document' \\ -H 'sec-fetch-mode: navigate' \\ -H 'sec-fetch-site: none' \\ -H 'sec-fetch-user: ?1' \\ -H 'sec-gpc: 1' \\ -H 'upgrade-insecure-requests: 1' \\ -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'"
+        },
+        "type": "n8n-nodes-base.ssh",
+        "typeVersion": 1,
+        "position": [
+          128,
+          272
+        ],
+        "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
+        "name": "Execute a command",
+        "credentials": {
+          "sshPrivateKey": {
+            "id": "D3sPlVcppZzCh4fv",
+            "name": "SSH Private Key account"
+          }
+        }
       }
     ],
     "connections": {
@@ -304,6 +538,17 @@
           [
             {
               "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reddit Request": {
+        "main": [
+          [
+            {
+              "node": "Execute a command",
               "type": "main",
               "index": 0
             }
