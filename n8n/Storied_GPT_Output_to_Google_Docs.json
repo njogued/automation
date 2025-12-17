@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-23T18:42:19.000Z",
+  "updatedAt": "2025-12-17T00:01:24.000Z",
   "createdAt": "2025-10-23T17:55:17.882Z",
   "id": "8u8RTVnqFpQFY14G",
   "name": "Storied GPT Output to Google Docs",
@@ -63,7 +63,7 @@
             },
             {
               "name": "content",
-              "value": "={{ $json.Body }}"
+              "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
             }
           ]
         },
@@ -153,15 +153,16 @@
     "On form submission": [
       {
         "json": {
-          "Title": "Strategic Sales Memo",
-          "Body": "\r\n## Owning the Leverage Layers in the Future of Drone Defense\r\n\r\n**To:** Prime Contractor Executives, Innovation & BD Leads, Strategic Investment Committees  \r\n**From:** [Your Company / Initiative Name]  \r\n**Subject:** Layer 2 and 4 Solutions for the 7-Layer Drone Defense Stack: Scalable Asymmetric Advantage  \r\n\r\n---\r\n\r\n### Executive Overview\r\n\r\nThe battlefield has changed.  \r\nCheap, autonomous drones—deployed in swarms or one-way missions—now pose a strategic threat to critical infrastructure, urban centers, and forward operating bases. They are fast, networked, and saturating. The traditional tools of air defense—missiles, SAMs, kinetic guns—are increasingly unsustainable in this new cost-exchange reality.\r\n\r\n**The response is clear and emerging globally:**  \r\nA layered drone defense architecture, where each layer contributes a specific role—combining hard and soft kill, deception, and intelligent coordination.\r\n\r\nThis is not a theory. It is already doctrine in Ukraine, Israel, South Korea, the Baltics, and NATO-aligned defense frameworks.\r\n\r\n---\r\n\r\n### Our Strategic Positioning\r\n\r\nWe are not building all 7 layers.  \r\nWe are delivering **solutions for the two most cost-leverage and innovation-critical layers** in the stack:\r\n\r\n- **Layer 2: False Target Drones (Deception Layer)**  \r\n- **Layer 4: AI Interceptor Drones (Autonomous Kill Layer)**  \r\n\r\nThese are the most **asymmetrically powerful**, **economically scalable**, and **mission-critical layers** in the entire ecosystem.  \r\nFor prime contractors and dual-use investors, they represent the sweet spot between strategic relevance and commercial scalability.\r\n\r\n---\r\n\r\n### The 7-Layer Defense Stack (With Cost Model)\r\n\r\n| **Layer** | **Name** | **Function** | **Tools / Methods** | **Strategic Strength** | **Cost Tier** | **Est. Cost per Use** | **Narrative Cue** |\r\n|-----------|----------|--------------|----------------------|-------------------------|----------------|------------------------|-------------------|\r\n| **1** | **Disruption Layer** | Disable drone control/navigation via signal denial | RF jammers, GPS spoofers, cyber takeover | Instant, non-kinetic, scalable | `$` | \\$10–\\$200 | *“Blind the threat before it sees you”* |\r\n| **2** | **Deception Layer** | Mislead drones toward false targets | Signature-emitting drones, decoys, spoof signals | Preemptive threat dilution, misdirection | `$$` | \\$500–\\$5,000 | *“Make them aim at shadows”* |\r\n| **3** | **Saturation Layer** | Rapid close-range kinetic denial | Smart ammo, .50 cal, 30mm autocannons | High-volume, low-cost suppression | `$$` | \\$50–\\$1,000 | *“The last 500 meters of protection”* |\r\n| **4** | **Interceptor Layer** | AI-powered drone-on-drone pursuit & kill | Autonomous intercept drones, AI swarms | Smart, fast, reusable, urban-friendly | `$$$` | \\$1,000–\\$20,000 | *“Smart hunters in the sky”* |\r\n| **5** | **High-End Interceptor Layer** | Destroy large/high-value threats at range | Patriot, NASAMS, Iron Dome, IRIS-T | Strategic strike, low tolerance for error | `$$$$$` | \\$250K–\\$4M | *“The vault security, not your front door”* |\r\n| **6** | **Passive Resilience Layer** | Reduce post-impact consequences | Infrastructure hardening, redundancy, rapid repair | Minimizes disruption, protects insurability | `$$$` | \\$50K–\\$1M per site | *“Not just defense—resilience”* |\r\n| **7** | **Coordination Layer** | AI-based orchestration across all layers | Battle management AI, C2 networks, sensor fusion | Enables layered sync, reduces waste | `$$$` | \\$50K–\\$500K per deployment | *“The brain behind the shield”* |\r\n\r\n---\r\n\r\n### Focus Area: Layer 4 – AI Interceptor Drones\r\n\r\n**Strategic Role:** Fast, autonomous kinetic defeat of hostile drones  \r\n\r\n**Functionality:**  \r\n- Autonomous or human-supervised drone-on-drone interception  \r\n- Onboard computer vision and targeting algorithms  \r\n- Networked swarm logic and multi-threat tracking  \r\n\r\n**Why It Matters:**  \r\n- Enables close-in kinetic defeat where jammers and SAMs fail  \r\n- Scalable protection for urban, mobile, and infrastructure environments  \r\n- Operates on a fraction of the cost of missile-based systems  \r\n- Easily redeployable and modular for multi-mission roles  \r\n\r\n**Estimated Cost per Intercept:** \\$1,000–\\$20,000  \r\n**Integration Potential:** Compatible with existing radars, EO/IR, and C2 systems  \r\n\r\n> **This is the Layer 4 unlock: Smart, fast, and software-defined aerial dominance—deployable at scale.**\r\n\r\n---\r\n\r\n### Focus Area: Layer 2 – False Target Drones\r\n\r\n**Strategic Role:** Confusion and pre-kill chain disruption  \r\n\r\n**Functionality:**  \r\n- Emit radar, RF, GPS, IR, and visual signatures to mimic real targets  \r\n- Trigger hostile drones or munitions to engage false positives  \r\n- Augments jamming and passive defenses  \r\n\r\n**Why It Matters:**  \r\n- Depletes enemy resources before engagement  \r\n- Misdirects autonomous and human-in-the-loop attackers  \r\n- Deployable across static and mobile environments  \r\n\r\n**Estimated Cost per Decoy Deployment:** \\$500–\\$5,000  \r\n**Deployment Methods:** Airborne, vehicle-mounted, or static ground systems  \r\n\r\n> **This is the Layer 2 unlock: Bend the attacker’s logic before they cross the perimeter.**\r\n\r\n---\r\n\r\n### Why This Matters for Prime Contractors\r\n\r\nYou're already engaged in several layers of the stack—Layer 5 (missiles), Layer 1 (EW), Layer 7 (C2).  \r\nBut Layers 2 and 4 offer you:\r\n\r\n- **New, modular capabilities** that integrate into your existing platforms  \r\n- **Contract differentiation** in RFPs focused on layered, scalable C-UAS architectures  \r\n- **Faster-to-deploy solutions** with dual-use commercial crossover  \r\n- **Strategic investment positions** in asymmetric defense technologies  \r\n\r\nThese layers don't compete with your core assets—they **amplify and extend** them.\r\n\r\n---\r\n\r\n### Why This Matters for Strategic Investors (Including You)\r\n\r\nWhether you're a prime with a ventures arm or a dual-use VC, Layers 2 and 4 represent:\r\n\r\n- **High-leverage cost disruption** in a trillion-dollar defense challenge  \r\n- **Low unit economics + high strategic value**  \r\n- **Alignment with DoD, NATO, and homeland security counter-drone funding mandates**  \r\n- **AI-first product architectures** that create defensible IP and data moats  \r\n- **Long-term commercial crossover** into power grid, port, oil/gas, and logistics defense  \r\n\r\n---\r\n\r\n### Conclusion & Invitation\r\n\r\nDrone warfare has changed the economics of national defense. The 7-layer model is the emerging blueprint.  \r\n**Layer 2 and Layer 4 are where leverage, innovation, and value converge.**\r\n\r\nWe are delivering scalable, AI-driven, and rapidly deployable solutions within those two layers.\r\n\r\nWe invite you to:\r\n- Explore co-development partnerships  \r\n- Integrate these capabilities into existing platforms and RFPs  \r\n- Join as a strategic investor in shaping the most future-ready layers of national defense  \r\n\r\nLet’s brief your innovation and integration leads.  \r\nLet’s walk you through field scenarios and systems alignment.  \r\nLet’s build what the next decade of airspace protection demands.\r\n",
-          "submittedAt": "2025-10-23T11:10:58.191-07:00",
+          "Title": "V / VC Brand Positioning",
+          "Body": "## **1. Internal Meaning Doc. V / VC**\r\n\r\n**What V / VC Means**\r\n\r\nThe V / VC mark represents Veridical\"s point of view on venture. Venture precedes venture capital. Belief precedes allocation. Narrative precedes execution. The slash is intentional. It signals contrast, not category. We operate above the mechanics of capital and focus on the upstream conditions that make capital effective. V is worldview. VC is instrument. Our work lives in the tension between the two. We do not reject venture capital. We contextualize it. The mark stands for a belief that early-stage investing is fundamentally about shaping conviction, coherence, and shared belief systems long before metrics stabilize. Capital follows clarity. Returns follow narrative fidelity. The logo is a reminder. We are not allocating money into stories. We are allocating belief into futures.\r\n## **2. Veridical Ventures Positioning Strategy**\r\n\r\n**Working Doc for Fund Identity, Narrative, and GTM**\r\n\r\n### **Core Positioning**\r\n\r\nVeridical Ventures is not a traditional venture firm.  \r\n We treat narrative as infrastructure and belief as a first-order input to company formation, category definition, and long-term value creation.\r\n\r\n### **Category Stance**\r\n\r\n* Venture is a belief allocation business\r\n* Capital is downstream of conviction\r\n* Narrative is the operating system of early-stage companies\r\n* Language compounds earlier than metrics\r\n\r\n### **Why We Do Not Rename to \"Veridical VC\"**\r\n\r\n* VC names signal instrument-level identity\r\n* Ventures signals actor-level identity\r\n* High-status firms assume the category\r\n* Differentiation comes from POV, not labels\r\n* “VC” narrows narrative altitude\r\n\r\n### **Role of the V / VC Mark**\r\n\r\n* Symbolic contrast, not literal descriptor\r\n* Venture over venture capital\r\n* POV over mechanism\r\n* Belief over allocation\r\n* Worldview over vehicle\r\n\r\nThe mark is not explained publicly.  \r\n It is earned through repetition of thesis, language, and behavior.\r\n\r\n### **Our Contrarian Advantage**\r\n\r\nWe are not anti-VC.  \r\n We are post-mechanics VC.\r\n\r\nWe focus on:\r\n\r\n* Conviction formation before capital deployment\r\n* Narrative coherence before scale\r\n* Category definition before competition\r\n* Language ownership before product sprawl\r\n\r\nThis creates narrative alpha across:\r\n\r\n* Founders shaping belief early\r\n* Operators aligning execution\r\n* Investors improving odds, not certainty\r\n\r\n### **GTM Narrative Spine**\r\n\r\nThis is the story we socialize consistently.\r\n\r\n* Early-stage venture is misunderstood\r\n* Most failure is narrative failure, not technical failure\r\n* Belief systems determine speed, alignment, and resilience\r\n* Veridical invests where belief can be made durable\r\n* We operate at the moment belief is still malleable\r\n\r\n### **Audience-Specific Emphasis**\r\n\r\n**Founders**\r\n\r\n* We help you name the thing you are actually building\r\n* We help you align belief before scaling execution\r\n* We help you avoid narrative debt\r\n\r\n**Operators**\r\n\r\n* Narrative is a coordination system\r\n* Language reduces friction and decision drag\r\n* Coherence scales faster than control\r\n\r\n**LPs and Investors**\r\n\r\n* Narrative is a risk-reduction tool\r\n* Conviction improves capital efficiency\r\n* Belief quality predicts outcome ranges\r\n\r\n### **Language Guardrails**\r\n\r\n* Never shorthand the firm as “VC”\r\n* Always lead with Ventures in formal contexts\r\n* Use “venture” as worldview, not category\r\n* Treat narrative as infrastructure, not storytelling\r\n* Avoid over-explaining the mark\r\n\r\n### **Success Criteria**\r\n\r\nThis strategy is working if:\r\n\r\n* People quote the thesis back to us\r\n* Founders reference belief, not pitch decks\r\n* “Narrative” becomes associated with operating leverage\r\n* The logo becomes recognizable without explanation\r\n* Veridical is seen as a school of thought, not just a fund\r\nIf you want next, I can:\r\n\r\n* Turn this into a 2-page PDF for partner alignment\r\n* Create a one-slide fund positioning visual\r\n* Draft the verbal shorthand Greg can use in LP conversations\r\n* Map this directly to your Operating Partner Narrative role language\r\n\r\n=== Code Execution Successful ===",
+          "submittedAt": "2025-12-16T10:51:41.110-08:00",
           "formMode": "production"
         }
       }
     ]
   },
-  "versionId": "d52c3244-babf-4453-b3be-10a492ab71ad",
+  "versionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
+  "activeVersionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
   "triggerCount": 1,
   "shared": [
     {
@@ -172,5 +173,147 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-17T00:01:24.388Z",
+    "createdAt": "2025-12-17T00:01:24.388Z",
+    "versionId": "b4b538e2-d000-432a-95b9-1d0e1a2e8a41",
+    "workflowId": "8u8RTVnqFpQFY14G",
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Storied GPT Output",
+          "formDescription": "Add in the raw markdown from Storied GPT output",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "Title",
+                "placeholder": "Enter File Title",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Body",
+                "fieldType": "textarea",
+                "placeholder": "Enter Body Copy",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          -272,
+          -112
+        ],
+        "id": "134cc1c3-cc30-4463-be8f-b6a08c2dd116",
+        "name": "On form submission",
+        "webhookId": "99e7ce64-162b-4971-8018-a70dc71e3367"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://script.google.com/macros/s/AKfycbx5daEj6eFWGKMMEu7DhTzz5RoUNt9d1yXFb-OR4j4Yslr1G36deFKFX8KdNOtFJVdw/exec",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "actionType",
+                "value": "Create"
+              },
+              {
+                "name": "title",
+                "value": "={{ $json.Title }}"
+              },
+              {
+                "name": "content",
+                "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          176,
+          -112
+        ],
+        "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
+        "name": "HTTP Request",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "select": "user",
+          "user": {
+            "__rl": true,
+            "value": "U06HYNGR0HL",
+            "mode": "list",
+            "cachedResultName": "edward"
+          },
+          "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $json.docUrl }}",
+          "otherOptions": {
+            "includeLinkToWorkflow": false,
+            "mrkdwn": true,
+            "unfurl_links": true
+          }
+        },
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.3,
+        "position": [
+          656,
+          -112
+        ],
+        "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
+        "name": "Send a message",
+        "webhookId": "02d9544d-593c-4c72-ab7a-941f73ab1c18",
+        "credentials": {
+          "slackApi": {
+            "id": "TCCNsFSy1xU8ud22",
+            "name": "SLACK API - BOT"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "On form submission": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Storied Admin",
+    "name": null,
+    "description": null
+  },
   "tags": []
 }
