@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-17T17:23:32.000Z",
+  "updatedAt": "2025-12-17T20:45:15.000Z",
   "createdAt": "2025-10-23T17:55:17.882Z",
   "id": "8u8RTVnqFpQFY14G",
   "name": "Storied GPT Output to Google Docs",
@@ -36,6 +36,23 @@
                   }
                 ]
               }
+            },
+            {
+              "fieldLabel": "Name",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Edward"
+                  },
+                  {
+                    "option": "Michael"
+                  },
+                  {
+                    "option": "Other"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -54,7 +71,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://script.google.com/macros/s/AKfycbwtWdsCfcLTeihqOkqeddTYGt-ZrJ6AYyCjLV3Sw6jJycKXA7dakqQcAlUtMJMNAJ9r/exec",
+        "url": "https://script.google.com/macros/s/AKfycbzNO888HIpHHr3KoeabqCHbucmJchcEakjj58HaaewLH4BzY4-_AqwKMHcXS7um61gP/exec",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -90,7 +107,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        176,
+        96,
         -112
       ],
       "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
@@ -108,7 +125,7 @@
           "mode": "list",
           "cachedResultName": "edward"
         },
-        "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $json.docUrl }}",
+        "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $('HTTP Request').item.json.docUrl }}",
         "otherOptions": {
           "includeLinkToWorkflow": false,
           "mrkdwn": true,
@@ -118,8 +135,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        656,
-        -112
+        736,
+        -128
       ],
       "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
       "name": "Send a message",
@@ -229,6 +246,49 @@
           "name": "SSH Private Key account"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ad767dba-8733-4946-921a-5439684aa21d",
+              "leftValue": "={{ $('On form submission').item.json.Name }}",
+              "rightValue": "Edward",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "cd5d5d1c-734b-4adb-a24a-dd9966e7d540",
+              "leftValue": "={{ $('On form submission').item.json.Name }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        384,
+        -112
+      ],
+      "id": "586080ae-c100-49a1-81c7-54811734d4f7",
+      "name": "If"
     }
   ],
   "connections": {
@@ -247,7 +307,7 @@
       "main": [
         [
           {
-            "node": "Send a message",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -259,6 +319,17 @@
         [
           {
             "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
             "type": "main",
             "index": 0
           }
@@ -278,8 +349,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
-  "activeVersionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
+  "versionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
+  "activeVersionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
   "triggerCount": 1,
   "shared": [
     {
@@ -291,9 +362,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-17T17:23:32.504Z",
-    "createdAt": "2025-12-17T17:23:32.504Z",
-    "versionId": "cbf8b0a8-f37c-4376-93bb-4f741200cb22",
+    "updatedAt": "2025-12-17T20:45:14.988Z",
+    "createdAt": "2025-12-17T20:45:14.988Z",
+    "versionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
     "workflowId": "8u8RTVnqFpQFY14G",
     "nodes": [
       {
@@ -326,6 +397,23 @@
                     }
                   ]
                 }
+              },
+              {
+                "fieldLabel": "Name",
+                "fieldType": "dropdown",
+                "fieldOptions": {
+                  "values": [
+                    {
+                      "option": "Edward"
+                    },
+                    {
+                      "option": "Michael"
+                    },
+                    {
+                      "option": "Other"
+                    }
+                  ]
+                }
               }
             ]
           },
@@ -344,7 +432,7 @@
       {
         "parameters": {
           "method": "POST",
-          "url": "https://script.google.com/macros/s/AKfycbwtWdsCfcLTeihqOkqeddTYGt-ZrJ6AYyCjLV3Sw6jJycKXA7dakqQcAlUtMJMNAJ9r/exec",
+          "url": "https://script.google.com/macros/s/AKfycbzNO888HIpHHr3KoeabqCHbucmJchcEakjj58HaaewLH4BzY4-_AqwKMHcXS7um61gP/exec",
           "sendHeaders": true,
           "headerParameters": {
             "parameters": [
@@ -380,7 +468,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          176,
+          96,
           -112
         ],
         "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
@@ -398,7 +486,7 @@
             "mode": "list",
             "cachedResultName": "edward"
           },
-          "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $json.docUrl }}",
+          "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $('HTTP Request').item.json.docUrl }}",
           "otherOptions": {
             "includeLinkToWorkflow": false,
             "mrkdwn": true,
@@ -408,8 +496,8 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          656,
-          -112
+          736,
+          -128
         ],
         "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
         "name": "Send a message",
@@ -519,6 +607,49 @@
             "name": "SSH Private Key account"
           }
         }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "ad767dba-8733-4946-921a-5439684aa21d",
+                "leftValue": "={{ $('On form submission').item.json.Name }}",
+                "rightValue": "Edward",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              },
+              {
+                "id": "cd5d5d1c-734b-4adb-a24a-dd9966e7d540",
+                "leftValue": "={{ $('On form submission').item.json.Name }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "or"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          384,
+          -112
+        ],
+        "id": "586080ae-c100-49a1-81c7-54811734d4f7",
+        "name": "If"
       }
     ],
     "connections": {
@@ -537,7 +668,7 @@
         "main": [
           [
             {
-              "node": "Send a message",
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -549,6 +680,17 @@
           [
             {
               "node": "Execute a command",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
               "type": "main",
               "index": 0
             }
