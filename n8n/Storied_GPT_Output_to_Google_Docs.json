@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-17T20:45:15.000Z",
+  "updatedAt": "2025-12-18T15:38:24.000Z",
   "createdAt": "2025-10-23T17:55:17.882Z",
   "id": "8u8RTVnqFpQFY14G",
   "name": "Storied GPT Output to Google Docs",
@@ -36,23 +36,6 @@
                   }
                 ]
               }
-            },
-            {
-              "fieldLabel": "Name",
-              "fieldType": "dropdown",
-              "fieldOptions": {
-                "values": [
-                  {
-                    "option": "Edward"
-                  },
-                  {
-                    "option": "Michael"
-                  },
-                  {
-                    "option": "Other"
-                  }
-                ]
-              }
             }
           ]
         },
@@ -61,7 +44,7 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.3,
       "position": [
-        -272,
+        -144,
         -112
       ],
       "id": "134cc1c3-cc30-4463-be8f-b6a08c2dd116",
@@ -107,7 +90,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        96,
+        144,
         -112
       ],
       "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
@@ -135,8 +118,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        736,
-        -128
+        768,
+        -112
       ],
       "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
       "name": "Send a message",
@@ -223,8 +206,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        -160,
-        272
+        176,
+        144
       ]
     },
     {
@@ -235,8 +218,8 @@
       "type": "n8n-nodes-base.ssh",
       "typeVersion": 1,
       "position": [
-        128,
-        272
+        464,
+        144
       ],
       "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
       "name": "Execute a command",
@@ -249,46 +232,22 @@
     },
     {
       "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "ad767dba-8733-4946-921a-5439684aa21d",
-              "leftValue": "={{ $('On form submission').item.json.Name }}",
-              "rightValue": "Edward",
-              "operator": {
-                "type": "string",
-                "operation": "contains"
-              }
-            },
-            {
-              "id": "cd5d5d1c-734b-4adb-a24a-dd9966e7d540",
-              "leftValue": "={{ $('On form submission').item.json.Name }}",
-              "rightValue": "",
-              "operator": {
-                "type": "string",
-                "operation": "empty",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "or"
-        },
-        "options": {}
+        "operation": "completion",
+        "completionTitle": "Document Created",
+        "completionMessage": "=The document {{ $('On form submission').item.json.Title }} has been created. \n\n<br><br>\n\nHere's the <a href=\"{{ $json.docUrl }}\">Google Doc URL.</a>",
+        "options": {
+          "formTitle": "Done"
+        }
       },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
       "position": [
-        384,
+        480,
         -112
       ],
-      "id": "586080ae-c100-49a1-81c7-54811734d4f7",
-      "name": "If"
+      "id": "452cf416-3570-42a6-8383-f135e7207a73",
+      "name": "Form",
+      "webhookId": "dc7d9258-b4b0-4272-a92c-d87a4a21bdd6"
     }
   ],
   "connections": {
@@ -307,7 +266,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Form",
             "type": "main",
             "index": 0
           }
@@ -325,7 +284,7 @@
         ]
       ]
     },
-    "If": {
+    "Form": {
       "main": [
         [
           {
@@ -349,8 +308,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
-  "activeVersionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
+  "versionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
+  "activeVersionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
   "triggerCount": 1,
   "shared": [
     {
@@ -362,9 +321,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-17T20:45:14.988Z",
-    "createdAt": "2025-12-17T20:45:14.988Z",
-    "versionId": "f4db5a09-f33a-49d9-a4e5-4d75b0cfd3ac",
+    "updatedAt": "2025-12-18T15:38:24.602Z",
+    "createdAt": "2025-12-18T15:38:24.602Z",
+    "versionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
     "workflowId": "8u8RTVnqFpQFY14G",
     "nodes": [
       {
@@ -397,23 +356,6 @@
                     }
                   ]
                 }
-              },
-              {
-                "fieldLabel": "Name",
-                "fieldType": "dropdown",
-                "fieldOptions": {
-                  "values": [
-                    {
-                      "option": "Edward"
-                    },
-                    {
-                      "option": "Michael"
-                    },
-                    {
-                      "option": "Other"
-                    }
-                  ]
-                }
               }
             ]
           },
@@ -422,7 +364,7 @@
         "type": "n8n-nodes-base.formTrigger",
         "typeVersion": 2.3,
         "position": [
-          -272,
+          -144,
           -112
         ],
         "id": "134cc1c3-cc30-4463-be8f-b6a08c2dd116",
@@ -468,7 +410,7 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          96,
+          144,
           -112
         ],
         "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
@@ -496,8 +438,8 @@
         "type": "n8n-nodes-base.slack",
         "typeVersion": 2.3,
         "position": [
-          736,
-          -128
+          768,
+          -112
         ],
         "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
         "name": "Send a message",
@@ -584,8 +526,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.1,
         "position": [
-          -160,
-          272
+          176,
+          144
         ]
       },
       {
@@ -596,8 +538,8 @@
         "type": "n8n-nodes-base.ssh",
         "typeVersion": 1,
         "position": [
-          128,
-          272
+          464,
+          144
         ],
         "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
         "name": "Execute a command",
@@ -610,46 +552,22 @@
       },
       {
         "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "ad767dba-8733-4946-921a-5439684aa21d",
-                "leftValue": "={{ $('On form submission').item.json.Name }}",
-                "rightValue": "Edward",
-                "operator": {
-                  "type": "string",
-                  "operation": "contains"
-                }
-              },
-              {
-                "id": "cd5d5d1c-734b-4adb-a24a-dd9966e7d540",
-                "leftValue": "={{ $('On form submission').item.json.Name }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "string",
-                  "operation": "empty",
-                  "singleValue": true
-                }
-              }
-            ],
-            "combinator": "or"
-          },
-          "options": {}
+          "operation": "completion",
+          "completionTitle": "Document Created",
+          "completionMessage": "=The document {{ $('On form submission').item.json.Title }} has been created. \n\n<br><br>\n\nHere's the <a href=\"{{ $json.docUrl }}\">Google Doc URL.</a>",
+          "options": {
+            "formTitle": "Done"
+          }
         },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.2,
+        "type": "n8n-nodes-base.form",
+        "typeVersion": 2.3,
         "position": [
-          384,
+          480,
           -112
         ],
-        "id": "586080ae-c100-49a1-81c7-54811734d4f7",
-        "name": "If"
+        "id": "452cf416-3570-42a6-8383-f135e7207a73",
+        "name": "Form",
+        "webhookId": "dc7d9258-b4b0-4272-a92c-d87a4a21bdd6"
       }
     ],
     "connections": {
@@ -668,7 +586,7 @@
         "main": [
           [
             {
-              "node": "If",
+              "node": "Form",
               "type": "main",
               "index": 0
             }
@@ -686,7 +604,7 @@
           ]
         ]
       },
-      "If": {
+      "Form": {
         "main": [
           [
             {
