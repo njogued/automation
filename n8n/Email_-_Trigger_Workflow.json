@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-18T00:37:59.000Z",
+  "updatedAt": "2025-12-19T19:31:19.000Z",
   "createdAt": "2025-07-10T11:53:50.528Z",
   "id": "VtuaZAAvnvzQToaV",
   "name": "Email - Trigger Workflow",
@@ -48,7 +48,7 @@
       "typeVersion": 1.9,
       "position": [
         688,
-        16
+        48
       ],
       "id": "67652e76-405e-4bf8-be9c-4fbde2cea6f8",
       "name": "AI Agent",
@@ -77,7 +77,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        880,
+        912,
         -176
       ],
       "id": "fe069788-c4a4-483b-91ab-b0e20edc4511",
@@ -100,7 +100,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        608,
+        560,
         272
       ],
       "id": "7448b500-361e-4b7f-ab09-539c429847af",
@@ -135,7 +135,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        672,
+        736,
         -176
       ],
       "id": "52e75859-f8ac-49c3-be1e-e0bdb5ebb6ce",
@@ -186,8 +186,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        880,
-        464
+        832,
+        400
       ],
       "id": "ab694a9d-6410-4b99-bc35-616a5a1a7fcc",
       "name": "Monday Sub-Workflow"
@@ -230,7 +230,7 @@
       "typeVersion": 2.2,
       "position": [
         1168,
-        320
+        400
       ],
       "id": "fbec491a-1c53-4203-8827-68ba7b407c9d",
       "name": "Email Sub-Workflow"
@@ -287,8 +287,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        752,
-        384
+        672,
+        400
       ],
       "id": "dea14681-c82e-47c1-bad3-9a9c89ebb9c4",
       "name": "Slack Sub-Workflow"
@@ -330,7 +330,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        1024,
+        992,
         400
       ],
       "id": "926b9945-b647-4961-99c6-d418fc686335",
@@ -385,8 +385,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1088,
-        32
+        1200,
+        48
       ],
       "id": "2a9b3111-6dfc-4c1e-ae68-00301fb75f61",
       "name": "Create a draft",
@@ -418,8 +418,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1376,
-        32
+        1568,
+        48
       ],
       "id": "8a858aff-2016-4ff3-b5b7-a4366fbbd809",
       "name": "Send Gmail Draft",
@@ -514,7 +514,7 @@
                 "conditions": [
                   {
                     "id": "43acc603-7e5c-49af-85b7-6ca4d673a065",
-                    "leftValue": "={{ $json.headers.to.includes(\"contentideas@storiedinc.com\") }}",
+                    "leftValue": "={{ $json.headers.to.includes(\"ideas@storiedinc.com\") }}",
                     "rightValue": "",
                     "operator": {
                       "type": "boolean",
@@ -537,7 +537,7 @@
                 "conditions": [
                   {
                     "id": "a435129e-724a-48fd-ab82-5f39c363138d",
-                    "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"contentideas@storiedinc.com\"), false) }}",
+                    "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ideas@storiedinc.com\"), false) }}",
                     "rightValue": "",
                     "operator": {
                       "type": "boolean",
@@ -560,7 +560,7 @@
                 "conditions": [
                   {
                     "id": "5f044f3b-08ad-4bed-9196-b6ec63b8bb0b",
-                    "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"contentideas@storiedinc.com\"), false) }}",
+                    "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ideas@storiedinc.com\"), false) }}",
                     "rightValue": "",
                     "operator": {
                       "type": "boolean",
@@ -602,7 +602,10 @@
         },
         "columns": {
           "mappingMode": "defineBelow",
-          "value": {},
+          "value": {
+            "Idea ": "={{ $json.headers.subject }}",
+            "Context": "={{ $json.text }}"
+          },
           "matchingColumns": [],
           "schema": [
             {
@@ -832,10 +835,10 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1766018341,
+        "lastTimeChecked": 1766176772,
         "possibleDuplicates": [
-          "19b2ee55eef14b35",
-          "19b2edbd97f35535"
+          "19b385740b10f8bb",
+          "19b381d0b52dc850"
         ]
       }
     }
@@ -843,9 +846,62 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "0915c5c1-d910-4130-bf92-bdf185f3195d",
-  "activeVersionId": "0915c5c1-d910-4130-bf92-bdf185f3195d",
+  "pinData": {
+    "Gmail Trigger": [
+      {
+        "json": {
+          "id": "19b2ee55eef14b35",
+          "threadId": "19b2ece0b1a9e67f",
+          "labelIds": [
+            "CATEGORY_PERSONAL",
+            "SENT"
+          ],
+          "sizeEstimate": 33521,
+          "headers": {
+            "mime-version": "MIME-Version: 1.0",
+            "date": "Date: Thu, 18 Dec 2025 03:39:01 +0300",
+            "references": "References: <31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+            "in-reply-to": "In-Reply-To: <31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+            "message-id": "Message-ID: <CAL9ygaofb953wMwtWzWX4Gef+18tXB9gD9pDhAqXoVTLGwP=5Q@mail.gmail.com>",
+            "subject": "Subject: Fwd: 2 new notifications in Storied",
+            "from": "From: Edward Njogu <edward@storiedinc.com>",
+            "to": "To: Content <contentideas@storiedinc.com>",
+            "content-type": "Content-Type: multipart/alternative; boundary=\"000000000000f9ba5506462f2fc8\""
+          },
+          "html": "<div dir=\"ltr\"><br><br><div class=\"gmail_quote gmail_quote_container\"><div dir=\"ltr\" class=\"gmail_attr\">---------- Forwarded message ---------<br>From: <strong class=\"gmail_sendername\" dir=\"auto\">&#39;Air&#39; via Admin</strong> <span dir=\"auto\">&lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;</span><br>Date: Thu, Dec 18, 2025 at 3:13 AM<br>Subject: 2 new notifications in Storied<br>To:  &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;<br></div><br><br><u></u><div style=\"display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0\">2 new notifications<div> ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿</div></div><div><div style=\"background-color:#f6f6f6;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;padding-top:48px;padding-bottom:48px;padding-left:12px;padding-right:12px\"><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"max-width:560px;background-color:white;border-radius:4px\"><tbody><tr style=\"width:100%\"><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"margin-bottom:24px;padding-left:48px;padding-right:48px;padding-top:32px;padding-bottom:32px\"><tbody><tr><td><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/8f0de33b-aa37-1a1e-5d4b-4a138b11d661.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:24px;color:#07b3be\"></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;padding-left:48px;padding-right:48px;padding-bottom:32px\"><tbody><tr><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:8px\"><img alt=\"Workspace image\" height=\"24\" src=\"https://assets.aircamera.com/avatars/avatar_yellow_1.png?q=80&amp;w=48&amp;h=48\" style=\"display:block;outline:none;border:none;text-decoration:none;border-radius:4px;object-fit:cover\" width=\"24\"></td><td><p style=\"font-size:16px;line-height:1.5;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-0.011em;color:#666666\">Storied</p></td></tr></tbody></table><h1 style=\"margin-top:8px;margin-bottom:8px;font-size:20px;font-weight:600;color:#202020\">2 new notifications</h1><div style=\"margin-top:32px\"><div style=\"border-radius:4px;border:1px solid;border-color:#efefef;padding-left:8px;padding-right:8px;margin-bottom:32px\"><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;width:100%;padding:16px;border-bottom:1px solid;border-color:#efefef\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:16px;vertical-align:baseline\"><div style=\"height:24px;max-height:24px;width:24px;overflow:hidden;border-radius:24px;background-color:#f6f6f6\"><div style=\"margin-left:7px;margin-top:5px;height:10px;width:10px;border-radius:10px;background-color:#dcdcdc\"></div><div style=\"margin-left:3px;margin-top:2px;height:18px;width:18px;border-radius:18px;background-color:#dcdcdc\"></div></div></td><td><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><div style=\"margin:0;font-size:14px;line-height:20px;word-break:break-word;color:#202020;margin-bottom:8px\"><b>Someone</b> downloaded 3 items</div><p style=\"overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#a4a4a4;margin:0\">in Work In Action Selects</p></span><span></span></a></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;width:100%;padding:16px\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:16px;vertical-align:baseline\"><div style=\"height:24px;max-height:24px;width:24px;overflow:hidden;border-radius:24px;background-color:#f6f6f6\"><div style=\"margin-left:7px;margin-top:5px;height:10px;width:10px;border-radius:10px;background-color:#dcdcdc\"></div><div style=\"margin-left:3px;margin-top:2px;height:18px;width:18px;border-radius:18px;background-color:#dcdcdc\"></div></div></td><td><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><div style=\"margin:0;font-size:14px;line-height:20px;word-break:break-word;color:#202020;margin-bottom:8px\"><b>Someone</b> viewed <b>Work In Action Selects</b></div><p style=\"overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#a4a4a4;margin:0\"></p></span><span></span></a></td></tr></tbody></table></div><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"border-radius:4px;background-color:#034bff;padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-size:14px;line-height:100%;font-weight:600;color:white;text-decoration:none;display:inline-block;max-width:100%;padding:10px 12px 10px 12px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\">View notifications</span><span></span></a></div></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;border-bottom-right-radius:4px;border-bottom-left-radius:4px;padding-left:48px;padding-right:48px;padding-bottom:24px;padding-top:48px\"><tbody><tr><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td><p style=\"font-size:12px;line-height:24px;margin:0;letter-spacing:normal;color:#808080;margin-bottom:16px\">If you’d rather not receive updates, you can <a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:underline\" target=\"_blank\">manage your notifications</a>.</p><div style=\"color:#a4a4a4;font-size:10px\"><a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Terms of service</a> | <a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Privacy policy</a> | <a href=\"https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Help center</a></div><p style=\"font-size:12px;line-height:24px;margin:16px 0;margin-bottom:16px;margin-top:16px;letter-spacing:normal;color:#a4a4a4\">© Air Labs, Inc.</p><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td><p style=\"font-size:14px;line-height:24px;margin:16px 0;display:none\">Thu, Dec 18, 2025, 12:13:32 AM</p></td><td><a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/6ee66644-645b-eb4e-4165-ca6c243e51d1.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:16px;color:#c1c1c1\"></span><span></span></a></td><td style=\"text-align:right\"><a href=\"https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"margin-right:4px;line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/18a69d84-c814-113b-0eba-432b33eb5750.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:12px\"></span><span></span></a><a href=\"https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/e74fda5d-c99e-f31c-6a7b-ecb7b21c4612.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:12px\"></span><span></span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div><img src=\"https://mandrillapp.com/track/open.php?u=31081829&amp;id=5f8c0dfa317a44d7b68a7d45c7e374b9\" height=\"1\" width=\"1\" alt=\"\"></div>\n</div><div><br clear=\"all\"></div><div><br></div><span class=\"gmail_signature_prefix\">-- </span><br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><span><div dir=\"ltr\" style=\"margin-left:0pt\" align=\"left\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;color:rgb(94,73,47);font-family:&quot;signature hound&quot;,-apple-system,&quot;system-ui&quot;,&quot;segoe ui&quot;,Roboto,&quot;helvetica neue&quot;,Arial,&quot;noto sans&quot;,sans-serif,&quot;apple color emoji&quot;,&quot;segoe ui emoji&quot;,&quot;segoe ui symbol&quot;,&quot;noto color emoji&quot;;font-size:14px;letter-spacing:-0.084px;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td align=\"center\" style=\"padding:0px 7px 0px 0px;vertical-align:top\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px\"><p style=\"margin:1px;padding:0px\"><img src=\"https://signaturehound.com/api/v1/file/1uduwplm3gau4ww?v=1731527618144\" alt=\"\" title=\"Profile Picture\" width=\"65\" height=\"65\" style=\"vertical-align:middle;border:0px;max-width:65px;height:65px;display:block\"></p></td></tr></tbody></table></td><td width=\"5\" style=\"padding:1px 0px 0px\"></td><td style=\"padding:0px 1px 0px 0px;vertical-align:top\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px;font-family:Arial,sans-serif;font-size:11px;line-height:14px\"><p style=\"margin:1px;padding:0px;line-height:14px;font-weight:700;color:rgb(8,43,153)\">Edward Njogu</p><p style=\"margin:1px;padding:0px;line-height:14px;color:rgb(92,92,92)\">EA to Michael Margolis</p><p style=\"margin:1px;padding:0px;line-height:14px;color:rgb(92,92,92)\">Storied Inc.</p></td></tr><tr><td style=\"padding:4px 1px 0px 0px\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px;font-family:Arial,sans-serif;font-size:11px;line-height:14px;color:rgb(92,92,91)!important\"><p style=\"margin:1px;padding:0px\"><a href=\"mailto:edward@storiedinc.com\" style=\"color:rgb(92,92,92);background-color:transparent;line-height:14px\" target=\"_blank\">edward@storiedinc.com</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td style=\"padding:0px 1px 0px 0px\"> </td></tr></tbody></table><br></div></span></div></div></div>\n",
+          "text": "---------- Forwarded message ---------\nFrom: 'Air' via Admin <admin@storiedinc.com>\nDate: Thu, Dec 18, 2025 at 3:13 AM\nSubject: 2 new notifications in Storied\nTo: <admin@storiedinc.com>\n\n\n2 new notifications\n ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n[image: Workspace image]\n\nStoried\n2 new notifications\n*Someone* downloaded 3 items\n\nin Work In Action Selects\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\n\n*Someone* viewed *Work In Action Selects*\n\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\nView notifications\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\nIf you’d rather not receive updates, you can manage your notifications\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n.\nTerms of service\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9>\n| Privacy policy\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n| Help center\n<https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\n© Air Labs, Inc.\n\nThu, Dec 18, 2025, 12:13:32 AM\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9>\n<https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\n<https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\n\n-- \n\nEdward Njogu\n\nEA to Michael Margolis\n\nStoried Inc.\n\nedward@storiedinc.com\n",
+          "textAsHtml": "<p>---------- Forwarded message ---------<br/>From: &apos;Air&apos; via Admin &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;<br/>Date: Thu, Dec 18, 2025 at 3:13&#x202F;AM<br/>Subject: 2 new notifications in Storied<br/>To: &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;</p><p>2 new notifications<br/> &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>[image: Workspace image]</p><p>Storied<br/>2 new notifications<br/>*Someone* downloaded 3 items</p><p>in Work In Action Selects<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;</p><p>*Someone* viewed *Work In Action Selects*</p><p>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;<br/>View notifications<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>If you&rsquo;d rather not receive updates, you can manage your notifications<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;<br/>.<br/>Terms of service<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9</a>&gt;<br/>| Privacy policy<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;<br/>| Help center<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>&copy; Air Labs, Inc.</p><p>Thu, Dec 18, 2025, 12:13:32 AM<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9</a>&gt;<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>--</p><p>Edward Njogu</p><p>EA to Michael Margolis</p><p>Storied Inc.</p><p><a href=\"mailto:edward@storiedinc.com\">edward@storiedinc.com</a></p>",
+          "subject": "Fwd: 2 new notifications in Storied",
+          "references": "<31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+          "date": "2025-12-18T00:39:01.000Z",
+          "to": {
+            "value": [
+              {
+                "address": "contentideas@storiedinc.com",
+                "name": "Content"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Content</span> &lt;<a href=\"mailto:contentideas@storiedinc.com\" class=\"mp_address_email\">contentideas@storiedinc.com</a>&gt;</span>",
+            "text": "\"Content\" <contentideas@storiedinc.com>"
+          },
+          "from": {
+            "value": [
+              {
+                "address": "edward@storiedinc.com",
+                "name": "Edward Njogu"
+              }
+            ],
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Edward Njogu</span> &lt;<a href=\"mailto:edward@storiedinc.com\" class=\"mp_address_email\">edward@storiedinc.com</a>&gt;</span>",
+            "text": "\"Edward Njogu\" <edward@storiedinc.com>"
+          },
+          "messageId": "<CAL9ygaofb953wMwtWzWX4Gef+18tXB9gD9pDhAqXoVTLGwP=5Q@mail.gmail.com>",
+          "inReplyTo": "<31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>"
+        }
+      }
+    ]
+  },
+  "versionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
+  "activeVersionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
   "triggerCount": 1,
   "shared": [
     {
@@ -857,9 +913,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-18T00:37:59.484Z",
-    "createdAt": "2025-12-18T00:37:59.484Z",
-    "versionId": "0915c5c1-d910-4130-bf92-bdf185f3195d",
+    "updatedAt": "2025-12-19T19:31:19.205Z",
+    "createdAt": "2025-12-19T19:31:19.205Z",
+    "versionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
     "workflowId": "VtuaZAAvnvzQToaV",
     "nodes": [
       {
@@ -904,7 +960,7 @@
         "typeVersion": 1.9,
         "position": [
           688,
-          16
+          48
         ],
         "id": "67652e76-405e-4bf8-be9c-4fbde2cea6f8",
         "name": "AI Agent",
@@ -933,7 +989,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          880,
+          912,
           -176
         ],
         "id": "fe069788-c4a4-483b-91ab-b0e20edc4511",
@@ -956,7 +1012,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.2,
         "position": [
-          608,
+          560,
           272
         ],
         "id": "7448b500-361e-4b7f-ab09-539c429847af",
@@ -991,7 +1047,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          672,
+          736,
           -176
         ],
         "id": "52e75859-f8ac-49c3-be1e-e0bdb5ebb6ce",
@@ -1042,8 +1098,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          880,
-          464
+          832,
+          400
         ],
         "id": "ab694a9d-6410-4b99-bc35-616a5a1a7fcc",
         "name": "Monday Sub-Workflow"
@@ -1086,7 +1142,7 @@
         "typeVersion": 2.2,
         "position": [
           1168,
-          320
+          400
         ],
         "id": "fbec491a-1c53-4203-8827-68ba7b407c9d",
         "name": "Email Sub-Workflow"
@@ -1143,8 +1199,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          752,
-          384
+          672,
+          400
         ],
         "id": "dea14681-c82e-47c1-bad3-9a9c89ebb9c4",
         "name": "Slack Sub-Workflow"
@@ -1186,7 +1242,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          1024,
+          992,
           400
         ],
         "id": "926b9945-b647-4961-99c6-d418fc686335",
@@ -1241,8 +1297,8 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          1088,
-          32
+          1200,
+          48
         ],
         "id": "2a9b3111-6dfc-4c1e-ae68-00301fb75f61",
         "name": "Create a draft",
@@ -1274,8 +1330,8 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          1376,
-          32
+          1568,
+          48
         ],
         "id": "8a858aff-2016-4ff3-b5b7-a4366fbbd809",
         "name": "Send Gmail Draft",
@@ -1370,7 +1426,7 @@
                   "conditions": [
                     {
                       "id": "43acc603-7e5c-49af-85b7-6ca4d673a065",
-                      "leftValue": "={{ $json.headers.to.includes(\"contentideas@storiedinc.com\") }}",
+                      "leftValue": "={{ $json.headers.to.includes(\"ideas@storiedinc.com\") }}",
                       "rightValue": "",
                       "operator": {
                         "type": "boolean",
@@ -1393,7 +1449,7 @@
                   "conditions": [
                     {
                       "id": "a435129e-724a-48fd-ab82-5f39c363138d",
-                      "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"contentideas@storiedinc.com\"), false) }}",
+                      "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ideas@storiedinc.com\"), false) }}",
                       "rightValue": "",
                       "operator": {
                         "type": "boolean",
@@ -1416,7 +1472,7 @@
                   "conditions": [
                     {
                       "id": "5f044f3b-08ad-4bed-9196-b6ec63b8bb0b",
-                      "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"contentideas@storiedinc.com\"), false) }}",
+                      "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ideas@storiedinc.com\"), false) }}",
                       "rightValue": "",
                       "operator": {
                         "type": "boolean",
@@ -1458,7 +1514,10 @@
           },
           "columns": {
             "mappingMode": "defineBelow",
-            "value": {},
+            "value": {
+              "Idea ": "={{ $json.headers.subject }}",
+              "Context": "={{ $json.text }}"
+            },
             "matchingColumns": [],
             "schema": [
               {
