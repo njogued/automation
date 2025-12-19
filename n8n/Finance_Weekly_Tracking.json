@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-21T20:48:21.000Z",
+  "updatedAt": "2025-12-19T19:13:08.000Z",
   "createdAt": "2025-11-03T11:28:34.520Z",
   "id": "v6bXXPBmzQtKrMQj",
   "name": "Finance Weekly Tracking",
@@ -93,7 +93,7 @@
         },
         "limit": 20,
         "filters": {
-          "oldest": "={{ $now.minus(8, 'days') }}"
+          "oldest": "={{ $now.minus(15, 'days') }}"
         }
       },
       "type": "n8n-nodes-base.slack",
@@ -704,26 +704,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Schedule Trigger": [
-      {
-        "json": {
-          "timestamp": "2025-11-21T08:00:52.055-08:00",
-          "Readable date": "November 21st 2025, 8:00:52 am",
-          "Readable time": "8:00:52 am",
-          "Day of week": "Friday",
-          "Year": "2025",
-          "Month": "November",
-          "Day of month": "21",
-          "Hour": "08",
-          "Minute": "00",
-          "Second": "52",
-          "Timezone": "America/Los_Angeles (UTC-08:00)"
-        }
-      }
-    ]
-  },
-  "versionId": "4aac1615-3214-4ca5-b4e2-55fbfd3728d9",
+  "pinData": {},
+  "versionId": "ab080522-8b1d-487a-917f-4f1addae9f0c",
+  "activeVersionId": "ab080522-8b1d-487a-917f-4f1addae9f0c",
   "triggerCount": 1,
   "shared": [
     {
@@ -734,5 +717,698 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-19T19:13:08.481Z",
+    "createdAt": "2025-12-19T19:13:08.481Z",
+    "versionId": "ab080522-8b1d-487a-917f-4f1addae9f0c",
+    "workflowId": "v6bXXPBmzQtKrMQj",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "getAll",
+          "organizationId": "cb826801-eabc-4123-9c34-c4684624efc3",
+          "options": {
+            "orderBy": "InvoiceID",
+            "sortOrder": "DESC",
+            "statuses": [
+              "AUTHORISED"
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.xero",
+        "typeVersion": 1,
+        "position": [
+          512,
+          -336
+        ],
+        "id": "a59d433a-e55c-4b6d-b6cf-f9cc3c1a48e2",
+        "name": "Get many invoices",
+        "executeOnce": true,
+        "credentials": {
+          "xeroOAuth2Api": {
+            "id": "TEu1H7g3y631bdEk",
+            "name": "Xero account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "getAll",
+          "boardId": "6322035412",
+          "groupId": "topics"
+        },
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          -432,
+          -64
+        ],
+        "id": "8023d644-ed26-4030-9203-60df233ca708",
+        "name": "Get many items",
+        "executeOnce": true,
+        "credentials": {
+          "mondayComApi": {
+            "id": "gUBGUEmQCAL7pJ0X",
+            "name": "Monday.com account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  5
+                ],
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -464,
+          -336
+        ],
+        "id": "68263e9e-f5df-456e-b0e7-751d990fcfa6",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "authentication": "oAuth2",
+          "resource": "channel",
+          "operation": "history",
+          "channelId": {
+            "__rl": true,
+            "value": "C05V0HHAB3L",
+            "mode": "list",
+            "cachedResultName": "finance-team"
+          },
+          "limit": 20,
+          "filters": {
+            "oldest": "={{ $now.minus(15, 'days') }}"
+          }
+        },
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.3,
+        "position": [
+          -112,
+          -336
+        ],
+        "id": "abced952-482a-429f-86fc-a4c0d1f452aa",
+        "name": "Get the history of a channel",
+        "webhookId": "02d0e249-32f7-4939-b7cc-f57d58728867",
+        "credentials": {
+          "slackOAuth2Api": {
+            "id": "b7AD0O5yoSxk07d8",
+            "name": "SLACK ACCOUNT - USER"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "a0eadfb8-1b3a-4849-b931-3f2b20b63320",
+                "leftValue": "={{ $json.text }}",
+                "rightValue": "REPORT",
+                "operator": {
+                  "type": "string",
+                  "operation": "contains"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          160,
+          -336
+        ],
+        "id": "b67f2c6a-a47b-4925-b1ca-96d230b28df5",
+        "name": "Filter"
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "getAll",
+          "boardId": "8080609962",
+          "groupId": "new_group__1",
+          "returnAll": true
+        },
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          192,
+          -64
+        ],
+        "id": "6ab098ed-3e9c-4d20-8999-c19665943a95",
+        "name": "Get many items1",
+        "executeOnce": true,
+        "credentials": {
+          "mondayComApi": {
+            "id": "gUBGUEmQCAL7pJ0X",
+            "name": "Monday.com account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## The Workflow\n\nAutomating AR Reporting Workflow\n- Get last week's AR Report\n- Get pending invoices on Xero (sent and not paid)\n- Identify which invoices were paid since last week\n- Update AR report to include these new amounts and totals for the month\n- Update Finance tracking board\n- Send AR report (updated) to Edward, noting what has changed, check for accuracy\n- Drop Draft Email on Gmail to ship to Jason and cc Michael\n- Bonus: Trigger weekly reporting workflow (add incoming AR)\n\n\nNeed:\n- Instructions to AI for AR report \n- Use previous report to guide next report\n- Edge Cases\n    - New month // Previous month report needs update\n    - What if an AR Report was not sent last week\n    - Report adjustments for new month: Add new month to end, move previous month to historical AR section",
+          "height": 320,
+          "width": 1024
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -288,
+          -752
+        ],
+        "typeVersion": 1,
+        "id": "e2348a4e-eadf-4750-853d-0ec6c92460da",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "resource": "draft",
+          "subject": "=A.R. Report - {{ $now.month }}.{{$now.day}}.{{ $now.year }}",
+          "message": "={{ $('AI Agent1').item.json.output }}",
+          "options": {
+            "ccList": "michael@storiedinc.com",
+            "sendTo": "jason@finclarity.co"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          816,
+          208
+        ],
+        "id": "d3735c7e-f1b6-469a-9a6d-caf8b026a7ab",
+        "name": "Create a draft",
+        "webhookId": "48ede583-5cfd-4864-b915-3ae1bdeca603",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "aLqiTFR2cLtIBYK6",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "boardItem",
+          "operation": "changeColumnValue"
+        },
+        "type": "n8n-nodes-base.mondayCom",
+        "typeVersion": 1,
+        "position": [
+          1152,
+          208
+        ],
+        "id": "23f08caa-6064-4e74-8d43-333c56ece7e0",
+        "name": "Change a column value for a board item",
+        "credentials": {
+          "mondayComApi": {
+            "id": "gUBGUEmQCAL7pJ0X",
+            "name": "Monday.com account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=I would like to know if a specific client has paid their invoice for the month. Use last week's accounts receivables report for context. For the client, output the name and whether they've paid. \n\nTo analyze:\n1. If the Accounts Receivables (A.R) report for last week indicates they have paid for this month, then yes, they already have. \n2. If the client name is among those who have a pending bill on Xero, then no, they haven't paid yet.\n3. If the contract end date has already passed, you can disregard\n\n\nHere are the details:\n\nName:  {{ $json.name }}\nContract End Date: {{ $json['End Date'] }}\n\nPending Invoices on Xero:\n\n| Client | Invoice Amount |\n|:--|--:|\n{{ $('Aggregate2').all().map(i => `| ${i.json.Name} | ${i.json.AmountDue} |`).join('\\n') }}\n\n\nHere's last week's A.R Report. \n\n{{ $('Filter').item.json.text }}\n",
+          "options": {
+            "systemMessage": "=You are a helpful assistant who helps analyze financial transactions and prepares reports. \n\nThe date today is {{ $now.toString() }}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          -480,
+          208
+        ],
+        "id": "a86ad02b-6161-4c95-a0a2-fcd270617834",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "550d3950-22ca-4c1a-8518-a02916aa57ba",
+                "name": "name",
+                "value": "={{ $json.name }}",
+                "type": "string"
+              },
+              {
+                "id": "1d3ca743-7bed-4b74-82a2-a04219602c85",
+                "name": "Status",
+                "value": "={{ $json.column_values[4].text }}",
+                "type": "string"
+              },
+              {
+                "id": "0a968bff-de61-43d2-bb4b-a57fada38284",
+                "name": "Start Date",
+                "value": "={{ $json.column_values[19].text }}",
+                "type": "string"
+              },
+              {
+                "id": "506b3139-b14d-4b01-b815-7755d5437336",
+                "name": "End Date",
+                "value": "={{ $json.column_values[15].text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          496,
+          -64
+        ],
+        "id": "fc6e912e-f809-4709-89fa-38c3edcc98bd",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "name"
+              },
+              {
+                "fieldToAggregate": "column_values[5].text",
+                "renameField": true,
+                "outputFieldName": "expected collection date"
+              },
+              {
+                "fieldToAggregate": "column_values[16].text",
+                "renameField": true,
+                "outputFieldName": "amount"
+              },
+              {
+                "fieldToAggregate": "column_values[17].text",
+                "renameField": true,
+                "outputFieldName": "invoice date"
+              },
+              {
+                "fieldToAggregate": "column_values[20].text",
+                "renameField": true,
+                "outputFieldName": "recurring end date"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          -112,
+          -64
+        ],
+        "id": "94866270-9915-4916-9c83-6dcf28b80cab",
+        "name": "Aggregate1"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4.1",
+            "mode": "list",
+            "cachedResultName": "gpt-4.1"
+          },
+          "options": {
+            "temperature": 0.4
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -480,
+          464
+        ],
+        "id": "dbf1a8c7-709a-470a-868e-98762f5cc339",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "O0zxMyVMsAWQNvxb",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "6b7627c3-a4f0-4a2a-944b-2efb9b464588",
+                "leftValue": "={{ $json.Status }}",
+                "rightValue": "Done",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEquals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.filter",
+        "typeVersion": 2.2,
+        "position": [
+          800,
+          -64
+        ],
+        "id": "7e1df8e2-383a-4315-ae01-572bd62c451e",
+        "name": "Filter1"
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "Contact.Name"
+              },
+              {
+                "fieldToAggregate": "InvoiceNumber"
+              },
+              {
+                "fieldToAggregate": "AmountDue"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          800,
+          -336
+        ],
+        "id": "4fb1f27d-ec41-41b4-b096-d832c096dd0b",
+        "name": "Aggregate2"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "destinationFieldName": "client analysis",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          -64,
+          208
+        ],
+        "id": "cef480a2-189d-44f2-b620-0d53adee0fc3",
+        "name": "Aggregate3"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Based on the context below, please generate an updated accounts receivables report for this month. \n\nThe date today is {{ $now.toString() }}\n\nThe previous Accounts Receivable report sent last week is included below. Please only update the report with the context in the client analysis below which identifies which clients have paid and which ones have not. You should only update the report for the current month, leaving everything else as is. \n\nLast Week's Accounts Receivable Report:\n{{ $('Filter').item.json.text }}\n\nClient's Accounts Receivable Analysis:\n{{ $json['client analysis'].toJsonString() }}",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 2.2,
+        "position": [
+          144,
+          208
+        ],
+        "id": "8a745d39-1746-47dd-a2fc-84b85a9087da",
+        "name": "AI Agent1"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4",
+            "mode": "list",
+            "cachedResultName": "gpt-4"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          144,
+          464
+        ],
+        "id": "d6b4207d-c9e9-4283-8aa1-acaa357279f6",
+        "name": "OpenAI Chat Model1",
+        "credentials": {
+          "openAiApi": {
+            "id": "O0zxMyVMsAWQNvxb",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "select": "user",
+          "user": {
+            "__rl": true,
+            "value": "U06HYNGR0HL",
+            "mode": "list",
+            "cachedResultName": "edward"
+          },
+          "text": "={{ $json.output }}",
+          "otherOptions": {
+            "includeLinkToWorkflow": false
+          }
+        },
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.3,
+        "position": [
+          528,
+          208
+        ],
+        "id": "4b1ee6ac-a925-4235-bbfa-f5baee1ff0c4",
+        "name": "Send a message",
+        "webhookId": "d15ffdd8-35a2-4085-997c-c11f36159a4e",
+        "credentials": {
+          "slackApi": {
+            "id": "TCCNsFSy1xU8ud22",
+            "name": "SLACK API - BOT"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Get many invoices": {
+        "main": [
+          [
+            {
+              "node": "Aggregate2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Get the history of a channel",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get the history of a channel": {
+        "main": [
+          [
+            {
+              "node": "Filter",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter": {
+        "main": [
+          [
+            {
+              "node": "Get many invoices",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many items1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many items": {
+        "main": [
+          [
+            {
+              "node": "Aggregate1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a draft": {
+        "main": [
+          []
+        ]
+      },
+      "Change a column value for a board item": {
+        "main": [
+          []
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Aggregate3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Filter1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate1": {
+        "main": [
+          [
+            {
+              "node": "Get many items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter1": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate2": {
+        "main": [
+          [
+            {
+              "node": "Get many items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate3": {
+        "main": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent1": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a message": {
+        "main": [
+          [
+            {
+              "node": "Create a draft",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Storied Admin",
+    "name": null,
+    "description": null
+  },
   "tags": []
 }
