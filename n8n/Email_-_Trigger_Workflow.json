@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-19T19:31:19.000Z",
+  "updatedAt": "2025-12-20T20:51:58.000Z",
   "createdAt": "2025-07-10T11:53:50.528Z",
   "id": "VtuaZAAvnvzQToaV",
   "name": "Email - Trigger Workflow",
@@ -655,6 +655,67 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "emailType": "html",
+        "message": "=Ideas sheet updated.\n<br>\n<a href=\"https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing\">Link to sheet.</a>",
+        "options": {
+          "fromAlias": "edward@storiedinc.com",
+          "replyTo": "edward@storiedinc.com",
+          "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+          "sendTo": "={{ $('Gmail Trigger').item.json.from.value[0].address }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        736
+      ],
+      "id": "69bc6696-72e5-4a8b-b78e-af474adefd34",
+      "name": "Create a draft1",
+      "webhookId": "9b7d0c52-2748-4e44-a034-09dc6f428b17",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/me/drafts/send",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gmailOAuth2",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        736
+      ],
+      "id": "c8c81196-025f-4b92-b011-d9aad7654d0d",
+      "name": "Send Gmail Draft1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
     }
   ],
   "connections": {
@@ -824,6 +885,28 @@
           }
         ]
       ]
+    },
+    "Create a draft1": {
+      "main": [
+        [
+          {
+            "node": "Send Gmail Draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create a draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -835,10 +918,9 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1766176772,
+        "lastTimeChecked": 1766255342,
         "possibleDuplicates": [
-          "19b385740b10f8bb",
-          "19b381d0b52dc850"
+          "19b3d05be2aa6803"
         ]
       }
     }
@@ -900,8 +982,8 @@
       }
     ]
   },
-  "versionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
-  "activeVersionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
+  "versionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
+  "activeVersionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
   "triggerCount": 1,
   "shared": [
     {
@@ -913,9 +995,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-19T19:31:19.205Z",
-    "createdAt": "2025-12-19T19:31:19.205Z",
-    "versionId": "8d2d0d6f-ea09-4eee-8eb7-b7adf5553c8d",
+    "updatedAt": "2025-12-20T20:51:58.511Z",
+    "createdAt": "2025-12-20T20:51:58.511Z",
+    "versionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
     "workflowId": "VtuaZAAvnvzQToaV",
     "nodes": [
       {
@@ -1567,6 +1649,67 @@
             "name": "Google Sheets account"
           }
         }
+      },
+      {
+        "parameters": {
+          "resource": "draft",
+          "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+          "emailType": "html",
+          "message": "=Ideas sheet updated.\n<br>\n<a href=\"https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing\">Link to sheet.</a>",
+          "options": {
+            "fromAlias": "edward@storiedinc.com",
+            "replyTo": "edward@storiedinc.com",
+            "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+            "sendTo": "={{ $('Gmail Trigger').item.json.from.value[0].address }}"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1088,
+          736
+        ],
+        "id": "69bc6696-72e5-4a8b-b78e-af474adefd34",
+        "name": "Create a draft1",
+        "webhookId": "9b7d0c52-2748-4e44-a034-09dc6f428b17",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "aLqiTFR2cLtIBYK6",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://gmail.googleapis.com/gmail/v1/users/me/drafts/send",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "gmailOAuth2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1456,
+          736
+        ],
+        "id": "c8c81196-025f-4b92-b011-d9aad7654d0d",
+        "name": "Send Gmail Draft1",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "aLqiTFR2cLtIBYK6",
+            "name": "Gmail account"
+          }
+        }
       }
     ],
     "connections": {
@@ -1731,6 +1874,28 @@
           [
             {
               "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a draft1": {
+        "main": [
+          [
+            {
+              "node": "Send Gmail Draft1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Create a draft1",
               "type": "main",
               "index": 0
             }
