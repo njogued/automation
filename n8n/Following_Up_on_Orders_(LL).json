@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-09T13:36:27.000Z",
+  "updatedAt": "2025-12-20T23:57:58.000Z",
   "createdAt": "2025-12-09T13:04:12.886Z",
   "id": "brOxsQNc7Yga2wsk",
   "name": "Following Up on Orders (LL)",
@@ -19,7 +19,7 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -288,
+        -400,
         -112
       ],
       "id": "0f165025-52b3-4022-acb4-0f72046b20c1",
@@ -72,7 +72,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        976,
+        1184,
         112
       ],
       "id": "0c53ed6b-3b7c-4042-b768-9eba4d7d62a3",
@@ -167,7 +167,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        672,
+        880,
         112
       ],
       "id": "07b5dbf4-934d-4e19-b19d-7ba9ba33789a",
@@ -308,7 +308,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        944,
+        1152,
         -96
       ],
       "id": "dcb4facd-6d48-42b4-ab7d-5bcc85ad8fec",
@@ -418,7 +418,11 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "lcqJzGkY4MX35CJE",
+    "timeSavedPerExecution": 10
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -429,8 +433,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "6379618a-4ff9-4241-b79b-73aff567755f",
-  "activeVersionId": "6379618a-4ff9-4241-b79b-73aff567755f",
+  "versionId": "472249c1-6ff9-405a-94b8-49ba4f27a9e2",
+  "activeVersionId": "472249c1-6ff9-405a-94b8-49ba4f27a9e2",
   "triggerCount": 1,
   "shared": [
     {
@@ -442,9 +446,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-09T13:36:00.518Z",
-    "createdAt": "2025-12-09T13:36:00.518Z",
-    "versionId": "6379618a-4ff9-4241-b79b-73aff567755f",
+    "updatedAt": "2025-12-20T23:57:58.438Z",
+    "createdAt": "2025-12-20T23:57:58.438Z",
+    "versionId": "472249c1-6ff9-405a-94b8-49ba4f27a9e2",
     "workflowId": "brOxsQNc7Yga2wsk",
     "nodes": [
       {
@@ -460,7 +464,7 @@
         "type": "n8n-nodes-base.scheduleTrigger",
         "typeVersion": 1.3,
         "position": [
-          -288,
+          -400,
           -112
         ],
         "id": "0f165025-52b3-4022-acb4-0f72046b20c1",
@@ -513,7 +517,7 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          976,
+          1184,
           112
         ],
         "id": "0c53ed6b-3b7c-4042-b768-9eba4d7d62a3",
@@ -608,7 +612,7 @@
         "type": "n8n-nodes-base.googleDrive",
         "typeVersion": 3,
         "position": [
-          672,
+          880,
           112
         ],
         "id": "07b5dbf4-934d-4e19-b19d-7ba9ba33789a",
@@ -749,7 +753,7 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.2,
         "position": [
-          944,
+          1152,
           -96
         ],
         "id": "dcb4facd-6d48-42b4-ab7d-5bcc85ad8fec",
