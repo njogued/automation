@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-28T13:14:28.000Z",
+  "updatedAt": "2025-12-20T23:55:17.000Z",
   "createdAt": "2025-11-28T12:07:56.369Z",
   "id": "RATXpS33g4grhRhm",
   "name": "Order Tracking - Vals (LL)",
@@ -17,6 +17,13 @@
               ],
               "triggerAtHour": 17,
               "triggerAtMinute": 30
+            },
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                5
+              ],
+              "triggerAtHour": 17
             }
           ]
         }
@@ -24,8 +31,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -96,
-        0
+        -560,
+        -16
       ],
       "id": "f2fcee02-cdb9-437d-9aa6-005934b1b724",
       "name": "Schedule Trigger"
@@ -42,7 +49,7 @@
       "type": "n8n-nodes-base.wooCommerce",
       "typeVersion": 1,
       "position": [
-        208,
+        416,
         0
       ],
       "id": "3bf17e40-4a7e-473b-a7be-d49880ab53d9",
@@ -101,7 +108,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        528,
+        736,
         0
       ],
       "id": "5008a3e1-3e5b-4494-be3b-579d234a32f5",
@@ -126,8 +133,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        848,
-        256
+        1072,
+        464
       ],
       "id": "1ead5c4b-5f2f-40fb-b1cd-1650968fc5d0",
       "name": "Send a message",
@@ -147,7 +154,7 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        832,
+        1056,
         0
       ],
       "id": "cd3200cc-8edb-4461-a773-4a74f690792f",
@@ -161,7 +168,7 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        -48,
+        160,
         256
       ],
       "id": "30f03881-1c18-4f87-a552-e441164cb901",
@@ -189,7 +196,7 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        208,
+        416,
         256
       ],
       "id": "2ef0f824-7d29-4825-b332-28fa41add7be",
@@ -221,7 +228,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        544,
+        752,
         256
       ],
       "id": "0cb65850-5f18-42d6-a2ef-7e771a749f21",
@@ -232,6 +239,513 @@
           "name": "Google Drive account"
         }
       }
+    },
+    {
+      "parameters": {
+        "resource": "customer",
+        "operation": "getAll",
+        "limit": 10,
+        "filters": {
+          "order": "desc",
+          "orderby": "registered_date"
+        }
+      },
+      "type": "n8n-nodes-base.wooCommerce",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -528
+      ],
+      "id": "15b7db02-7070-4678-9605-43df122a5910",
+      "name": "Get many customers",
+      "credentials": {
+        "wooCommerceApi": {
+          "id": "Z3GlvWiUIpM5bOIO",
+          "name": "WooCommerce account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+          "mode": "list",
+          "cachedResultName": "Contacts Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 746450242,
+          "mode": "list",
+          "cachedResultName": "Values Contacts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        192,
+        -528
+      ],
+      "id": "d3ddb132-43ce-4c53-a1ab-7a8530f55b52",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "executeOnce": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        496,
+        -528
+      ],
+      "id": "dc222ba8-ef8a-435e-8692-bf740b0b554a",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97d3077e-3a1a-4049-880e-d2e885ef1da6",
+              "leftValue": "={{ $('Aggregate1').item.json.Email }}",
+              "rightValue": "={{ $('Get many customers').item.json.email }}",
+              "operator": {
+                "type": "array",
+                "operation": "contains",
+                "rightType": "any"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        -528
+      ],
+      "id": "8e461b3c-381b-47a8-abd4-739453e2cb50",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://script.google.com/macros/s/AKfycbwnDf0DA3pj5g29giUQb2pAefl_fFEOoDeF9QaiK4VlBDL-dFERZYBx7-ql-Te-XBlOGQ/exec",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "={{ $json.first_name }} {{ $json.last_name }}"
+            },
+            {
+              "name": "firstName",
+              "value": "={{ $json.first_name }}"
+            },
+            {
+              "name": "lastName",
+              "value": "={{ $json.last_name }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.email }}"
+            },
+            {
+              "name": "signUpDate",
+              "value": "={{ $json.date_created.split(\"T\")[0] }}"
+            },
+            {
+              "name": "country",
+              "value": "={{ $json.billing.country }}"
+            },
+            {
+              "name": "city",
+              "value": "={{ $json.billing.city }}"
+            },
+            {
+              "name": "region",
+              "value": "={{ $json.billing.state }}"
+            },
+            {
+              "name": "postalCode",
+              "value": "={{ $json.billing.postcode }}"
+            },
+            {
+              "name": "username",
+              "value": "={{ $json.username }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1552,
+        -496
+      ],
+      "id": "2821ab86-4238-466f-a35e-df9f6b93e627",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1296,
+        -512
+      ],
+      "id": "205bff9a-bf93-4439-80ae-a2e685b151a5",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1824,
+        -496
+      ],
+      "id": "a0024826-d7e0-4fb3-b1a3-fe66097327e3",
+      "name": "Wait",
+      "webhookId": "8f7e1291-a616-40dc-bd74-3df431c6cd56"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+          "mode": "list",
+          "cachedResultName": "Contacts Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 746450242,
+          "mode": "list",
+          "cachedResultName": "Values Contacts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": 0,
+            "Email": "={{ $('Get many orders').item.json.billing.email }}",
+            "Orders": "={{ $json.Orders + 1 }}",
+            "Total Spend": "={{ $json[\"Total Spend\"] + parseFloat($('Get many orders').item.json.total) }}",
+            "AOV": "={{ ($json[\"Total Spend\"] + parseFloat($('Get many orders').item.json.total)) / ($json.Orders + 1) }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sign Up",
+              "displayName": "Sign Up",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Orders",
+              "displayName": "Orders",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total Spend",
+              "displayName": "Total Spend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "AOV",
+              "displayName": "AOV",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Country",
+              "displayName": "Country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "City",
+              "displayName": "City",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Region",
+              "displayName": "Region",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Postal Code",
+              "displayName": "Postal Code",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Username",
+              "displayName": "Username",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1376,
+        208
+      ],
+      "id": "2a015dbf-f8e0-4b82-a56d-b6019bb73d7e",
+      "name": "Update row in sheet",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+          "mode": "list",
+          "cachedResultName": "Contacts Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 746450242,
+          "mode": "list",
+          "cachedResultName": "Values Contacts",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Email",
+              "lookupValue": "={{ $('Get many orders').item.json.billing.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1056,
+        208
+      ],
+      "id": "b0055a58-47b6-4651-9ad5-44b6b30b2dbd",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "n434ebqBlO2QBh7B",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Minute }}",
+                    "rightValue": "00",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "8231c514-c467-4c56-8360-d0f989bd7a63"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "282c519f-d8f7-4bad-9046-494b8658cb1b",
+                    "leftValue": "={{ $json.Minute }}",
+                    "rightValue": "30",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "216d8be4-b5f6-4f23-adaa-cf904ca3b70c",
+      "name": "Switch"
     }
   ],
   "connections": {
@@ -239,7 +753,7 @@
       "main": [
         [
           {
-            "node": "Get many orders",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -262,6 +776,11 @@
         [
           {
             "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet1",
             "type": "main",
             "index": 0
           }
@@ -316,10 +835,122 @@
           }
         ]
       ]
+    },
+    "Get many customers": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Get many customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get many orders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "lcqJzGkY4MX35CJE",
+    "timeSavedPerExecution": 15
   },
   "staticData": {
     "node:Schedule Trigger": {
@@ -330,7 +961,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "eda9efff-f9ef-4774-a655-77bc26416b38",
+  "versionId": "cf8407eb-5370-45cb-9e6a-c10d35079bc0",
+  "activeVersionId": "cf8407eb-5370-45cb-9e6a-c10d35079bc0",
   "triggerCount": 1,
   "shared": [
     {
@@ -341,5 +973,954 @@
       "projectId": "DukkafP5uTjGrfTt"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-20T23:55:17.692Z",
+    "createdAt": "2025-12-20T23:55:17.692Z",
+    "versionId": "cf8407eb-5370-45cb-9e6a-c10d35079bc0",
+    "workflowId": "RATXpS33g4grhRhm",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  5
+                ],
+                "triggerAtHour": 17,
+                "triggerAtMinute": 30
+              },
+              {
+                "field": "weeks",
+                "triggerAtDay": [
+                  5
+                ],
+                "triggerAtHour": 17
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -560,
+          -16
+        ],
+        "id": "f2fcee02-cdb9-437d-9aa6-005934b1b724",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "resource": "order",
+          "operation": "getAll",
+          "returnAll": true,
+          "options": {
+            "after": "={{ $now.minus(7, 'days') }}"
+          }
+        },
+        "type": "n8n-nodes-base.wooCommerce",
+        "typeVersion": 1,
+        "position": [
+          416,
+          0
+        ],
+        "id": "3bf17e40-4a7e-473b-a7be-d49880ab53d9",
+        "name": "Get many orders",
+        "credentials": {
+          "wooCommerceApi": {
+            "id": "Z3GlvWiUIpM5bOIO",
+            "name": "WooCommerce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "43334a68-0c02-4e36-9df8-73ebe13962d6",
+                "name": "name",
+                "value": "={{ $json.billing.first_name }} {{ $json.billing.last_name }}",
+                "type": "string"
+              },
+              {
+                "id": "f3488715-6a68-4de2-88bc-d8bf15d8bb6f",
+                "name": "company",
+                "value": "={{ $json.billing.company }}",
+                "type": "string"
+              },
+              {
+                "id": "509560b4-1593-451f-8ed7-9ae8eccecee5",
+                "name": "items",
+                "value": "={{ $json.line_items.map(item => item.name) }}",
+                "type": "string"
+              },
+              {
+                "id": "7c0896f3-ad94-4291-b6d9-602c5935e0d6",
+                "name": "shipping",
+                "value": "={{\n$json.shipping && $json.shipping.address_1\n  ? $json.shipping.address_1 + \", \" +\n    $json.shipping.city + \"  \" +\n    $json.shipping.state + \", \" +\n    $json.shipping.country + \" \" +\n    $json.shipping.postcode\n  : \"No shipping address provided.\"\n}}\n",
+                "type": "string"
+              },
+              {
+                "id": "f47cec2e-2b5c-44ad-a827-81810e2f28a2",
+                "name": "date",
+                "value": "={{ $json.date_created.toDateTime().format('yyyy-MM-dd') }}",
+                "type": "string"
+              },
+              {
+                "id": "1ce58aac-a0a8-47ad-ba64-96834a36e71e",
+                "name": "amount",
+                "value": "={{ $json.total }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          736,
+          0
+        ],
+        "id": "5008a3e1-3e5b-4494-be3b-579d234a32f5",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "sendTo": "cscott@cynthiascott.net,njogued@gmail.com",
+          "subject": "Orders This Week",
+          "emailType": "text",
+          "message": "=Hi Cynthia - \n\nYou have {{ $('Aggregate').item.json.data.length }} orders from the past 7 days:\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nTotal Amount Paid: ${{\n$('Aggregate').item.json.data\n  .map(order => Number(order.amount) || 0)\n  .reduce((sum, value) => sum + value, 0)\n}}\n\nThank you,\nEdward\n\n",
+          "options": {
+            "appendAttribution": false,
+            "attachmentsUi": {
+              "attachmentsBinary": [
+                {}
+              ]
+            },
+            "senderName": "Edward Njogu"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1072,
+          464
+        ],
+        "id": "1ead5c4b-5f2f-40fb-b1cd-1650968fc5d0",
+        "name": "Send a message",
+        "webhookId": "3c180822-8ccc-4d21-86a3-a8d65d1fb07b",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "c3iKg7fkmFbTwlnB",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          1056,
+          0
+        ],
+        "id": "cd3200cc-8edb-4461-a773-4a74f690792f",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "folderId": "=14UrpUiA99ZHG1IsGKpXUfTmlo5O1BYzA",
+          "title": "=Orders Report - {{ $now.format('yyyy/MM/dd') }}"
+        },
+        "type": "n8n-nodes-base.googleDocs",
+        "typeVersion": 2,
+        "position": [
+          160,
+          256
+        ],
+        "id": "30f03881-1c18-4f87-a552-e441164cb901",
+        "name": "Create a document",
+        "credentials": {
+          "googleDocsOAuth2Api": {
+            "id": "a0JiMS8xcmx4P6st",
+            "name": "Google Docs account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentURL": "={{ $json.id }}",
+          "actionsUi": {
+            "actionFields": [
+              {
+                "action": "insert",
+                "text": "=You have {{ $('Aggregate').item.json.data.length }} orders from the past 7 days:\n\n{{\n$('Aggregate').item.json.data.map((order, index) => {\n  let items;\n  try {\n    items = JSON.parse(order.items);\n  } catch (e) {\n    items = [order.items];\n  }\n\n  const itemLines = items.map(i => `  - ${i}`).join('\\n');\n\n  return [\n    `Order ${index + 1}:`,\n    `Name: ${order.name}`,\n    `Company: ${order.company}`,\n    `Date: ${order.date}`,\n    'Items:',\n    itemLines,\n    'Shipping:',\n    `  ${order.shipping}`\n  ].join('\\n');\n}).join('\\n\\n')\n}}\n\nTotal Amount Paid: ${{\n$('Aggregate').item.json.data\n  .map(order => Number(order.amount) || 0)\n  .reduce((sum, value) => sum + value, 0)\n}}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.googleDocs",
+        "typeVersion": 2,
+        "position": [
+          416,
+          256
+        ],
+        "id": "2ef0f824-7d29-4825-b332-28fa41add7be",
+        "name": "Update a document",
+        "credentials": {
+          "googleDocsOAuth2Api": {
+            "id": "a0JiMS8xcmx4P6st",
+            "name": "Google Docs account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $json.documentId }}",
+            "mode": "id"
+          },
+          "options": {
+            "googleFileConversion": {
+              "conversion": {
+                "docsToFormat": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              }
+            },
+            "fileName": "=Orders Report - {{ $now.format('yyyy-MM-dd') }}"
+          }
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          752,
+          256
+        ],
+        "id": "0cb65850-5f18-42d6-a2ef-7e771a749f21",
+        "name": "Download file",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "0wiQ3avym1XshEaG",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "customer",
+          "operation": "getAll",
+          "limit": 10,
+          "filters": {
+            "order": "desc",
+            "orderby": "registered_date"
+          }
+        },
+        "type": "n8n-nodes-base.wooCommerce",
+        "typeVersion": 1,
+        "position": [
+          736,
+          -528
+        ],
+        "id": "15b7db02-7070-4678-9605-43df122a5910",
+        "name": "Get many customers",
+        "credentials": {
+          "wooCommerceApi": {
+            "id": "Z3GlvWiUIpM5bOIO",
+            "name": "WooCommerce account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+            "mode": "list",
+            "cachedResultName": "Contacts Tracker",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 746450242,
+            "mode": "list",
+            "cachedResultName": "Values Contacts",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          192,
+          -528
+        ],
+        "id": "d3ddb132-43ce-4c53-a1ab-7a8530f55b52",
+        "name": "Get row(s) in sheet",
+        "alwaysOutputData": true,
+        "executeOnce": true,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "n434ebqBlO2QBh7B",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldsToAggregate": {
+            "fieldToAggregate": [
+              {
+                "fieldToAggregate": "Email"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          496,
+          -528
+        ],
+        "id": "dc222ba8-ef8a-435e-8692-bf740b0b554a",
+        "name": "Aggregate1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "97d3077e-3a1a-4049-880e-d2e885ef1da6",
+                "leftValue": "={{ $('Aggregate1').item.json.Email }}",
+                "rightValue": "={{ $('Get many customers').item.json.email }}",
+                "operator": {
+                  "type": "array",
+                  "operation": "contains",
+                  "rightType": "any"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [
+          976,
+          -528
+        ],
+        "id": "8e461b3c-381b-47a8-abd4-739453e2cb50",
+        "name": "If2"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://script.google.com/macros/s/AKfycbwnDf0DA3pj5g29giUQb2pAefl_fFEOoDeF9QaiK4VlBDL-dFERZYBx7-ql-Te-XBlOGQ/exec",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "name",
+                "value": "={{ $json.first_name }} {{ $json.last_name }}"
+              },
+              {
+                "name": "firstName",
+                "value": "={{ $json.first_name }}"
+              },
+              {
+                "name": "lastName",
+                "value": "={{ $json.last_name }}"
+              },
+              {
+                "name": "email",
+                "value": "={{ $json.email }}"
+              },
+              {
+                "name": "signUpDate",
+                "value": "={{ $json.date_created.split(\"T\")[0] }}"
+              },
+              {
+                "name": "country",
+                "value": "={{ $json.billing.country }}"
+              },
+              {
+                "name": "city",
+                "value": "={{ $json.billing.city }}"
+              },
+              {
+                "name": "region",
+                "value": "={{ $json.billing.state }}"
+              },
+              {
+                "name": "postalCode",
+                "value": "={{ $json.billing.postcode }}"
+              },
+              {
+                "name": "username",
+                "value": "={{ $json.username }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1552,
+          -496
+        ],
+        "id": "2821ab86-4238-466f-a35e-df9f6b93e627",
+        "name": "HTTP Request",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          1296,
+          -512
+        ],
+        "id": "205bff9a-bf93-4439-80ae-a2e685b151a5",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          1824,
+          -496
+        ],
+        "id": "a0024826-d7e0-4fb3-b1a3-fe66097327e3",
+        "name": "Wait",
+        "webhookId": "8f7e1291-a616-40dc-bd74-3df431c6cd56"
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+            "mode": "list",
+            "cachedResultName": "Contacts Tracker",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 746450242,
+            "mode": "list",
+            "cachedResultName": "Values Contacts",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "row_number": 0,
+              "Email": "={{ $('Get many orders').item.json.billing.email }}",
+              "Orders": "={{ $json.Orders + 1 }}",
+              "Total Spend": "={{ $json[\"Total Spend\"] + parseFloat($('Get many orders').item.json.total) }}",
+              "AOV": "={{ ($json[\"Total Spend\"] + parseFloat($('Get many orders').item.json.total)) / ($json.Orders + 1) }}"
+            },
+            "matchingColumns": [
+              "Email"
+            ],
+            "schema": [
+              {
+                "id": "Name",
+                "displayName": "Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Sign Up",
+                "displayName": "Sign Up",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Orders",
+                "displayName": "Orders",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Total Spend",
+                "displayName": "Total Spend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "AOV",
+                "displayName": "AOV",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Country",
+                "displayName": "Country",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "City",
+                "displayName": "City",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Region",
+                "displayName": "Region",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Postal Code",
+                "displayName": "Postal Code",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Username",
+                "displayName": "Username",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "row_number",
+                "displayName": "row_number",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "readOnly": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1376,
+          208
+        ],
+        "id": "2a015dbf-f8e0-4b82-a56d-b6019bb73d7e",
+        "name": "Update row in sheet",
+        "alwaysOutputData": true,
+        "executeOnce": false,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "n434ebqBlO2QBh7B",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck",
+            "mode": "list",
+            "cachedResultName": "Contacts Tracker",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 746450242,
+            "mode": "list",
+            "cachedResultName": "Values Contacts",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit#gid=746450242"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "Email",
+                "lookupValue": "={{ $('Get many orders').item.json.billing.email }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1056,
+          208
+        ],
+        "id": "b0055a58-47b6-4651-9ad5-44b6b30b2dbd",
+        "name": "Get row(s) in sheet1",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "n434ebqBlO2QBh7B",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.Minute }}",
+                      "rightValue": "00",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      },
+                      "id": "8231c514-c467-4c56-8360-d0f989bd7a63"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "282c519f-d8f7-4bad-9046-494b8658cb1b",
+                      "leftValue": "={{ $json.Minute }}",
+                      "rightValue": "30",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          -112,
+          -16
+        ],
+        "id": "216d8be4-b5f6-4f23-adaa-cf904ca3b70c",
+        "name": "Switch"
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many orders": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get row(s) in sheet1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Create a document",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Send a message": {
+        "main": [
+          []
+        ]
+      },
+      "Create a document": {
+        "main": [
+          [
+            {
+              "node": "Update a document",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update a document": {
+        "main": [
+          [
+            {
+              "node": "Download file",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download file": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get many customers": {
+        "main": [
+          [
+            {
+              "node": "If2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "Aggregate1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate1": {
+        "main": [
+          [
+            {
+              "node": "Get many customers",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If2": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet1": {
+        "main": [
+          [
+            {
+              "node": "Update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get many orders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Edward Njogu",
+    "name": null,
+    "description": null
+  },
   "tags": []
 }
