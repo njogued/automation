@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-08T23:30:51.000Z",
+  "updatedAt": "2025-12-20T20:51:58.000Z",
   "createdAt": "2025-07-10T11:53:50.528Z",
   "id": "VtuaZAAvnvzQToaV",
   "name": "Email - Trigger Workflow",
@@ -24,8 +24,8 @@
       "type": "n8n-nodes-base.gmailTrigger",
       "typeVersion": 1.2,
       "position": [
-        -304,
-        32
+        -336,
+        96
       ],
       "id": "04e9bab4-d940-4da8-8093-9e95f7b6c819",
       "name": "Gmail Trigger",
@@ -47,8 +47,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 1.9,
       "position": [
-        528,
-        32
+        688,
+        48
       ],
       "id": "67652e76-405e-4bf8-be9c-4fbde2cea6f8",
       "name": "AI Agent",
@@ -77,7 +77,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        672,
+        912,
         -176
       ],
       "id": "fe069788-c4a4-483b-91ab-b0e20edc4511",
@@ -100,7 +100,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        400,
+        560,
         272
       ],
       "id": "7448b500-361e-4b7f-ab09-539c429847af",
@@ -135,7 +135,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        464,
+        736,
         -176
       ],
       "id": "52e75859-f8ac-49c3-be1e-e0bdb5ebb6ce",
@@ -186,8 +186,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        672,
-        464
+        832,
+        400
       ],
       "id": "ab694a9d-6410-4b99-bc35-616a5a1a7fcc",
       "name": "Monday Sub-Workflow"
@@ -229,8 +229,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        960,
-        320
+        1168,
+        400
       ],
       "id": "fbec491a-1c53-4203-8827-68ba7b407c9d",
       "name": "Email Sub-Workflow"
@@ -287,8 +287,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        544,
-        384
+        672,
+        400
       ],
       "id": "dea14681-c82e-47c1-bad3-9a9c89ebb9c4",
       "name": "Slack Sub-Workflow"
@@ -330,7 +330,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        816,
+        992,
         400
       ],
       "id": "926b9945-b647-4961-99c6-d418fc686335",
@@ -365,64 +365,10 @@
       "typeVersion": 2.2,
       "position": [
         -64,
-        32
+        96
       ],
       "id": "3435a822-b97c-48b7-b351-30a71e7d6296",
       "name": "Filter Out Mail from Storied AI"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "49b4a1dd-4bf5-4e24-8042-7795fe200208",
-              "leftValue": "={{ $json.headers.to.includes(\"ai@storiedinc.com\") }}",
-              "rightValue": "To: ai@storiedinc.com",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "79ac21c9-3852-4b5e-a45a-a6a68a7439d4",
-              "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ai@storiedinc.com\"), false) }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            },
-            {
-              "id": "e3f7331b-d738-4d31-9692-f4ee4311eccd",
-              "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ai@storiedinc.com\"), false) }}",
-              "rightValue": "",
-              "operator": {
-                "type": "boolean",
-                "operation": "true",
-                "singleValue": true
-              }
-            }
-          ],
-          "combinator": "or"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.filter",
-      "typeVersion": 2.2,
-      "position": [
-        192,
-        32
-      ],
-      "id": "1dc73d91-ff7c-4d29-a2d6-eef5733aeb46",
-      "name": "Only Allow Mail to Storied AI"
     },
     {
       "parameters": {
@@ -439,8 +385,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        880,
-        32
+        1200,
+        48
       ],
       "id": "2a9b3111-6dfc-4c1e-ae68-00301fb75f61",
       "name": "Create a draft",
@@ -472,11 +418,298 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        1168,
-        32
+        1568,
+        48
       ],
       "id": "8a858aff-2016-4ff3-b5b7-a4366fbbd809",
       "name": "Send Gmail Draft",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.headers.to.includes(\"ai@storiedinc.com\") }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "bbb42841-dcf4-4ddb-99c9-844761e532dc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "96a3244e-ab7b-4d84-8df0-3aca72d87dc2",
+                    "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ai@storiedinc.com\"), false) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "fd7db993-2053-4fe3-be21-3ce298c75753",
+                    "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ai@storiedinc.com\"), false) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "43acc603-7e5c-49af-85b7-6ca4d673a065",
+                    "leftValue": "={{ $json.headers.to.includes(\"ideas@storiedinc.com\") }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a435129e-724a-48fd-ab82-5f39c363138d",
+                    "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ideas@storiedinc.com\"), false) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5f044f3b-08ad-4bed-9196-b6ec63b8bb0b",
+                    "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ideas@storiedinc.com\"), false) }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        144,
+        32
+      ],
+      "id": "2bdb23e4-6aae-4fff-9e2a-5b9d40303c8e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2003617587,
+          "mode": "list",
+          "cachedResultName": "Bank of ideas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit#gid=2003617587"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Idea ": "={{ $json.headers.subject }}",
+            "Context": "={{ $json.text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Idea ",
+              "displayName": "Idea ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Context",
+              "displayName": "Context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Relevant materials/sources",
+              "displayName": "Relevant materials/sources",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        752,
+        736
+      ],
+      "id": "aab95390-d9e5-42a9-99bb-bfd6d76af4f1",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+        "emailType": "html",
+        "message": "=Ideas sheet updated.\n<br>\n<a href=\"https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing\">Link to sheet.</a>",
+        "options": {
+          "fromAlias": "edward@storiedinc.com",
+          "replyTo": "edward@storiedinc.com",
+          "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+          "sendTo": "={{ $('Gmail Trigger').item.json.from.value[0].address }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1088,
+        736
+      ],
+      "id": "69bc6696-72e5-4a8b-b78e-af474adefd34",
+      "name": "Create a draft1",
+      "webhookId": "9b7d0c52-2748-4e44-a034-09dc6f428b17",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/me/drafts/send",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gmailOAuth2",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1456,
+        736
+      ],
+      "id": "c8c81196-025f-4b92-b011-d9aad7654d0d",
+      "name": "Send Gmail Draft1",
       "credentials": {
         "gmailOAuth2": {
           "id": "aLqiTFR2cLtIBYK6",
@@ -589,18 +822,7 @@
       "main": [
         [
           {
-            "node": "Only Allow Mail to Storied AI",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Only Allow Mail to Storied AI": {
-      "main": [
-        [
-          {
-            "node": "AI Agent",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -617,6 +839,74 @@
           }
         ]
       ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft1": {
+      "main": [
+        [
+          {
+            "node": "Send Gmail Draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Create a draft1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -628,10 +918,9 @@
   "staticData": {
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1765240687,
+        "lastTimeChecked": 1766255342,
         "possibleDuplicates": [
-          "19b008b4f0d14589",
-          "19b0087d99edd3fa"
+          "19b3d05be2aa6803"
         ]
       }
     }
@@ -643,47 +932,39 @@
     "Gmail Trigger": [
       {
         "json": {
-          "id": "19a790dc1cf1e683",
-          "threadId": "19a78f55fc6e9624",
+          "id": "19b2ee55eef14b35",
+          "threadId": "19b2ece0b1a9e67f",
           "labelIds": [
-            "Label_105",
             "CATEGORY_PERSONAL",
             "SENT"
           ],
-          "sizeEstimate": 23126,
+          "sizeEstimate": 33521,
           "headers": {
-            "received": "Received: from 649336022844\r\n\tnamed unknown\r\n\tby gmailapi.google.com\r\n\twith HTTPREST;\r\n\tWed, 12 Nov 2025 09:12:17 -0800",
-            "mime-version": "Mime-Version: 1.0",
-            "in-reply-to": "In-Reply-To: <CAL9ygaqGAWjzRUN4xcYSFhVGdbpdH43y=fYJqA2vHG5VPBu+DQ@mail.gmail.com>",
-            "date": "Date: Wed, 12 Nov 2025 17:12:16 +0000",
-            "message-id": "Message-ID: <mhw9byja.73b97eb0-29f8-4065-b308-0ccf43e984d8@we.are.superhuman.com>",
-            "subject": "Subject: Fwd: Fwd: EOS TOKEN MIGRATION",
-            "x-mailer": "X-Mailer: Superhuman Desktop (2025-11-11T20:22:58Z)",
-            "x-superhuman-id": "X-Superhuman-ID: mhw9c9kq.5de11ee3-04f0-43f8-92e1-4c47f20903d9",
-            "x-superhuman-draft-id": "X-Superhuman-Draft-ID: draft00f2c650e717d165",
-            "references": "References: <mhw83buh.adc93db8-e24b-4e98-bc00-3882222886be@we.are.superhuman.com> <CAL9ygaqGAWjzRUN4xcYSFhVGdbpdH43y=fYJqA2vHG5VPBu+DQ@mail.gmail.com>",
-            "from": "From: \"Edward Njogu\" <edward@storiedinc.com>",
-            "to": "To: \"Storied AI\" <ai@storiedinc.com>",
-            "content-type": "Content-Type: multipart/alternative;\r\n boundary=d07b03ba8990571ed4dafc63a96ed5a63bc77fab838f7b590948fd74f014"
+            "mime-version": "MIME-Version: 1.0",
+            "date": "Date: Thu, 18 Dec 2025 03:39:01 +0300",
+            "references": "References: <31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+            "in-reply-to": "In-Reply-To: <31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+            "message-id": "Message-ID: <CAL9ygaofb953wMwtWzWX4Gef+18tXB9gD9pDhAqXoVTLGwP=5Q@mail.gmail.com>",
+            "subject": "Subject: Fwd: 2 new notifications in Storied",
+            "from": "From: Edward Njogu <edward@storiedinc.com>",
+            "to": "To: Content <contentideas@storiedinc.com>",
+            "content-type": "Content-Type: multipart/alternative; boundary=\"000000000000f9ba5506462f2fc8\""
           },
-          "html": "<html><head></head><body><div><div><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><br/></div></div></div><div class=\"sh-quoted-content\"><div class=\"\"><div class=\"\"><br/><div class=\"\"><div class=\"gmail_quote\" style=\"\" id=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"sh-quoted-content\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"gmail_quote\" style=\"\" id=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"\">Below is a request from Michael to me.<br/></div><div class=\"\"><br/></div><ol class=\"\"><li value=\"1\" class=\"\">Please create this item on my board.<br/></li><li class=\"\">Once created, research how to do this (including any key terms) and add those to the item you just created.<br/></li></ol><div class=\"\">Thanks..<br/></div><div class=\"\"><br/></div><div class=\"\"><br/></div><div class=\"\"><hr class=\"\"/><br/></div><div class=\"\"><br/></div><div class=\"\">Michael&#39;s request:<br/></div></div></div><div class=\"sh-quoted-content\"><div class=\"\"><div class=\"\"><div class=\"\"><br/></div><div class=\"\"><div class=\"gmail_quote\" style=\"\" id=\"\"><div class=\"\"><div class=\"\"><div class=\"\"><div class=\"\">Edward<br/></div><div class=\"\">Can you research and guide me on how to do this. <span style=\"background-color: transparent;\" class=\"\">I have a bunch of EOS tokens in Coinbase that need to be transferred to my self custodial wallet Exodus. </span><br/></div><div class=\"\"><span style=\"background-color: transparent;\" class=\"\">Not urgent, but good to do in the next week or so.</span><br/></div><div class=\"\"><span style=\"background-color: transparent;\" class=\"\"> </span><br/></div><div class=\"\"><br/></div><div class=\"\"><div class=\"\"><div class=\"gmail_quote bodybg\" style=\"margin: 0px auto; padding: 0px; background-color: transparent; color: rgb(0, 0, 0); background-image: none;\" id=\"\"><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" align=\"center\" class=\"\"><tbody class=\"\"><tr class=\"\"><td align=\"center\" valign=\"top\" class=\"\"><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"720\" align=\"center\" class=\"w_360\"><tbody class=\"\"><tr class=\"\"><td align=\"center\" valign=\"top\" class=\"\"><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" align=\"center\" class=\"\"><tbody class=\"\"><tr class=\"\"><td align=\"center\" valign=\"top\" class=\"whitetext\" style=\"font-size:22px; line-height:35px; letter-spacing:-0.5px; font-weight:600; font-family:Coinbase Sans, Arial, sans-serif; color:#0A0B0D; padding-top:14px;\"><div class=\"\">EOS Token (EOS) Migration<br/></div></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr class=\"\"><td align=\"center\" valign=\"top\" style=\"padding: 0px 0px 40px 0px;\" class=\"\"><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"720\" class=\"w_360\"><tbody class=\"\"><tr class=\"\"><td class=\"plr_24\" align=\"center\" valign=\"top\" style=\"padding: 20px 30px 0px 30px;\"><table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"660\" align=\"center\" class=\"w_312\"><tbody class=\"\"><tr class=\"\"><td class=\"whitetext\" align=\"left\" valign=\"top\" style=\"color:#0A0B0D; font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:16px; font-weight:400; line-height:24px;\">We’re reaching out with an update regarding the migration of the EOS (EOS) token to Vaulta (A). If you hold these tokens, here’s what you need to know: <br/></td></tr><tr class=\"\"><td class=\"whitetext\" align=\"left\" valign=\"top\" style=\"padding-top: 20px; color:#0A0B0D; font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:16px; font-weight:400; line-height:24px;\"><div class=\"\"><b class=\"\">What&#39;s Happening?</b> <br/></div><p class=\"\"><br/></p><div class=\"\">The EOS token is being replaced by A as part of a project upgrade. <br/></div><div class=\"\"> <br/></div><div class=\"\"> To continue using your tokens, you’ll need to swap your EOS tokens for A through the <a style=\"color:#0052FF; text-decoration: none;\" href=\"https://links.coinbase.com/s/c/ePPeOFRnDqaWdsJnwJVmskOPTrBQkKx9M9dOQK7NcPoLEi62rHFmpfJSv9ZM0k8xpzcOfZ_ZVyC5s86K1y7sYuPO0rTu7YwdQfFfcDXWdpeVm-Psa-T6CZR_klpJwSJoY_Tstk0KLnVUz5U8MF5DHa1S-hrZcPDQioMLJRrCc9AD12wHLgtTl3trRgIqizB9HHjsfx1oU3dLCOsCZihFBTi60WHQB4p4dDQWJ0REOjc1W97FWWKB7Xx5mM2YCFkqLK81rq9CZhsuvhxZmtJ85ov8Yr4GyLCuZKR3ADUIyGyKoes5UDs8RSzGC_A9WM7O6uy8uB-BAV5-AWq-Nq5P6pN-c_e7LICgfH7KFuT6ERnWRrERq36jn57dfgV3fYbX1q5nWZfiqoGMN7iV4-3LL22wYfviD8elC4owW-aoZ9T3k45S_8UlRw92ZN3DOTT_usdWnzyxqBiC-mG7H42m3yD42_cQUyRiYSQIjEdozj7mmB2iu9vLcgQxxO5QwQUkJJbVrtU-o6t63DygVXIVaau4oXKiHSawnal6sVMCfDOB928uEMIuvN5_5Gtm32w7z7Maqu2OniY-rfcvhkWrs_8/mtdy3U2zMG_u4gv6iBNit9Fb_b6uQ3G6/8\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">official migration portal</a>. You can find more details about the migration and how to swap your tokens <a style=\"color:#0052FF; text-decoration: none;\" href=\"https://links.coinbase.com/s/c/NRAvwLBUIhX4RRJP6XeWNHGYtGYcj1hqDMa_Q4eNFNUgMkC47J-C6f4pLthyKnJ2LVTk5DSibWR7_NxMkxI94B8WPPn5WvCP8S0JpKmsc2K5vQQ2fZx2XEdoajXAqjfxiTh4ocUJSUD9UKj4XhRa75boKQyouPzepN6mOUv2161Hv7247GaQIn8gX8YSaTGyfAsSmrHq4rUHbjB9gRzGKS1uHuhQrAyXm0TiXYPu3MfVe_gmXwg_swfCiqnmscnTyrDqISaz5tbu7ydDlTipTL06MzWfcqXIXriK9oe07A9mDQAUONXj-G98pc62zM5H0Wpmps3yrBTCUJOfH2-wow2qIES1gB5ITyqTdOpZyIE-mrdp9NQ4D0qvM3ow5T2T9Z2y4nPYu1GjCTK9GxCHkIxnWfsOcR8ZS-Se3F4_nTFoqKXG1DWDP5tifbj19lO8DEu1jpjJBFAZCKmFNySwzFBketem_QgM_k0WWM3WUxHyHuafGC1yqnyGz4U2HAgMFKBWOl05UJCNgQP0WWPVOB48EebK0-C-Hp157O3i5mrGCoj0fQ42AKPxE2mUNMyYRfMoE2ZQ0Wk3tGckuA/vjiI-VvwLkM7mdaQOse853E7S_2LHx0Z/8\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">here</a>. A list of wallets compatible with the EOS Native network can be found <a style=\"color:#0052FF; text-decoration: none;\" href=\"https://links.coinbase.com/s/c/y-FvBJr_0_o_jMkI1-Bof6mAtQ2pGfH2Fi3JIao8HjPLNY5JbJYGYA9D3KIUyYmX0LC5BmPc8gdc6DrVeuUDPFEwxXLKS_JM4c3Sth0_fl9iEj9MSMjWoP5Yr8GBchtpRP2kcbFKUjVlYaclg_RrOKIKVx2tdqe60fxhxNfRf66c0C020NGAmNUY2lG1rmIZ4dQfrxLuYVxzoIhsrShRkbU8vLN8OMUjvXs_nzuhbdw3Djg8LBSt9aMmTg9Oo_pGpSC_GSEkbk7LxDAvdIKFcWO3H2MheuAl1qvBgkk89hbCtA1bPq-Zju9NujvtDurPPAoBB2rSePu1e4tEjY4hXrthSdyl-4dPEY5OE0Yv00Cd3Sh960KJDYis6KxzqrIHR9r_Hu7Q2f7ZnX7Hepb8hY7lsrlDyQXsj7x4ONalDQx40SHQbtxsna0av65hUBa43zXyvZLTmy-U8V5XElItiaLhwf68voXthO5rQCoom5SjxHcLsM_DocgxNwZ1p6O7-Xk7/w7CYU89OMM_k5desr84tGJVyYGnCOiZm/8\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">here</a>.<br/></div><p class=\"\"><br/></p></td></tr><tr class=\"\"><td class=\"whitetext\" align=\"left\" valign=\"top\" style=\"padding-top: 20px; color:#0A0B0D; font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:16px; font-weight:400; line-height:24px;\"><div class=\"\"><b class=\"\">What This Means for You</b> <br/></div><ul class=\"\"><li class=\"\">Coinbase will NOT automatically convert your tokens.<br/></li><li class=\"\">To swap your tokens, you’ll need to move them to a compatible self-custodial wallet before completing the migration. <br/></li><li class=\"\">There’s no set deadline right now, so you have time to make the switch. <br/></li></ul></td></tr><tr class=\"\"><td class=\"whitetext\" align=\"left\" valign=\"top\" style=\"padding-top: 20px; color:#0A0B0D; font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:16px; font-weight:400; line-height:24px;\"><div class=\"\"><b class=\"\">How to Swap Your Tokens</b> <br/></div><ul class=\"\"><div class=\"\">1. Move your EOS tokens to a self-custodial wallet. <br/></div><div class=\"\"> 2. Go to the <a style=\"color:#0052FF; text-decoration: none;\" href=\"https://links.coinbase.com/s/c/VwX2LWHE5Li1L02Jvlr3Py-r8pZT94CuP-IkxxZf0QR4zMtxN0IxJK3lZkbeEACg8rfRjmX4Pzie11HlY48BLowSnsvVQIoNf3CBcLLm5m36gfUk3bX1JP__6WWkjcfCRh6QV5fKbZ7cj3aNN1EHGOtLeXCXyxVKMolweClJNc54-mpn-WgsPmsmLTqKsuCznzhy2KYoVEdkD0EwVeEWyfDWViGJ1EaW6KfN7bM3u1IWuZXWYozPsxCoqmMgVbhCafd1R3rO59es9Cd_OQtkgCbfbvjZtruC-JQSYStKwzwa4H3wAxPOZL2in4Tuxm0ZXFY1Akd7cIT4TGjVdkTAR4PUEwx-F180vsh9r8OruGoNV_T36WgmbxqalS9i_gRKpMFWZi8A71EZtYseyJqPciv-xoLHbgG_q4BfdSNqxikfHuaYMzv8hFDJaYtO6bUHzm9sntvKhoC0TRlOq0nDXtAdVfxJcISd8Pzb52gXogzTbqe_N_X6cAInqGBu3CBfheb-YrVA7Y9QuKHFDiCmbrnGD-c7eCJA-nKB_IxRbrMNCKspefUDMoVjCCK03tQr84mxsmbPorYJLfnTBH_a-v0/Qnqk_Asx-gE8xAb0EDywB1YTxOdQXDZk/8\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">official migration portal</a>. <br/></div><div class=\"\"> 3. Follow the steps to swap your EOS for A.<br/></div></ul><div class=\"\">Once completed, you’ll now hold A, which replaces your old tokens.<br/></div></td></tr><tr class=\"\"><td class=\"whitetext\" align=\"left\" valign=\"top\" style=\"padding-top: 20px; color:#0A0B0D; font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:16px; font-weight:400; line-height:24px;\">If you have any questions regarding this update, please visit <a style=\"color:#0052FF; text-decoration: none;\" href=\"https://comm.coinbase.com/CL0/https:%2F%2Flinks.coinbase.com%2Fs%2Fc%2F55xIkh24v27PO4xDb46euXXgpfjamxO9u8-a0jqjsbHexScoNtXmETNUK2eYkPirzV4Z-izgmBBQQHcEZ6Evxq4CI555_fRia4Uzs2I-ktn0NT9GOcP4mXEqB2J0HkVGwUPtba2RgLITATU59cy059ldQGvAVqx9WFgz8H8wbjD1-w2y91kaC3tI5F93-599g4u-9sFm5FR3o0QphKD_vyNz9IypDPszoG-zSir8qU9KY1fWlj9_mp9TirQ0xplQ3OWNGJnBOznHXRn0BKQAmQCbb88aFUTJl5eGW9MuMTKnKEYvsWUwYMTy3Unc48_hSqy2OVFUcMHgyH5cCoVTKWwoMwf18_bJgwSiaXxv7eOL8EceSUKjkzHdzaIGIKBNr-ErvRftHhnOxCtnddNH1kIzlOeItRR2HJ2Kmv2IBnD6bX2B69kv2wbJn45W7ySKpAjREoAd9gi8Ktb-ftT9zWRfsM3KihNsoNn7%2FiBAnlBB0QUE1TT2nI2CLp3h2g2bF2eDa%2F8/1/01000196d0311f77-a923b062-b3b0-4b63-b087-7c960cf7e90a-000000/hkSlul5D4C7ZF9GGXDhgv11O1edbXp1thiAnikG6xO0=405\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">Coinbase Help</a>. <br/></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr class=\"\"><td class=\"footerbg\" align=\"center\" valign=\"top\" bgcolor=\"#fafafa\" style=\"padding-top: 15px; padding-bottom: 34px; background-color: transparent !important;\"><table class=\"w_360\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" width=\"720\"><tbody class=\"\"><tr class=\"\"><td class=\"plr_24\" align=\"center\" valign=\"top\" style=\"padding: 0px 30px\"><table class=\"w_312\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" width=\"660\"><tbody class=\"\"><tr class=\"\"><td align=\"center\" valign=\"top\" style=\"padding-top: 10px;\" class=\"\"><table class=\"w_312\" role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" width=\"660\"><tbody class=\"\"><tr class=\"\"><td class=\"whitetext\" align=\"center\" valign=\"top\" style=\"font-family:Coinbase Sans, &#39;Inter&#39;, Arial, sans-serif; font-size:12px; line-height:18px; letter-spacing:-0.15px; font-weight:400; color:#0A0B0D;\"><br/></td></tr></tbody></table></td></tr><tr class=\"\"><td align=\"center\" valign=\"top\" style=\"padding-top:14px;\" class=\"\"><a href=\"https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&amp;_m=558a9360871b46b7821c7e6242f224bf&amp;_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOBjT0BOZRfNcx9w_HKO3WQNYk4mTCyH_a5UR2Fs_-yr7uL6sd3TZkzEc7V1-zJv9kQL6RTXpQR-uDX49ZUzJFkuAGOrUUhXkAlzTq7XYYrl-Fg2sW7BISHxpHqVPO50GeAwMYMYZ0spEXivifyFkkp9nV_t_rpOTSotIFDk6DxpRwdy-ZmfyWo-wjxuzjhvcLWoS1QbFQwk46WKt7BjgqI_GO4DE7JTlMiSEHdb6UmYEkN58ow4NXMgiRA-svI8djwXp2A0_2AJdCxij_LCOfNoY-CVVbpyay4Yj7APdjBzI\" style=\"text-decoration:none; display:block; width:48px; padding-top:6px; padding-bottom:6px;\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\"><img src=\"https://d15k2d11r6t6rl.cloudfront.net/public/users/Integrators/669d5713-9b6a-46bb-bd7e-c542cff6dd6a/3aca56371967418192255878e9689713/editor_images/footer_coinbase_logo_icon_1.png\" alt=\"Coinbase\" width=\"36\" style=\"display:block; width:36px;\" class=\"\"/></a> <br/></td></tr><tr class=\"\"><td class=\"whitetext\" align=\"center\" valign=\"top\"><div class=\"\">© Coinbase 2025 | Coinbase Inc. <br/></div><div class=\"\"> 248 3rd St #434 <br/></div><div class=\"\">Oakland | CA 94607 | US <br/></div><div class=\"\"> <a href=\"https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&amp;_m=558a9360871b46b7821c7e6242f224bf&amp;_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOHWg-dqwX2C6qKYY_f9yZ1wc19hvskxkk-HOYVATbHuIt7ZOj6pjefE17ytA3XuO1lvnirJV0wBP3-FvLufd96oDSKYV9uMOxSyvJ983JcyLDBuSwLUrO9RCCowfVlKswKNL4-u3Qg3ZcAFoV5Uvl-YBuJZSFDvG3jBZ7VkI8v3E2mA3ZT2T7hUUzwDq0dklRlVQeRRPVtSW-WiTFyibRiDpFZ3LZO51XT_2jdTR6_sSjAp0n6w1B1cWk4A3lk8sO12kSeFcgxrM-kRilho6PV7amwrdwqcG-kBqT_yQy4eO\" style=\"text-decoration: none; color: #0052ff;\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">www.<wbr/>coinbase.<wbr/>com</a> <br/></div><div class=\"\"> <a href=\"https://links.coinbase.com/s/c/8XC4m1nJJGLTGA2w1V_HegNb_IppIqNmRqm8i0f-a3IDU8ukg76jX7UDj02JviBNMl7OoLzm3hVRFfop4DH43xgPUWlhrSs4ix0f2qkCB9zwbISTzNc5UicYVki14E87us_z8wNk5m9-mGDXEWZUx-SlynsEVHl_mEWQObcG2DRwWKxKsh1RC78GxXyDALlvT5Crgde-IsoWQe28N3GNBJKIxyqE2oPCCtGsTFZB3SvDiKQBG7bh9w8mCbB3GbGdLz445TnZSkOLeDkJ0k-gOh3wKJAgYVJHX_g5ck6fbBRqLcyv0AGfUWDpRy1S5hOuZChMEEoqe-28PZoA8awVNINuwcRXUTqzFEhCMnsUHc-zgltUK9YarMqebTuan0rgEqa2ZCyJ2nQ5QS3WSvqBDgerUCV3gS9YMk0uBMDarVsDgnZ7fp-8rD_Olh5p5CLSgMWl3C04L2OLuRATmrs98kJbm0kDJKE0xj9XBSQ/DNG717UtR625W6q-yKF0oVwLD_9NliFp/8\" style=\"text-decoration: none; color: #0052ff;\" rel=\"noopener noreferrer\" class=\"\" target=\"_blank\">Get in touch</a> <br/></div></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div class=\"\"><br/></div></div><div class=\"\"><br/></div></div></div></div></div></div></div></div><div><br/></div></div><div></div></div></body></html>",
-          "text": "Below is a request from Michael to me.\n\n* Please create this item on my board.\n\n* Once created, research how to do this (including any key terms) and add those to the item you just created.\n\nThanks..\n\nMichael's request:\n\nEdward\n\nCan you research and guide me on how to do this. I have a bunch of EOS tokens in Coinbase that need to be transferred to my self custodial wallet Exodus.\n\nNot urgent, but good to do in the next week or so.\n\nEOS Token (EOS) Migration\n\nWe’re reaching out with an update regarding the migration of the EOS (EOS) token to Vaulta (A). If you hold these tokens, here’s what you need to know:\n*What's Happening?*\n\nThe EOS token is being replaced by A as part of a project upgrade.\n\nTo continue using your tokens, you’ll need to swap your EOS tokens for A through the official migration portal ( https://links.coinbase.com/s/c/ePPeOFRnDqaWdsJnwJVmskOPTrBQkKx9M9dOQK7NcPoLEi62rHFmpfJSv9ZM0k8xpzcOfZ_ZVyC5s86K1y7sYuPO0rTu7YwdQfFfcDXWdpeVm-Psa-T6CZR_klpJwSJoY_Tstk0KLnVUz5U8MF5DHa1S-hrZcPDQioMLJRrCc9AD12wHLgtTl3trRgIqizB9HHjsfx1oU3dLCOsCZihFBTi60WHQB4p4dDQWJ0REOjc1W97FWWKB7Xx5mM2YCFkqLK81rq9CZhsuvhxZmtJ85ov8Yr4GyLCuZKR3ADUIyGyKoes5UDs8RSzGC_A9WM7O6uy8uB-BAV5-AWq-Nq5P6pN-c_e7LICgfH7KFuT6ERnWRrERq36jn57dfgV3fYbX1q5nWZfiqoGMN7iV4-3LL22wYfviD8elC4owW-aoZ9T3k45S_8UlRw92ZN3DOTT_usdWnzyxqBiC-mG7H42m3yD42_cQUyRiYSQIjEdozj7mmB2iu9vLcgQxxO5QwQUkJJbVrtU-o6t63DygVXIVaau4oXKiHSawnal6sVMCfDOB928uEMIuvN5_5Gtm32w7z7Maqu2OniY-rfcvhkWrs_8/mtdy3U2zMG_u4gv6iBNit9Fb_b6uQ3G6/8 ). You can find more details about the migration and how to swap your tokens here ( https://links.coinbase.com/s/c/NRAvwLBUIhX4RRJP6XeWNHGYtGYcj1hqDMa_Q4eNFNUgMkC47J-C6f4pLthyKnJ2LVTk5DSibWR7_NxMkxI94B8WPPn5WvCP8S0JpKmsc2K5vQQ2fZx2XEdoajXAqjfxiTh4ocUJSUD9UKj4XhRa75boKQyouPzepN6mOUv2161Hv7247GaQIn8gX8YSaTGyfAsSmrHq4rUHbjB9gRzGKS1uHuhQrAyXm0TiXYPu3MfVe_gmXwg_swfCiqnmscnTyrDqISaz5tbu7ydDlTipTL06MzWfcqXIXriK9oe07A9mDQAUONXj-G98pc62zM5H0Wpmps3yrBTCUJOfH2-wow2qIES1gB5ITyqTdOpZyIE-mrdp9NQ4D0qvM3ow5T2T9Z2y4nPYu1GjCTK9GxCHkIxnWfsOcR8ZS-Se3F4_nTFoqKXG1DWDP5tifbj19lO8DEu1jpjJBFAZCKmFNySwzFBketem_QgM_k0WWM3WUxHyHuafGC1yqnyGz4U2HAgMFKBWOl05UJCNgQP0WWPVOB48EebK0-C-Hp157O3i5mrGCoj0fQ42AKPxE2mUNMyYRfMoE2ZQ0Wk3tGckuA/vjiI-VvwLkM7mdaQOse853E7S_2LHx0Z/8 ). A list of wallets compatible with the EOS Native network can be found here ( https://links.coinbase.com/s/c/y-FvBJr_0_o_jMkI1-Bof6mAtQ2pGfH2Fi3JIao8HjPLNY5JbJYGYA9D3KIUyYmX0LC5BmPc8gdc6DrVeuUDPFEwxXLKS_JM4c3Sth0_fl9iEj9MSMjWoP5Yr8GBchtpRP2kcbFKUjVlYaclg_RrOKIKVx2tdqe60fxhxNfRf66c0C020NGAmNUY2lG1rmIZ4dQfrxLuYVxzoIhsrShRkbU8vLN8OMUjvXs_nzuhbdw3Djg8LBSt9aMmTg9Oo_pGpSC_GSEkbk7LxDAvdIKFcWO3H2MheuAl1qvBgkk89hbCtA1bPq-Zju9NujvtDurPPAoBB2rSePu1e4tEjY4hXrthSdyl-4dPEY5OE0Yv00Cd3Sh960KJDYis6KxzqrIHR9r_Hu7Q2f7ZnX7Hepb8hY7lsrlDyQXsj7x4ONalDQx40SHQbtxsna0av65hUBa43zXyvZLTmy-U8V5XElItiaLhwf68voXthO5rQCoom5SjxHcLsM_DocgxNwZ1p6O7-Xk7/w7CYU89OMM_k5desr84tGJVyYGnCOiZm/8 ).\n\n*What This Means for You*\n\n* Coinbase will NOT automatically convert your tokens.\n\n* To swap your tokens, you’ll need to move them to a compatible self-custodial wallet before completing the migration.\n\n* There’s no set deadline right now, so you have time to make the switch.\n\n*How to Swap Your Tokens*\n\n1. Move your EOS tokens to a self-custodial wallet.\n\n2. Go to the official migration portal ( https://links.coinbase.com/s/c/VwX2LWHE5Li1L02Jvlr3Py-r8pZT94CuP-IkxxZf0QR4zMtxN0IxJK3lZkbeEACg8rfRjmX4Pzie11HlY48BLowSnsvVQIoNf3CBcLLm5m36gfUk3bX1JP__6WWkjcfCRh6QV5fKbZ7cj3aNN1EHGOtLeXCXyxVKMolweClJNc54-mpn-WgsPmsmLTqKsuCznzhy2KYoVEdkD0EwVeEWyfDWViGJ1EaW6KfN7bM3u1IWuZXWYozPsxCoqmMgVbhCafd1R3rO59es9Cd_OQtkgCbfbvjZtruC-JQSYStKwzwa4H3wAxPOZL2in4Tuxm0ZXFY1Akd7cIT4TGjVdkTAR4PUEwx-F180vsh9r8OruGoNV_T36WgmbxqalS9i_gRKpMFWZi8A71EZtYseyJqPciv-xoLHbgG_q4BfdSNqxikfHuaYMzv8hFDJaYtO6bUHzm9sntvKhoC0TRlOq0nDXtAdVfxJcISd8Pzb52gXogzTbqe_N_X6cAInqGBu3CBfheb-YrVA7Y9QuKHFDiCmbrnGD-c7eCJA-nKB_IxRbrMNCKspefUDMoVjCCK03tQr84mxsmbPorYJLfnTBH_a-v0/Qnqk_Asx-gE8xAb0EDywB1YTxOdQXDZk/8 ).\n\n3. Follow the steps to swap your EOS for A.\n\nOnce completed, you’ll now hold A, which replaces your old tokens.\n\nIf you have any questions regarding this update, please visit Coinbase Help ( https://comm.coinbase.com/CL0/https:%2F%2Flinks.coinbase.com%2Fs%2Fc%2F55xIkh24v27PO4xDb46euXXgpfjamxO9u8-a0jqjsbHexScoNtXmETNUK2eYkPirzV4Z-izgmBBQQHcEZ6Evxq4CI555_fRia4Uzs2I-ktn0NT9GOcP4mXEqB2J0HkVGwUPtba2RgLITATU59cy059ldQGvAVqx9WFgz8H8wbjD1-w2y91kaC3tI5F93-599g4u-9sFm5FR3o0QphKD_vyNz9IypDPszoG-zSir8qU9KY1fWlj9_mp9TirQ0xplQ3OWNGJnBOznHXRn0BKQAmQCbb88aFUTJl5eGW9MuMTKnKEYvsWUwYMTy3Unc48_hSqy2OVFUcMHgyH5cCoVTKWwoMwf18_bJgwSiaXxv7eOL8EceSUKjkzHdzaIGIKBNr-ErvRftHhnOxCtnddNH1kIzlOeItRR2HJ2Kmv2IBnD6bX2B69kv2wbJn45W7ySKpAjREoAd9gi8Ktb-ftT9zWRfsM3KihNsoNn7%2FiBAnlBB0QUE1TT2nI2CLp3h2g2bF2eDa%2F8/1/01000196d0311f77-a923b062-b3b0-4b63-b087-7c960cf7e90a-000000/hkSlul5D4C7ZF9GGXDhgv11O1edbXp1thiAnikG6xO0=405 ).\n\nCoinbase ( https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOBjT0BOZRfNcx9w_HKO3WQNYk4mTCyH_a5UR2Fs_-yr7uL6sd3TZkzEc7V1-zJv9kQL6RTXpQR-uDX49ZUzJFkuAGOrUUhXkAlzTq7XYYrl-Fg2sW7BISHxpHqVPO50GeAwMYMYZ0spEXivifyFkkp9nV_t_rpOTSotIFDk6DxpRwdy-ZmfyWo-wjxuzjhvcLWoS1QbFQwk46WKt7BjgqI_GO4DE7JTlMiSEHdb6UmYEkN58ow4NXMgiRA-svI8djwXp2A0_2AJdCxij_LCOfNoY-CVVbpyay4Yj7APdjBzI )\n© Coinbase 2025 | Coinbase Inc.\n\n248 3rd St #434\n\nOakland | CA 94607 | US\n\nwww. coinbase. com ( https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOHWg-dqwX2C6qKYY_f9yZ1wc19hvskxkk-HOYVATbHuIt7ZOj6pjefE17ytA3XuO1lvnirJV0wBP3-FvLufd96oDSKYV9uMOxSyvJ983JcyLDBuSwLUrO9RCCowfVlKswKNL4-u3Qg3ZcAFoV5Uvl-YBuJZSFDvG3jBZ7VkI8v3E2mA3ZT2T7hUUzwDq0dklRlVQeRRPVtSW-WiTFyibRiDpFZ3LZO51XT_2jdTR6_sSjAp0n6w1B1cWk4A3lk8sO12kSeFcgxrM-kRilho6PV7amwrdwqcG-kBqT_yQy4eO )\n\nGet in touch ( https://links.coinbase.com/s/c/8XC4m1nJJGLTGA2w1V_HegNb_IppIqNmRqm8i0f-a3IDU8ukg76jX7UDj02JviBNMl7OoLzm3hVRFfop4DH43xgPUWlhrSs4ix0f2qkCB9zwbISTzNc5UicYVki14E87us_z8wNk5m9-mGDXEWZUx-SlynsEVHl_mEWQObcG2DRwWKxKsh1RC78GxXyDALlvT5Crgde-IsoWQe28N3GNBJKIxyqE2oPCCtGsTFZB3SvDiKQBG7bh9w8mCbB3GbGdLz445TnZSkOLeDkJ0k-gOh3wKJAgYVJHX_g5ck6fbBRqLcyv0AGfUWDpRy1S5hOuZChMEEoqe-28PZoA8awVNINuwcRXUTqzFEhCMnsUHc-zgltUK9YarMqebTuan0rgEqa2ZCyJ2nQ5QS3WSvqBDgerUCV3gS9YMk0uBMDarVsDgnZ7fp-8rD_Olh5p5CLSgMWl3C04L2OLuRATmrs98kJbm0kDJKE0xj9XBSQ/DNG717UtR625W6q-yKF0oVwLD_9NliFp/8 )",
-          "textAsHtml": "<p>Below is a request from Michael to me.</p><p>* Please create this item on my board.</p><p>* Once created, research how to do this (including any key terms) and add those to the item you just created.</p><p>Thanks..</p><p>Michael&apos;s&nbsp;request:</p><p>Edward</p><p>Can you research and guide me on how to do this. I have a bunch of EOS tokens in Coinbase that need to be transferred&nbsp;to my self custodial wallet Exodus.</p><p>Not urgent, but good to do in the next week or so.</p><p>EOS Token (EOS) Migration</p><p>We&rsquo;re reaching out with an update regarding the migration of the EOS (EOS) token to Vaulta (A). If you hold these tokens, here&rsquo;s what you need to know:<br/>*What&apos;s Happening?*</p><p>The EOS token is being replaced by A as part of a project upgrade.</p><p>To continue using your tokens, you&rsquo;ll need to swap your EOS tokens for A through the official migration portal ( <a href=\"https://links.coinbase.com/s/c/ePPeOFRnDqaWdsJnwJVmskOPTrBQkKx9M9dOQK7NcPoLEi62rHFmpfJSv9ZM0k8xpzcOfZ_ZVyC5s86K1y7sYuPO0rTu7YwdQfFfcDXWdpeVm-Psa-T6CZR_klpJwSJoY_Tstk0KLnVUz5U8MF5DHa1S-hrZcPDQioMLJRrCc9AD12wHLgtTl3trRgIqizB9HHjsfx1oU3dLCOsCZihFBTi60WHQB4p4dDQWJ0REOjc1W97FWWKB7Xx5mM2YCFkqLK81rq9CZhsuvhxZmtJ85ov8Yr4GyLCuZKR3ADUIyGyKoes5UDs8RSzGC_A9WM7O6uy8uB-BAV5-AWq-Nq5P6pN-c_e7LICgfH7KFuT6ERnWRrERq36jn57dfgV3fYbX1q5nWZfiqoGMN7iV4-3LL22wYfviD8elC4owW-aoZ9T3k45S_8UlRw92ZN3DOTT_usdWnzyxqBiC-mG7H42m3yD42_cQUyRiYSQIjEdozj7mmB2iu9vLcgQxxO5QwQUkJJbVrtU-o6t63DygVXIVaau4oXKiHSawnal6sVMCfDOB928uEMIuvN5_5Gtm32w7z7Maqu2OniY-rfcvhkWrs_8/mtdy3U2zMG_u4gv6iBNit9Fb_b6uQ3G6/8\">https://links.coinbase.com/s/c/ePPeOFRnDqaWdsJnwJVmskOPTrBQkKx9M9dOQK7NcPoLEi62rHFmpfJSv9ZM0k8xpzcOfZ_ZVyC5s86K1y7sYuPO0rTu7YwdQfFfcDXWdpeVm-Psa-T6CZR_klpJwSJoY_Tstk0KLnVUz5U8MF5DHa1S-hrZcPDQioMLJRrCc9AD12wHLgtTl3trRgIqizB9HHjsfx1oU3dLCOsCZihFBTi60WHQB4p4dDQWJ0REOjc1W97FWWKB7Xx5mM2YCFkqLK81rq9CZhsuvhxZmtJ85ov8Yr4GyLCuZKR3ADUIyGyKoes5UDs8RSzGC_A9WM7O6uy8uB-BAV5-AWq-Nq5P6pN-c_e7LICgfH7KFuT6ERnWRrERq36jn57dfgV3fYbX1q5nWZfiqoGMN7iV4-3LL22wYfviD8elC4owW-aoZ9T3k45S_8UlRw92ZN3DOTT_usdWnzyxqBiC-mG7H42m3yD42_cQUyRiYSQIjEdozj7mmB2iu9vLcgQxxO5QwQUkJJbVrtU-o6t63DygVXIVaau4oXKiHSawnal6sVMCfDOB928uEMIuvN5_5Gtm32w7z7Maqu2OniY-rfcvhkWrs_8/mtdy3U2zMG_u4gv6iBNit9Fb_b6uQ3G6/8</a> ). You can find more details about the migration and how to swap your tokens here ( <a href=\"https://links.coinbase.com/s/c/NRAvwLBUIhX4RRJP6XeWNHGYtGYcj1hqDMa_Q4eNFNUgMkC47J-C6f4pLthyKnJ2LVTk5DSibWR7_NxMkxI94B8WPPn5WvCP8S0JpKmsc2K5vQQ2fZx2XEdoajXAqjfxiTh4ocUJSUD9UKj4XhRa75boKQyouPzepN6mOUv2161Hv7247GaQIn8gX8YSaTGyfAsSmrHq4rUHbjB9gRzGKS1uHuhQrAyXm0TiXYPu3MfVe_gmXwg_swfCiqnmscnTyrDqISaz5tbu7ydDlTipTL06MzWfcqXIXriK9oe07A9mDQAUONXj-G98pc62zM5H0Wpmps3yrBTCUJOfH2-wow2qIES1gB5ITyqTdOpZyIE-mrdp9NQ4D0qvM3ow5T2T9Z2y4nPYu1GjCTK9GxCHkIxnWfsOcR8ZS-Se3F4_nTFoqKXG1DWDP5tifbj19lO8DEu1jpjJBFAZCKmFNySwzFBketem_QgM_k0WWM3WUxHyHuafGC1yqnyGz4U2HAgMFKBWOl05UJCNgQP0WWPVOB48EebK0-C-Hp157O3i5mrGCoj0fQ42AKPxE2mUNMyYRfMoE2ZQ0Wk3tGckuA/vjiI-VvwLkM7mdaQOse853E7S_2LHx0Z/8\">https://links.coinbase.com/s/c/NRAvwLBUIhX4RRJP6XeWNHGYtGYcj1hqDMa_Q4eNFNUgMkC47J-C6f4pLthyKnJ2LVTk5DSibWR7_NxMkxI94B8WPPn5WvCP8S0JpKmsc2K5vQQ2fZx2XEdoajXAqjfxiTh4ocUJSUD9UKj4XhRa75boKQyouPzepN6mOUv2161Hv7247GaQIn8gX8YSaTGyfAsSmrHq4rUHbjB9gRzGKS1uHuhQrAyXm0TiXYPu3MfVe_gmXwg_swfCiqnmscnTyrDqISaz5tbu7ydDlTipTL06MzWfcqXIXriK9oe07A9mDQAUONXj-G98pc62zM5H0Wpmps3yrBTCUJOfH2-wow2qIES1gB5ITyqTdOpZyIE-mrdp9NQ4D0qvM3ow5T2T9Z2y4nPYu1GjCTK9GxCHkIxnWfsOcR8ZS-Se3F4_nTFoqKXG1DWDP5tifbj19lO8DEu1jpjJBFAZCKmFNySwzFBketem_QgM_k0WWM3WUxHyHuafGC1yqnyGz4U2HAgMFKBWOl05UJCNgQP0WWPVOB48EebK0-C-Hp157O3i5mrGCoj0fQ42AKPxE2mUNMyYRfMoE2ZQ0Wk3tGckuA/vjiI-VvwLkM7mdaQOse853E7S_2LHx0Z/8</a> ). A list of wallets compatible with the EOS Native network can be found here ( <a href=\"https://links.coinbase.com/s/c/y-FvBJr_0_o_jMkI1-Bof6mAtQ2pGfH2Fi3JIao8HjPLNY5JbJYGYA9D3KIUyYmX0LC5BmPc8gdc6DrVeuUDPFEwxXLKS_JM4c3Sth0_fl9iEj9MSMjWoP5Yr8GBchtpRP2kcbFKUjVlYaclg_RrOKIKVx2tdqe60fxhxNfRf66c0C020NGAmNUY2lG1rmIZ4dQfrxLuYVxzoIhsrShRkbU8vLN8OMUjvXs_nzuhbdw3Djg8LBSt9aMmTg9Oo_pGpSC_GSEkbk7LxDAvdIKFcWO3H2MheuAl1qvBgkk89hbCtA1bPq-Zju9NujvtDurPPAoBB2rSePu1e4tEjY4hXrthSdyl-4dPEY5OE0Yv00Cd3Sh960KJDYis6KxzqrIHR9r_Hu7Q2f7ZnX7Hepb8hY7lsrlDyQXsj7x4ONalDQx40SHQbtxsna0av65hUBa43zXyvZLTmy-U8V5XElItiaLhwf68voXthO5rQCoom5SjxHcLsM_DocgxNwZ1p6O7-Xk7/w7CYU89OMM_k5desr84tGJVyYGnCOiZm/8\">https://links.coinbase.com/s/c/y-FvBJr_0_o_jMkI1-Bof6mAtQ2pGfH2Fi3JIao8HjPLNY5JbJYGYA9D3KIUyYmX0LC5BmPc8gdc6DrVeuUDPFEwxXLKS_JM4c3Sth0_fl9iEj9MSMjWoP5Yr8GBchtpRP2kcbFKUjVlYaclg_RrOKIKVx2tdqe60fxhxNfRf66c0C020NGAmNUY2lG1rmIZ4dQfrxLuYVxzoIhsrShRkbU8vLN8OMUjvXs_nzuhbdw3Djg8LBSt9aMmTg9Oo_pGpSC_GSEkbk7LxDAvdIKFcWO3H2MheuAl1qvBgkk89hbCtA1bPq-Zju9NujvtDurPPAoBB2rSePu1e4tEjY4hXrthSdyl-4dPEY5OE0Yv00Cd3Sh960KJDYis6KxzqrIHR9r_Hu7Q2f7ZnX7Hepb8hY7lsrlDyQXsj7x4ONalDQx40SHQbtxsna0av65hUBa43zXyvZLTmy-U8V5XElItiaLhwf68voXthO5rQCoom5SjxHcLsM_DocgxNwZ1p6O7-Xk7/w7CYU89OMM_k5desr84tGJVyYGnCOiZm/8</a> ).</p><p>*What This Means for You*</p><p>* Coinbase will NOT automatically convert your tokens.</p><p>* To swap your tokens, you&rsquo;ll need to move them to a compatible self-custodial wallet before completing the migration.</p><p>* There&rsquo;s no set deadline right now, so you have time to make the switch.</p><p>*How to Swap Your Tokens*</p><p>1. Move your EOS tokens to a self-custodial wallet.</p><p>2. Go to the official migration portal ( <a href=\"https://links.coinbase.com/s/c/VwX2LWHE5Li1L02Jvlr3Py-r8pZT94CuP-IkxxZf0QR4zMtxN0IxJK3lZkbeEACg8rfRjmX4Pzie11HlY48BLowSnsvVQIoNf3CBcLLm5m36gfUk3bX1JP__6WWkjcfCRh6QV5fKbZ7cj3aNN1EHGOtLeXCXyxVKMolweClJNc54-mpn-WgsPmsmLTqKsuCznzhy2KYoVEdkD0EwVeEWyfDWViGJ1EaW6KfN7bM3u1IWuZXWYozPsxCoqmMgVbhCafd1R3rO59es9Cd_OQtkgCbfbvjZtruC-JQSYStKwzwa4H3wAxPOZL2in4Tuxm0ZXFY1Akd7cIT4TGjVdkTAR4PUEwx-F180vsh9r8OruGoNV_T36WgmbxqalS9i_gRKpMFWZi8A71EZtYseyJqPciv-xoLHbgG_q4BfdSNqxikfHuaYMzv8hFDJaYtO6bUHzm9sntvKhoC0TRlOq0nDXtAdVfxJcISd8Pzb52gXogzTbqe_N_X6cAInqGBu3CBfheb-YrVA7Y9QuKHFDiCmbrnGD-c7eCJA-nKB_IxRbrMNCKspefUDMoVjCCK03tQr84mxsmbPorYJLfnTBH_a-v0/Qnqk_Asx-gE8xAb0EDywB1YTxOdQXDZk/8\">https://links.coinbase.com/s/c/VwX2LWHE5Li1L02Jvlr3Py-r8pZT94CuP-IkxxZf0QR4zMtxN0IxJK3lZkbeEACg8rfRjmX4Pzie11HlY48BLowSnsvVQIoNf3CBcLLm5m36gfUk3bX1JP__6WWkjcfCRh6QV5fKbZ7cj3aNN1EHGOtLeXCXyxVKMolweClJNc54-mpn-WgsPmsmLTqKsuCznzhy2KYoVEdkD0EwVeEWyfDWViGJ1EaW6KfN7bM3u1IWuZXWYozPsxCoqmMgVbhCafd1R3rO59es9Cd_OQtkgCbfbvjZtruC-JQSYStKwzwa4H3wAxPOZL2in4Tuxm0ZXFY1Akd7cIT4TGjVdkTAR4PUEwx-F180vsh9r8OruGoNV_T36WgmbxqalS9i_gRKpMFWZi8A71EZtYseyJqPciv-xoLHbgG_q4BfdSNqxikfHuaYMzv8hFDJaYtO6bUHzm9sntvKhoC0TRlOq0nDXtAdVfxJcISd8Pzb52gXogzTbqe_N_X6cAInqGBu3CBfheb-YrVA7Y9QuKHFDiCmbrnGD-c7eCJA-nKB_IxRbrMNCKspefUDMoVjCCK03tQr84mxsmbPorYJLfnTBH_a-v0/Qnqk_Asx-gE8xAb0EDywB1YTxOdQXDZk/8</a> ).</p><p>3. Follow the steps to swap your EOS for A.</p><p>Once completed, you&rsquo;ll now hold A, which replaces your old tokens.</p><p>If you have any questions regarding this update, please visit Coinbase Help ( <a href=\"https://comm.coinbase.com/CL0/https:%2F%2Flinks.coinbase.com%2Fs%2Fc%2F55xIkh24v27PO4xDb46euXXgpfjamxO9u8-a0jqjsbHexScoNtXmETNUK2eYkPirzV4Z-izgmBBQQHcEZ6Evxq4CI555_fRia4Uzs2I-ktn0NT9GOcP4mXEqB2J0HkVGwUPtba2RgLITATU59cy059ldQGvAVqx9WFgz8H8wbjD1-w2y91kaC3tI5F93-599g4u-9sFm5FR3o0QphKD_vyNz9IypDPszoG-zSir8qU9KY1fWlj9_mp9TirQ0xplQ3OWNGJnBOznHXRn0BKQAmQCbb88aFUTJl5eGW9MuMTKnKEYvsWUwYMTy3Unc48_hSqy2OVFUcMHgyH5cCoVTKWwoMwf18_bJgwSiaXxv7eOL8EceSUKjkzHdzaIGIKBNr-ErvRftHhnOxCtnddNH1kIzlOeItRR2HJ2Kmv2IBnD6bX2B69kv2wbJn45W7ySKpAjREoAd9gi8Ktb-ftT9zWRfsM3KihNsoNn7%2FiBAnlBB0QUE1TT2nI2CLp3h2g2bF2eDa%2F8/1/01000196d0311f77-a923b062-b3b0-4b63-b087-7c960cf7e90a-000000/hkSlul5D4C7ZF9GGXDhgv11O1edbXp1thiAnikG6xO0=405\">https://comm.coinbase.com/CL0/https:%2F%2Flinks.coinbase.com%2Fs%2Fc%2F55xIkh24v27PO4xDb46euXXgpfjamxO9u8-a0jqjsbHexScoNtXmETNUK2eYkPirzV4Z-izgmBBQQHcEZ6Evxq4CI555_fRia4Uzs2I-ktn0NT9GOcP4mXEqB2J0HkVGwUPtba2RgLITATU59cy059ldQGvAVqx9WFgz8H8wbjD1-w2y91kaC3tI5F93-599g4u-9sFm5FR3o0QphKD_vyNz9IypDPszoG-zSir8qU9KY1fWlj9_mp9TirQ0xplQ3OWNGJnBOznHXRn0BKQAmQCbb88aFUTJl5eGW9MuMTKnKEYvsWUwYMTy3Unc48_hSqy2OVFUcMHgyH5cCoVTKWwoMwf18_bJgwSiaXxv7eOL8EceSUKjkzHdzaIGIKBNr-ErvRftHhnOxCtnddNH1kIzlOeItRR2HJ2Kmv2IBnD6bX2B69kv2wbJn45W7ySKpAjREoAd9gi8Ktb-ftT9zWRfsM3KihNsoNn7%2FiBAnlBB0QUE1TT2nI2CLp3h2g2bF2eDa%2F8/1/01000196d0311f77-a923b062-b3b0-4b63-b087-7c960cf7e90a-000000/hkSlul5D4C7ZF9GGXDhgv11O1edbXp1thiAnikG6xO0=405</a> ).</p><p>Coinbase ( <a href=\"https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOBjT0BOZRfNcx9w_HKO3WQNYk4mTCyH_a5UR2Fs_-yr7uL6sd3TZkzEc7V1-zJv9kQL6RTXpQR-uDX49ZUzJFkuAGOrUUhXkAlzTq7XYYrl-Fg2sW7BISHxpHqVPO50GeAwMYMYZ0spEXivifyFkkp9nV_t_rpOTSotIFDk6DxpRwdy-ZmfyWo-wjxuzjhvcLWoS1QbFQwk46WKt7BjgqI_GO4DE7JTlMiSEHdb6UmYEkN58ow4NXMgiRA-svI8djwXp2A0_2AJdCxij_LCOfNoY-CVVbpyay4Yj7APdjBzI\">https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOBjT0BOZRfNcx9w_HKO3WQNYk4mTCyH_a5UR2Fs_-yr7uL6sd3TZkzEc7V1-zJv9kQL6RTXpQR-uDX49ZUzJFkuAGOrUUhXkAlzTq7XYYrl-Fg2sW7BISHxpHqVPO50GeAwMYMYZ0spEXivifyFkkp9nV_t_rpOTSotIFDk6DxpRwdy-ZmfyWo-wjxuzjhvcLWoS1QbFQwk46WKt7BjgqI_GO4DE7JTlMiSEHdb6UmYEkN58ow4NXMgiRA-svI8djwXp2A0_2AJdCxij_LCOfNoY-CVVbpyay4Yj7APdjBzI</a> )<br/>&copy; Coinbase 2025&nbsp;| Coinbase Inc.</p><p>248 3rd St #434</p><p>Oakland | CA 94607 | US</p><p>www. coinbase. com ( <a href=\"https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOHWg-dqwX2C6qKYY_f9yZ1wc19hvskxkk-HOYVATbHuIt7ZOj6pjefE17ytA3XuO1lvnirJV0wBP3-FvLufd96oDSKYV9uMOxSyvJ983JcyLDBuSwLUrO9RCCowfVlKswKNL4-u3Qg3ZcAFoV5Uvl-YBuJZSFDvG3jBZ7VkI8v3E2mA3ZT2T7hUUzwDq0dklRlVQeRRPVtSW-WiTFyibRiDpFZ3LZO51XT_2jdTR6_sSjAp0n6w1B1cWk4A3lk8sO12kSeFcgxrM-kRilho6PV7amwrdwqcG-kBqT_yQy4eO\">https://links.coinbase.com/a/click?_t=3aca56371967418192255878e9689713&_m=558a9360871b46b7821c7e6242f224bf&_e=EiHWzeO0angkl08_t7UYYtCPDr7U34mSIBbPRJtLDYiKWrZXcvfcb-O_1ZRAsB1jXsKkM2ClHdP2yiAXhxMiCYfAeG3XjwFFm0TKHZYLW4wpXxHOCSiKB45h5lsLjy5TiCoZJEFqVSPqekAhWzATOHWg-dqwX2C6qKYY_f9yZ1wc19hvskxkk-HOYVATbHuIt7ZOj6pjefE17ytA3XuO1lvnirJV0wBP3-FvLufd96oDSKYV9uMOxSyvJ983JcyLDBuSwLUrO9RCCowfVlKswKNL4-u3Qg3ZcAFoV5Uvl-YBuJZSFDvG3jBZ7VkI8v3E2mA3ZT2T7hUUzwDq0dklRlVQeRRPVtSW-WiTFyibRiDpFZ3LZO51XT_2jdTR6_sSjAp0n6w1B1cWk4A3lk8sO12kSeFcgxrM-kRilho6PV7amwrdwqcG-kBqT_yQy4eO</a> )</p><p>Get in touch ( <a href=\"https://links.coinbase.com/s/c/8XC4m1nJJGLTGA2w1V_HegNb_IppIqNmRqm8i0f-a3IDU8ukg76jX7UDj02JviBNMl7OoLzm3hVRFfop4DH43xgPUWlhrSs4ix0f2qkCB9zwbISTzNc5UicYVki14E87us_z8wNk5m9-mGDXEWZUx-SlynsEVHl_mEWQObcG2DRwWKxKsh1RC78GxXyDALlvT5Crgde-IsoWQe28N3GNBJKIxyqE2oPCCtGsTFZB3SvDiKQBG7bh9w8mCbB3GbGdLz445TnZSkOLeDkJ0k-gOh3wKJAgYVJHX_g5ck6fbBRqLcyv0AGfUWDpRy1S5hOuZChMEEoqe-28PZoA8awVNINuwcRXUTqzFEhCMnsUHc-zgltUK9YarMqebTuan0rgEqa2ZCyJ2nQ5QS3WSvqBDgerUCV3gS9YMk0uBMDarVsDgnZ7fp-8rD_Olh5p5CLSgMWl3C04L2OLuRATmrs98kJbm0kDJKE0xj9XBSQ/DNG717UtR625W6q-yKF0oVwLD_9NliFp/8\">https://links.coinbase.com/s/c/8XC4m1nJJGLTGA2w1V_HegNb_IppIqNmRqm8i0f-a3IDU8ukg76jX7UDj02JviBNMl7OoLzm3hVRFfop4DH43xgPUWlhrSs4ix0f2qkCB9zwbISTzNc5UicYVki14E87us_z8wNk5m9-mGDXEWZUx-SlynsEVHl_mEWQObcG2DRwWKxKsh1RC78GxXyDALlvT5Crgde-IsoWQe28N3GNBJKIxyqE2oPCCtGsTFZB3SvDiKQBG7bh9w8mCbB3GbGdLz445TnZSkOLeDkJ0k-gOh3wKJAgYVJHX_g5ck6fbBRqLcyv0AGfUWDpRy1S5hOuZChMEEoqe-28PZoA8awVNINuwcRXUTqzFEhCMnsUHc-zgltUK9YarMqebTuan0rgEqa2ZCyJ2nQ5QS3WSvqBDgerUCV3gS9YMk0uBMDarVsDgnZ7fp-8rD_Olh5p5CLSgMWl3C04L2OLuRATmrs98kJbm0kDJKE0xj9XBSQ/DNG717UtR625W6q-yKF0oVwLD_9NliFp/8</a> )</p>",
-          "subject": "Fwd: Fwd: EOS TOKEN MIGRATION",
-          "references": [
-            "<mhw83buh.adc93db8-e24b-4e98-bc00-3882222886be@we.are.superhuman.com>",
-            "<CAL9ygaqGAWjzRUN4xcYSFhVGdbpdH43y=fYJqA2vHG5VPBu+DQ@mail.gmail.com>"
-          ],
-          "date": "2025-11-12T17:12:16.000Z",
+          "html": "<div dir=\"ltr\"><br><br><div class=\"gmail_quote gmail_quote_container\"><div dir=\"ltr\" class=\"gmail_attr\">---------- Forwarded message ---------<br>From: <strong class=\"gmail_sendername\" dir=\"auto\">&#39;Air&#39; via Admin</strong> <span dir=\"auto\">&lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;</span><br>Date: Thu, Dec 18, 2025 at 3:13 AM<br>Subject: 2 new notifications in Storied<br>To:  &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;<br></div><br><br><u></u><div style=\"display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0\">2 new notifications<div> ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿</div></div><div><div style=\"background-color:#f6f6f6;margin-left:auto;margin-right:auto;margin-top:auto;margin-bottom:auto;padding-top:48px;padding-bottom:48px;padding-left:12px;padding-right:12px\"><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"max-width:560px;background-color:white;border-radius:4px\"><tbody><tr style=\"width:100%\"><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"margin-bottom:24px;padding-left:48px;padding-right:48px;padding-top:32px;padding-bottom:32px\"><tbody><tr><td><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/8f0de33b-aa37-1a1e-5d4b-4a138b11d661.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:24px;color:#07b3be\"></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;padding-left:48px;padding-right:48px;padding-bottom:32px\"><tbody><tr><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:8px\"><img alt=\"Workspace image\" height=\"24\" src=\"https://assets.aircamera.com/avatars/avatar_yellow_1.png?q=80&amp;w=48&amp;h=48\" style=\"display:block;outline:none;border:none;text-decoration:none;border-radius:4px;object-fit:cover\" width=\"24\"></td><td><p style=\"font-size:16px;line-height:1.5;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-0.011em;color:#666666\">Storied</p></td></tr></tbody></table><h1 style=\"margin-top:8px;margin-bottom:8px;font-size:20px;font-weight:600;color:#202020\">2 new notifications</h1><div style=\"margin-top:32px\"><div style=\"border-radius:4px;border:1px solid;border-color:#efefef;padding-left:8px;padding-right:8px;margin-bottom:32px\"><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;width:100%;padding:16px;border-bottom:1px solid;border-color:#efefef\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:16px;vertical-align:baseline\"><div style=\"height:24px;max-height:24px;width:24px;overflow:hidden;border-radius:24px;background-color:#f6f6f6\"><div style=\"margin-left:7px;margin-top:5px;height:10px;width:10px;border-radius:10px;background-color:#dcdcdc\"></div><div style=\"margin-left:3px;margin-top:2px;height:18px;width:18px;border-radius:18px;background-color:#dcdcdc\"></div></div></td><td><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><div style=\"margin:0;font-size:14px;line-height:20px;word-break:break-word;color:#202020;margin-bottom:8px\"><b>Someone</b> downloaded 3 items</div><p style=\"overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#a4a4a4;margin:0\">in Work In Action Selects</p></span><span></span></a></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;width:100%;padding:16px\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td style=\"width:24px;padding-right:16px;vertical-align:baseline\"><div style=\"height:24px;max-height:24px;width:24px;overflow:hidden;border-radius:24px;background-color:#f6f6f6\"><div style=\"margin-left:7px;margin-top:5px;height:10px;width:10px;border-radius:10px;background-color:#dcdcdc\"></div><div style=\"margin-left:3px;margin-top:2px;height:18px;width:18px;border-radius:18px;background-color:#dcdcdc\"></div></div></td><td><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><div style=\"margin:0;font-size:14px;line-height:20px;word-break:break-word;color:#202020;margin-bottom:8px\"><b>Someone</b> viewed <b>Work In Action Selects</b></div><p style=\"overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#a4a4a4;margin:0\"></p></span><span></span></a></td></tr></tbody></table></div><a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"border-radius:4px;background-color:#034bff;padding-left:12px;padding-right:12px;padding-top:10px;padding-bottom:10px;font-size:14px;line-height:100%;font-weight:600;color:white;text-decoration:none;display:inline-block;max-width:100%;padding:10px 12px 10px 12px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\">View notifications</span><span></span></a></div></td></tr></tbody></table><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"table-layout:fixed;border-bottom-right-radius:4px;border-bottom-left-radius:4px;padding-left:48px;padding-right:48px;padding-bottom:24px;padding-top:48px\"><tbody><tr><td><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td><p style=\"font-size:12px;line-height:24px;margin:0;letter-spacing:normal;color:#808080;margin-bottom:16px\">If you’d rather not receive updates, you can <a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:underline\" target=\"_blank\">manage your notifications</a>.</p><div style=\"color:#a4a4a4;font-size:10px\"><a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Terms of service</a> | <a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Privacy policy</a> | <a href=\"https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"color:inherit;text-decoration:none\" target=\"_blank\">Help center</a></div><p style=\"font-size:12px;line-height:24px;margin:16px 0;margin-bottom:16px;margin-top:16px;letter-spacing:normal;color:#a4a4a4\">© Air Labs, Inc.</p><table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\"><tbody style=\"width:100%\"><tr style=\"width:100%\"><td><p style=\"font-size:14px;line-height:24px;margin:16px 0;display:none\">Thu, Dec 18, 2025, 12:13:32 AM</p></td><td><a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/6ee66644-645b-eb4e-4165-ca6c243e51d1.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:16px;color:#c1c1c1\"></span><span></span></a></td><td style=\"text-align:right\"><a href=\"https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\" style=\"margin-right:4px;line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/18a69d84-c814-113b-0eba-432b33eb5750.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:12px\"></span><span></span></a><a href=\"https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\" style=\"line-height:100%;text-decoration:none;display:inline-block;max-width:100%;padding:0px 0px 0px 0px\" target=\"_blank\"><span></span><span style=\"max-width:100%;display:inline-block;line-height:120%\"><img src=\"https://mcusercontent.com/68c7bae8f8aa12aa52770c239/images/e74fda5d-c99e-f31c-6a7b-ecb7b21c4612.png\" style=\"display:block;outline:none;border:none;text-decoration:none;height:12px\"></span><span></span></a></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></div><img src=\"https://mandrillapp.com/track/open.php?u=31081829&amp;id=5f8c0dfa317a44d7b68a7d45c7e374b9\" height=\"1\" width=\"1\" alt=\"\"></div>\n</div><div><br clear=\"all\"></div><div><br></div><span class=\"gmail_signature_prefix\">-- </span><br><div dir=\"ltr\" class=\"gmail_signature\" data-smartmail=\"gmail_signature\"><div dir=\"ltr\"><span><div dir=\"ltr\" style=\"margin-left:0pt\" align=\"left\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;color:rgb(94,73,47);font-family:&quot;signature hound&quot;,-apple-system,&quot;system-ui&quot;,&quot;segoe ui&quot;,Roboto,&quot;helvetica neue&quot;,Arial,&quot;noto sans&quot;,sans-serif,&quot;apple color emoji&quot;,&quot;segoe ui emoji&quot;,&quot;segoe ui symbol&quot;,&quot;noto color emoji&quot;;font-size:14px;letter-spacing:-0.084px;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td align=\"center\" style=\"padding:0px 7px 0px 0px;vertical-align:top\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px\"><p style=\"margin:1px;padding:0px\"><img src=\"https://signaturehound.com/api/v1/file/1uduwplm3gau4ww?v=1731527618144\" alt=\"\" title=\"Profile Picture\" width=\"65\" height=\"65\" style=\"vertical-align:middle;border:0px;max-width:65px;height:65px;display:block\"></p></td></tr></tbody></table></td><td width=\"5\" style=\"padding:1px 0px 0px\"></td><td style=\"padding:0px 1px 0px 0px;vertical-align:top\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px;font-family:Arial,sans-serif;font-size:11px;line-height:14px\"><p style=\"margin:1px;padding:0px;line-height:14px;font-weight:700;color:rgb(8,43,153)\">Edward Njogu</p><p style=\"margin:1px;padding:0px;line-height:14px;color:rgb(92,92,92)\">EA to Michael Margolis</p><p style=\"margin:1px;padding:0px;line-height:14px;color:rgb(92,92,92)\">Storied Inc.</p></td></tr><tr><td style=\"padding:4px 1px 0px 0px\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse;margin:0px\"><tbody><tr><td style=\"padding:0px 1px 0px 0px;font-family:Arial,sans-serif;font-size:11px;line-height:14px;color:rgb(92,92,91)!important\"><p style=\"margin:1px;padding:0px\"><a href=\"mailto:edward@storiedinc.com\" style=\"color:rgb(92,92,92);background-color:transparent;line-height:14px\" target=\"_blank\">edward@storiedinc.com</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr><td style=\"padding:0px 1px 0px 0px\"> </td></tr></tbody></table><br></div></span></div></div></div>\n",
+          "text": "---------- Forwarded message ---------\nFrom: 'Air' via Admin <admin@storiedinc.com>\nDate: Thu, Dec 18, 2025 at 3:13 AM\nSubject: 2 new notifications in Storied\nTo: <admin@storiedinc.com>\n\n\n2 new notifications\n ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿ ‌‍‎‏﻿\n[image: Workspace image]\n\nStoried\n2 new notifications\n*Someone* downloaded 3 items\n\nin Work In Action Selects\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\n\n*Someone* viewed *Work In Action Selects*\n\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\nView notifications\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\nIf you’d rather not receive updates, you can manage your notifications\n<https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n.\nTerms of service\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9>\n| Privacy policy\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n| Help center\n<https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\n© Air Labs, Inc.\n\nThu, Dec 18, 2025, 12:13:32 AM\n<https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9>\n<https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ>\n<https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0>\n\n\n-- \n\nEdward Njogu\n\nEA to Michael Margolis\n\nStoried Inc.\n\nedward@storiedinc.com\n",
+          "textAsHtml": "<p>---------- Forwarded message ---------<br/>From: &apos;Air&apos; via Admin &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;<br/>Date: Thu, Dec 18, 2025 at 3:13&#x202F;AM<br/>Subject: 2 new notifications in Storied<br/>To: &lt;<a href=\"mailto:admin@storiedinc.com\">admin@storiedinc.com</a>&gt;</p><p>2 new notifications<br/> &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>&zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF; &zwnj;&zwj;&lrm;&rlm;&#xFEFF;<br/>[image: Workspace image]</p><p>Storied<br/>2 new notifications<br/>*Someone* downloaded 3 items</p><p>in Work In Action Selects<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiUk15NTMyQkk4ZVR4MFVPLXBmREFwUXBFaXB3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvMmJlY2JjM2QtZjJiZC00ZTA1LTliZWYtYzNiZTA0Nzg4M2Q3XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;</p><p>*Someone* viewed *Work In Action Selects*</p><p>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoicjJqQnhNZEdnZERNTmdDZlVEeUhxay1vOUtRIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL25vdGlmaWNhdGlvbnNcXFwvYTE1ZmQwYzQtNzllZS00ODdhLWEzY2UtZjVjNTYzNTUyMmU0XCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCJmNjFhODIzNjJhOGU5NzRmZjZmY2JiZTgwOTdiMjBhNWMxMTQ1YjU1XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;<br/>View notifications<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoibmZBRnZWMjFuZ0d4V3Y2N0VYbTJqWTh4azRNIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FsbD93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlYyZuUGFuZWw9dHJ1ZVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWI2NDVkYjQ2ODVlNWQ4Y2QyMjg3MjljZmUwMjUwNjQ4ZjU2MmRmZlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>If you&rsquo;d rather not receive updates, you can manage your notifications<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/app.air.inc?p=eyJzIjoiemtGQXl2MFh2Y0JiUTBhUVlwVnk5U2dOSEhvIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2FwcC5haXIuaW5jXFxcL2FjY291bnRcXFwvbm90aWZpY2F0aW9ucz93c2lkPTVlZjJkZDQ2LTE0MTgtNGYxMC1hOTZiLTk5MzE3MDUwZDFlY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZjYxYTgyMzYyYThlOTc0ZmY2ZmNiYmU4MDk3YjIwYTVjMTE0NWI1NVwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;<br/>.<br/>Terms of service<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiUlVCdzRfNzM1ZWpOQ1lFdlczd1VqVllRREtVIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvdGVybXNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjQwOGU0ZWE1ZmU2YWI2ODE2ZDIyZDE0NTU2ZmRkMjhiN2RkYWQ4YTBcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9</a>&gt;<br/>| Privacy policy<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoidmg2eE9uTWxkX08wN1dvRmRJd2lJTzdKSHlZIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcXFwvbGVnYWxcXFwvcHJpdmFjeVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiNGZjNWRmODgzYWM1OWIxMjMxOTU0NjAxNDY2ZDAxYzlkZDliY2MxNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;<br/>| Help center<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/help.air.inc?p=eyJzIjoiTHMtRFR3eUdPS0gyU2VVeXZXSjRMeDJFNHNjIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2hlbHAuYWlyLmluY1wiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiZWEzYzViNTA3NTExMGM0MjVmZGFmZWZjMDliM2NkOTMwN2IzYjlkNFwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>&copy; Air Labs, Inc.</p><p>Thu, Dec 18, 2025, 12:13:32 AM<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9\">https://mandrillapp.com/track/click/31081829/air.inc?p=eyJzIjoiN0t1Q2NDNWFDV21maC1UVUNja25qZHZHMEgwIiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL2Fpci5pbmNcIixcImlkXCI6XCI1ZjhjMGRmYTMxN2E0NGQ3YjY4YTdkNDVjN2UzNzRiOVwiLFwidXJsX2lkc1wiOltcIjVlZGYzNDQyMTQxM2JmZWM4MTczZDg1N2JlOTExNzY4MzdiNjZhNDZcIl0sXCJtc2dfdHNcIjoxNzY2MDE2ODEyfSJ9</a>&gt;<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ\">https://mandrillapp.com/track/click/31081829/twitter.com?p=eyJzIjoiOWNRQmFNejJtODhZNWN2c0hpczdham5hUEF3IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3R3aXR0ZXIuY29tXFxcL2FpckhRXCIsXCJpZFwiOlwiNWY4YzBkZmEzMTdhNDRkN2I2OGE3ZDQ1YzdlMzc0YjlcIixcInVybF9pZHNcIjpbXCI3NWM5MzI2NTFmMDkwMTU4MzFmNzA2YTBiZDkyYThjMjE3YjI4ZjE2XCJdLFwibXNnX3RzXCI6MTc2NjAxNjgxMn0ifQ</a>&gt;<br/>&lt;<a href=\"https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0\">https://mandrillapp.com/track/click/31081829/www.linkedin.com?p=eyJzIjoiUlk3MjZCbGMtUFFfVzRDWHpud2NIWWQ1blE0IiwidiI6MiwicCI6IntcInVcIjozMTA4MTgyOSxcInZcIjoyLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5saW5rZWRpbi5jb21cXFwvY29tcGFueVxcXC9haXJocVwiLFwiaWRcIjpcIjVmOGMwZGZhMzE3YTQ0ZDdiNjhhN2Q0NWM3ZTM3NGI5XCIsXCJ1cmxfaWRzXCI6W1wiOWNiMjY5MzBlYmQ0ZjE3NDM4Yzg4YzVhZGUwMDRhMDU1YmMyMzUxNlwiXSxcIm1zZ190c1wiOjE3NjYwMTY4MTJ9In0</a>&gt;</p><p>--</p><p>Edward Njogu</p><p>EA to Michael Margolis</p><p>Storied Inc.</p><p><a href=\"mailto:edward@storiedinc.com\">edward@storiedinc.com</a></p>",
+          "subject": "Fwd: 2 new notifications in Storied",
+          "references": "<31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>",
+          "date": "2025-12-18T00:39:01.000Z",
           "to": {
             "value": [
               {
-                "address": "ai@storiedinc.com",
-                "name": "Storied AI"
+                "address": "contentideas@storiedinc.com",
+                "name": "Content"
               }
             ],
-            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Storied AI</span> &lt;<a href=\"mailto:ai@storiedinc.com\" class=\"mp_address_email\">ai@storiedinc.com</a>&gt;</span>",
-            "text": "\"Storied AI\" <ai@storiedinc.com>"
+            "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Content</span> &lt;<a href=\"mailto:contentideas@storiedinc.com\" class=\"mp_address_email\">contentideas@storiedinc.com</a>&gt;</span>",
+            "text": "\"Content\" <contentideas@storiedinc.com>"
           },
           "from": {
             "value": [
@@ -695,14 +976,14 @@
             "html": "<span class=\"mp_address_group\"><span class=\"mp_address_name\">Edward Njogu</span> &lt;<a href=\"mailto:edward@storiedinc.com\" class=\"mp_address_email\">edward@storiedinc.com</a>&gt;</span>",
             "text": "\"Edward Njogu\" <edward@storiedinc.com>"
           },
-          "messageId": "<mhw9byja.73b97eb0-29f8-4065-b308-0ccf43e984d8@we.are.superhuman.com>",
-          "inReplyTo": "<CAL9ygaqGAWjzRUN4xcYSFhVGdbpdH43y=fYJqA2vHG5VPBu+DQ@mail.gmail.com>"
+          "messageId": "<CAL9ygaofb953wMwtWzWX4Gef+18tXB9gD9pDhAqXoVTLGwP=5Q@mail.gmail.com>",
+          "inReplyTo": "<31081829.20251218001332.6943472c4d61e5.05952502@mail333.us4.mandrillapp.com>"
         }
       }
     ]
   },
-  "versionId": "dde2bab7-eb7b-4165-9aed-0e766ce9d526",
-  "activeVersionId": "dde2bab7-eb7b-4165-9aed-0e766ce9d526",
+  "versionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
+  "activeVersionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
   "triggerCount": 1,
   "shared": [
     {
@@ -714,9 +995,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2025-12-08T23:30:50.986Z",
-    "createdAt": "2025-12-08T23:30:50.986Z",
-    "versionId": "dde2bab7-eb7b-4165-9aed-0e766ce9d526",
+    "updatedAt": "2025-12-20T20:51:58.511Z",
+    "createdAt": "2025-12-20T20:51:58.511Z",
+    "versionId": "687681a7-4e6e-491d-997a-5409bf72dea1",
     "workflowId": "VtuaZAAvnvzQToaV",
     "nodes": [
       {
@@ -737,8 +1018,8 @@
         "type": "n8n-nodes-base.gmailTrigger",
         "typeVersion": 1.2,
         "position": [
-          -304,
-          32
+          -336,
+          96
         ],
         "id": "04e9bab4-d940-4da8-8093-9e95f7b6c819",
         "name": "Gmail Trigger",
@@ -760,8 +1041,8 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 1.9,
         "position": [
-          528,
-          32
+          688,
+          48
         ],
         "id": "67652e76-405e-4bf8-be9c-4fbde2cea6f8",
         "name": "AI Agent",
@@ -790,7 +1071,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          672,
+          912,
           -176
         ],
         "id": "fe069788-c4a4-483b-91ab-b0e20edc4511",
@@ -813,7 +1094,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
         "typeVersion": 1.2,
         "position": [
-          400,
+          560,
           272
         ],
         "id": "7448b500-361e-4b7f-ab09-539c429847af",
@@ -848,7 +1129,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          464,
+          736,
           -176
         ],
         "id": "52e75859-f8ac-49c3-be1e-e0bdb5ebb6ce",
@@ -899,8 +1180,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          672,
-          464
+          832,
+          400
         ],
         "id": "ab694a9d-6410-4b99-bc35-616a5a1a7fcc",
         "name": "Monday Sub-Workflow"
@@ -942,8 +1223,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          960,
-          320
+          1168,
+          400
         ],
         "id": "fbec491a-1c53-4203-8827-68ba7b407c9d",
         "name": "Email Sub-Workflow"
@@ -1000,8 +1281,8 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          544,
-          384
+          672,
+          400
         ],
         "id": "dea14681-c82e-47c1-bad3-9a9c89ebb9c4",
         "name": "Slack Sub-Workflow"
@@ -1043,7 +1324,7 @@
         "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
         "typeVersion": 2.2,
         "position": [
-          816,
+          992,
           400
         ],
         "id": "926b9945-b647-4961-99c6-d418fc686335",
@@ -1078,64 +1359,10 @@
         "typeVersion": 2.2,
         "position": [
           -64,
-          32
+          96
         ],
         "id": "3435a822-b97c-48b7-b351-30a71e7d6296",
         "name": "Filter Out Mail from Storied AI"
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "id": "49b4a1dd-4bf5-4e24-8042-7795fe200208",
-                "leftValue": "={{ $json.headers.to.includes(\"ai@storiedinc.com\") }}",
-                "rightValue": "To: ai@storiedinc.com",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true",
-                  "singleValue": true
-                }
-              },
-              {
-                "id": "79ac21c9-3852-4b5e-a45a-a6a68a7439d4",
-                "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ai@storiedinc.com\"), false) }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true",
-                  "singleValue": true
-                }
-              },
-              {
-                "id": "e3f7331b-d738-4d31-9692-f4ee4311eccd",
-                "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ai@storiedinc.com\"), false) }}",
-                "rightValue": "",
-                "operator": {
-                  "type": "boolean",
-                  "operation": "true",
-                  "singleValue": true
-                }
-              }
-            ],
-            "combinator": "or"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.filter",
-        "typeVersion": 2.2,
-        "position": [
-          192,
-          32
-        ],
-        "id": "1dc73d91-ff7c-4d29-a2d6-eef5733aeb46",
-        "name": "Only Allow Mail to Storied AI"
       },
       {
         "parameters": {
@@ -1152,8 +1379,8 @@
         "type": "n8n-nodes-base.gmail",
         "typeVersion": 2.1,
         "position": [
-          880,
-          32
+          1200,
+          48
         ],
         "id": "2a9b3111-6dfc-4c1e-ae68-00301fb75f61",
         "name": "Create a draft",
@@ -1185,11 +1412,298 @@
         "type": "n8n-nodes-base.httpRequest",
         "typeVersion": 4.2,
         "position": [
-          1168,
-          32
+          1568,
+          48
         ],
         "id": "8a858aff-2016-4ff3-b5b7-a4366fbbd809",
         "name": "Send Gmail Draft",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "aLqiTFR2cLtIBYK6",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $json.headers.to.includes(\"ai@storiedinc.com\") }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      },
+                      "id": "bbb42841-dcf4-4ddb-99c9-844761e532dc"
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "96a3244e-ab7b-4d84-8df0-3aca72d87dc2",
+                      "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ai@storiedinc.com\"), false) }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "fd7db993-2053-4fe3-be21-3ce298c75753",
+                      "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ai@storiedinc.com\"), false) }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "43acc603-7e5c-49af-85b7-6ca4d673a065",
+                      "leftValue": "={{ $json.headers.to.includes(\"ideas@storiedinc.com\") }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "a435129e-724a-48fd-ab82-5f39c363138d",
+                      "leftValue": "={{ $if($json.headers.cc, $json.headers.cc.includes(\"ideas@storiedinc.com\"), false) }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 2
+                  },
+                  "conditions": [
+                    {
+                      "id": "5f044f3b-08ad-4bed-9196-b6ec63b8bb0b",
+                      "leftValue": "={{ $if($json.headers.bcc, $json.headers.bcc.includes(\"ideas@storiedinc.com\"), false) }}",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "boolean",
+                        "operation": "true",
+                        "singleValue": true
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.3,
+        "position": [
+          144,
+          32
+        ],
+        "id": "2bdb23e4-6aae-4fff-9e2a-5b9d40303c8e",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing",
+            "mode": "url"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 2003617587,
+            "mode": "list",
+            "cachedResultName": "Bank of ideas",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit#gid=2003617587"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Idea ": "={{ $json.headers.subject }}",
+              "Context": "={{ $json.text }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Idea ",
+                "displayName": "Idea ",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Context",
+                "displayName": "Context",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Relevant materials/sources",
+                "displayName": "Relevant materials/sources",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          752,
+          736
+        ],
+        "id": "aab95390-d9e5-42a9-99bb-bfd6d76af4f1",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "a2GvYolbVNMGjx2A",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "draft",
+          "subject": "={{ $('Gmail Trigger').item.json.headers.subject }}",
+          "emailType": "html",
+          "message": "=Ideas sheet updated.\n<br>\n<a href=\"https://docs.google.com/spreadsheets/d/1oUjawNZt9Pe-ttKethMjyd5x_JSBpeZ5HvUGPHR6PkU/edit?usp=sharing\">Link to sheet.</a>",
+          "options": {
+            "fromAlias": "edward@storiedinc.com",
+            "replyTo": "edward@storiedinc.com",
+            "threadId": "={{ $('Gmail Trigger').item.json.threadId }}",
+            "sendTo": "={{ $('Gmail Trigger').item.json.from.value[0].address }}"
+          }
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.1,
+        "position": [
+          1088,
+          736
+        ],
+        "id": "69bc6696-72e5-4a8b-b78e-af474adefd34",
+        "name": "Create a draft1",
+        "webhookId": "9b7d0c52-2748-4e44-a034-09dc6f428b17",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "aLqiTFR2cLtIBYK6",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://gmail.googleapis.com/gmail/v1/users/me/drafts/send",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "gmailOAuth2",
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "id",
+                "value": "={{ $json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          1456,
+          736
+        ],
+        "id": "c8c81196-025f-4b92-b011-d9aad7654d0d",
+        "name": "Send Gmail Draft1",
         "credentials": {
           "gmailOAuth2": {
             "id": "aLqiTFR2cLtIBYK6",
@@ -1302,18 +1816,7 @@
         "main": [
           [
             {
-              "node": "Only Allow Mail to Storied AI",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Only Allow Mail to Storied AI": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
+              "node": "Switch",
               "type": "main",
               "index": 0
             }
@@ -1325,6 +1828,74 @@
           [
             {
               "node": "Send Gmail Draft",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a draft1": {
+        "main": [
+          [
+            {
+              "node": "Send Gmail Draft1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Create a draft1",
               "type": "main",
               "index": 0
             }

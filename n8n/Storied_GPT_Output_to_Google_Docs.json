@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-10-23T18:42:19.000Z",
+  "updatedAt": "2025-12-18T15:38:24.000Z",
   "createdAt": "2025-10-23T17:55:17.882Z",
   "id": "8u8RTVnqFpQFY14G",
   "name": "Storied GPT Output to Google Docs",
@@ -22,6 +22,20 @@
               "fieldType": "textarea",
               "placeholder": "Enter Body Copy",
               "requiredField": true
+            },
+            {
+              "fieldLabel": "Template",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Storied"
+                  },
+                  {
+                    "option": "Veridical"
+                  }
+                ]
+              }
             }
           ]
         },
@@ -30,7 +44,7 @@
       "type": "n8n-nodes-base.formTrigger",
       "typeVersion": 2.3,
       "position": [
-        -272,
+        -144,
         -112
       ],
       "id": "134cc1c3-cc30-4463-be8f-b6a08c2dd116",
@@ -40,7 +54,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://script.google.com/macros/s/AKfycbx5daEj6eFWGKMMEu7DhTzz5RoUNt9d1yXFb-OR4j4Yslr1G36deFKFX8KdNOtFJVdw/exec",
+        "url": "https://script.google.com/macros/s/AKfycbzNO888HIpHHr3KoeabqCHbucmJchcEakjj58HaaewLH4BzY4-_AqwKMHcXS7um61gP/exec",
         "sendHeaders": true,
         "headerParameters": {
           "parameters": [
@@ -63,7 +77,11 @@
             },
             {
               "name": "content",
-              "value": "={{ $json.Body }}"
+              "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
+            },
+            {
+              "name": "tempType",
+              "value": "={{ $json.Template }}"
             }
           ]
         },
@@ -72,7 +90,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        176,
+        144,
         -112
       ],
       "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
@@ -90,7 +108,7 @@
           "mode": "list",
           "cachedResultName": "edward"
         },
-        "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $json.docUrl }}",
+        "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $('HTTP Request').item.json.docUrl }}",
         "otherOptions": {
           "includeLinkToWorkflow": false,
           "mrkdwn": true,
@@ -100,7 +118,7 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        656,
+        768,
         -112
       ],
       "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
@@ -112,6 +130,124 @@
           "name": "SLACK API - BOT"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+            },
+            {
+              "name": "accept-language",
+              "value": "en-GB,en;q=0.9"
+            },
+            {
+              "name": "cache-control",
+              "value": "max-age=0"
+            },
+            {
+              "name": "sec-ch-ua",
+              "value": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\""
+            },
+            {
+              "name": "sec-ch-ua-mobile",
+              "value": "?0"
+            },
+            {
+              "name": "sec-ch-ua-platform",
+              "value": "\"macOS\""
+            },
+            {
+              "name": "sec-fetch-dest",
+              "value": "document"
+            },
+            {
+              "name": "sec-fetch-mode",
+              "value": "navigate"
+            },
+            {
+              "name": "sec-fetch-site",
+              "value": "none"
+            },
+            {
+              "name": "sec-fetch-user",
+              "value": "?1"
+            },
+            {
+              "name": "sec-gpc",
+              "value": "1"
+            },
+            {
+              "name": "upgrade-insecure-requests",
+              "value": "1"
+            },
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+            },
+            {
+              "name": "Cookie",
+              "value": "loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "id": "0730992d-74d3-4e30-aae6-e3226a1d4368",
+      "name": "Reddit Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        176,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "curl 'https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json' \\ -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8' \\ -H 'accept-language: en-GB,en;q=0.9' \\ -H 'cache-control: max-age=0' \\ -b 'loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh' \\ -H 'priority: u=0, i' \\ -H 'sec-ch-ua: \"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"' \\ -H 'sec-ch-ua-mobile: ?0' \\ -H 'sec-ch-ua-platform: \"macOS\"' \\ -H 'sec-fetch-dest: document' \\ -H 'sec-fetch-mode: navigate' \\ -H 'sec-fetch-site: none' \\ -H 'sec-fetch-user: ?1' \\ -H 'sec-gpc: 1' \\ -H 'upgrade-insecure-requests: 1' \\ -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        464,
+        144
+      ],
+      "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
+      "name": "Execute a command",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "D3sPlVcppZzCh4fv",
+          "name": "SSH Private Key account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Document Created",
+        "completionMessage": "=The document {{ $('On form submission').item.json.Title }} has been created. \n\n<br><br>\n\nHere's the <a href=\"{{ $json.docUrl }}\">Google Doc URL.</a>",
+        "options": {
+          "formTitle": "Done"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.3,
+      "position": [
+        480,
+        -112
+      ],
+      "id": "452cf416-3570-42a6-8383-f135e7207a73",
+      "name": "Form",
+      "webhookId": "dc7d9258-b4b0-4272-a92c-d87a4a21bdd6"
     }
   ],
   "connections": {
@@ -127,6 +263,28 @@
       ]
     },
     "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit Request": {
+      "main": [
+        [
+          {
+            "node": "Execute a command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Form": {
       "main": [
         [
           {
@@ -149,19 +307,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "On form submission": [
-      {
-        "json": {
-          "Title": "Strategic Sales Memo",
-          "Body": "\r\n## Owning the Leverage Layers in the Future of Drone Defense\r\n\r\n**To:** Prime Contractor Executives, Innovation & BD Leads, Strategic Investment Committees  \r\n**From:** [Your Company / Initiative Name]  \r\n**Subject:** Layer 2 and 4 Solutions for the 7-Layer Drone Defense Stack: Scalable Asymmetric Advantage  \r\n\r\n---\r\n\r\n### Executive Overview\r\n\r\nThe battlefield has changed.  \r\nCheap, autonomous drones—deployed in swarms or one-way missions—now pose a strategic threat to critical infrastructure, urban centers, and forward operating bases. They are fast, networked, and saturating. The traditional tools of air defense—missiles, SAMs, kinetic guns—are increasingly unsustainable in this new cost-exchange reality.\r\n\r\n**The response is clear and emerging globally:**  \r\nA layered drone defense architecture, where each layer contributes a specific role—combining hard and soft kill, deception, and intelligent coordination.\r\n\r\nThis is not a theory. It is already doctrine in Ukraine, Israel, South Korea, the Baltics, and NATO-aligned defense frameworks.\r\n\r\n---\r\n\r\n### Our Strategic Positioning\r\n\r\nWe are not building all 7 layers.  \r\nWe are delivering **solutions for the two most cost-leverage and innovation-critical layers** in the stack:\r\n\r\n- **Layer 2: False Target Drones (Deception Layer)**  \r\n- **Layer 4: AI Interceptor Drones (Autonomous Kill Layer)**  \r\n\r\nThese are the most **asymmetrically powerful**, **economically scalable**, and **mission-critical layers** in the entire ecosystem.  \r\nFor prime contractors and dual-use investors, they represent the sweet spot between strategic relevance and commercial scalability.\r\n\r\n---\r\n\r\n### The 7-Layer Defense Stack (With Cost Model)\r\n\r\n| **Layer** | **Name** | **Function** | **Tools / Methods** | **Strategic Strength** | **Cost Tier** | **Est. Cost per Use** | **Narrative Cue** |\r\n|-----------|----------|--------------|----------------------|-------------------------|----------------|------------------------|-------------------|\r\n| **1** | **Disruption Layer** | Disable drone control/navigation via signal denial | RF jammers, GPS spoofers, cyber takeover | Instant, non-kinetic, scalable | `$` | \\$10–\\$200 | *“Blind the threat before it sees you”* |\r\n| **2** | **Deception Layer** | Mislead drones toward false targets | Signature-emitting drones, decoys, spoof signals | Preemptive threat dilution, misdirection | `$$` | \\$500–\\$5,000 | *“Make them aim at shadows”* |\r\n| **3** | **Saturation Layer** | Rapid close-range kinetic denial | Smart ammo, .50 cal, 30mm autocannons | High-volume, low-cost suppression | `$$` | \\$50–\\$1,000 | *“The last 500 meters of protection”* |\r\n| **4** | **Interceptor Layer** | AI-powered drone-on-drone pursuit & kill | Autonomous intercept drones, AI swarms | Smart, fast, reusable, urban-friendly | `$$$` | \\$1,000–\\$20,000 | *“Smart hunters in the sky”* |\r\n| **5** | **High-End Interceptor Layer** | Destroy large/high-value threats at range | Patriot, NASAMS, Iron Dome, IRIS-T | Strategic strike, low tolerance for error | `$$$$$` | \\$250K–\\$4M | *“The vault security, not your front door”* |\r\n| **6** | **Passive Resilience Layer** | Reduce post-impact consequences | Infrastructure hardening, redundancy, rapid repair | Minimizes disruption, protects insurability | `$$$` | \\$50K–\\$1M per site | *“Not just defense—resilience”* |\r\n| **7** | **Coordination Layer** | AI-based orchestration across all layers | Battle management AI, C2 networks, sensor fusion | Enables layered sync, reduces waste | `$$$` | \\$50K–\\$500K per deployment | *“The brain behind the shield”* |\r\n\r\n---\r\n\r\n### Focus Area: Layer 4 – AI Interceptor Drones\r\n\r\n**Strategic Role:** Fast, autonomous kinetic defeat of hostile drones  \r\n\r\n**Functionality:**  \r\n- Autonomous or human-supervised drone-on-drone interception  \r\n- Onboard computer vision and targeting algorithms  \r\n- Networked swarm logic and multi-threat tracking  \r\n\r\n**Why It Matters:**  \r\n- Enables close-in kinetic defeat where jammers and SAMs fail  \r\n- Scalable protection for urban, mobile, and infrastructure environments  \r\n- Operates on a fraction of the cost of missile-based systems  \r\n- Easily redeployable and modular for multi-mission roles  \r\n\r\n**Estimated Cost per Intercept:** \\$1,000–\\$20,000  \r\n**Integration Potential:** Compatible with existing radars, EO/IR, and C2 systems  \r\n\r\n> **This is the Layer 4 unlock: Smart, fast, and software-defined aerial dominance—deployable at scale.**\r\n\r\n---\r\n\r\n### Focus Area: Layer 2 – False Target Drones\r\n\r\n**Strategic Role:** Confusion and pre-kill chain disruption  \r\n\r\n**Functionality:**  \r\n- Emit radar, RF, GPS, IR, and visual signatures to mimic real targets  \r\n- Trigger hostile drones or munitions to engage false positives  \r\n- Augments jamming and passive defenses  \r\n\r\n**Why It Matters:**  \r\n- Depletes enemy resources before engagement  \r\n- Misdirects autonomous and human-in-the-loop attackers  \r\n- Deployable across static and mobile environments  \r\n\r\n**Estimated Cost per Decoy Deployment:** \\$500–\\$5,000  \r\n**Deployment Methods:** Airborne, vehicle-mounted, or static ground systems  \r\n\r\n> **This is the Layer 2 unlock: Bend the attacker’s logic before they cross the perimeter.**\r\n\r\n---\r\n\r\n### Why This Matters for Prime Contractors\r\n\r\nYou're already engaged in several layers of the stack—Layer 5 (missiles), Layer 1 (EW), Layer 7 (C2).  \r\nBut Layers 2 and 4 offer you:\r\n\r\n- **New, modular capabilities** that integrate into your existing platforms  \r\n- **Contract differentiation** in RFPs focused on layered, scalable C-UAS architectures  \r\n- **Faster-to-deploy solutions** with dual-use commercial crossover  \r\n- **Strategic investment positions** in asymmetric defense technologies  \r\n\r\nThese layers don't compete with your core assets—they **amplify and extend** them.\r\n\r\n---\r\n\r\n### Why This Matters for Strategic Investors (Including You)\r\n\r\nWhether you're a prime with a ventures arm or a dual-use VC, Layers 2 and 4 represent:\r\n\r\n- **High-leverage cost disruption** in a trillion-dollar defense challenge  \r\n- **Low unit economics + high strategic value**  \r\n- **Alignment with DoD, NATO, and homeland security counter-drone funding mandates**  \r\n- **AI-first product architectures** that create defensible IP and data moats  \r\n- **Long-term commercial crossover** into power grid, port, oil/gas, and logistics defense  \r\n\r\n---\r\n\r\n### Conclusion & Invitation\r\n\r\nDrone warfare has changed the economics of national defense. The 7-layer model is the emerging blueprint.  \r\n**Layer 2 and Layer 4 are where leverage, innovation, and value converge.**\r\n\r\nWe are delivering scalable, AI-driven, and rapidly deployable solutions within those two layers.\r\n\r\nWe invite you to:\r\n- Explore co-development partnerships  \r\n- Integrate these capabilities into existing platforms and RFPs  \r\n- Join as a strategic investor in shaping the most future-ready layers of national defense  \r\n\r\nLet’s brief your innovation and integration leads.  \r\nLet’s walk you through field scenarios and systems alignment.  \r\nLet’s build what the next decade of airspace protection demands.\r\n",
-          "submittedAt": "2025-10-23T11:10:58.191-07:00",
-          "formMode": "production"
-        }
-      }
-    ]
-  },
-  "versionId": "d52c3244-babf-4453-b3be-10a492ab71ad",
+  "pinData": {},
+  "versionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
+  "activeVersionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
   "triggerCount": 1,
   "shared": [
     {
@@ -172,5 +320,305 @@
       "projectId": "VAJTVGe0TjfANDAE"
     }
   ],
+  "activeVersion": {
+    "updatedAt": "2025-12-18T15:38:24.602Z",
+    "createdAt": "2025-12-18T15:38:24.602Z",
+    "versionId": "c0e724d0-4253-4a06-9e3e-22073dd4b654",
+    "workflowId": "8u8RTVnqFpQFY14G",
+    "nodes": [
+      {
+        "parameters": {
+          "formTitle": "Storied GPT Output",
+          "formDescription": "Add in the raw markdown from Storied GPT output",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "Title",
+                "placeholder": "Enter File Title",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Body",
+                "fieldType": "textarea",
+                "placeholder": "Enter Body Copy",
+                "requiredField": true
+              },
+              {
+                "fieldLabel": "Template",
+                "fieldType": "dropdown",
+                "fieldOptions": {
+                  "values": [
+                    {
+                      "option": "Storied"
+                    },
+                    {
+                      "option": "Veridical"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          -144,
+          -112
+        ],
+        "id": "134cc1c3-cc30-4463-be8f-b6a08c2dd116",
+        "name": "On form submission",
+        "webhookId": "99e7ce64-162b-4971-8018-a70dc71e3367"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://script.google.com/macros/s/AKfycbzNO888HIpHHr3KoeabqCHbucmJchcEakjj58HaaewLH4BzY4-_AqwKMHcXS7um61gP/exec",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "actionType",
+                "value": "Create"
+              },
+              {
+                "name": "title",
+                "value": "={{ $json.Title }}"
+              },
+              {
+                "name": "content",
+                "value": "={{ $json.Body.replace(/^\\s*---\\s*\\r?\\n/gm, '').replace(/(^\\s*(?:[*+-]|\\d+[.)])\\s.*)\\r?\\n(?:[ \\t]*\\r?\\n)+(?=^\\s*(?:[*+-]|\\d+[.)])\\s)/gm, '$1\\n').replace(/\\\\([\\\\`*_{}\\[\\]()#+\\-.!|>])/g, '$1').replace(/\\\\(?=\\s)/g, '');  }}"
+              },
+              {
+                "name": "tempType",
+                "value": "={{ $json.Template }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          144,
+          -112
+        ],
+        "id": "beabd969-fd9c-4b0a-a81f-b31f65e611a1",
+        "name": "HTTP Request",
+        "retryOnFail": true,
+        "waitBetweenTries": 5000,
+        "alwaysOutputData": false
+      },
+      {
+        "parameters": {
+          "select": "user",
+          "user": {
+            "__rl": true,
+            "value": "U06HYNGR0HL",
+            "mode": "list",
+            "cachedResultName": "edward"
+          },
+          "text": "=Document created:  {{ $('On form submission').item.json.Title }}\n\nLink: {{ $('HTTP Request').item.json.docUrl }}",
+          "otherOptions": {
+            "includeLinkToWorkflow": false,
+            "mrkdwn": true,
+            "unfurl_links": true
+          }
+        },
+        "type": "n8n-nodes-base.slack",
+        "typeVersion": 2.3,
+        "position": [
+          768,
+          -112
+        ],
+        "id": "df0269be-1b04-4ae5-be23-c4b66cbf66a4",
+        "name": "Send a message",
+        "webhookId": "02d9544d-593c-4c72-ab7a-941f73ab1c18",
+        "credentials": {
+          "slackApi": {
+            "id": "TCCNsFSy1xU8ud22",
+            "name": "SLACK API - BOT"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "accept",
+                "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8"
+              },
+              {
+                "name": "accept-language",
+                "value": "en-GB,en;q=0.9"
+              },
+              {
+                "name": "cache-control",
+                "value": "max-age=0"
+              },
+              {
+                "name": "sec-ch-ua",
+                "value": "\"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\""
+              },
+              {
+                "name": "sec-ch-ua-mobile",
+                "value": "?0"
+              },
+              {
+                "name": "sec-ch-ua-platform",
+                "value": "\"macOS\""
+              },
+              {
+                "name": "sec-fetch-dest",
+                "value": "document"
+              },
+              {
+                "name": "sec-fetch-mode",
+                "value": "navigate"
+              },
+              {
+                "name": "sec-fetch-site",
+                "value": "none"
+              },
+              {
+                "name": "sec-fetch-user",
+                "value": "?1"
+              },
+              {
+                "name": "sec-gpc",
+                "value": "1"
+              },
+              {
+                "name": "upgrade-insecure-requests",
+                "value": "1"
+              },
+              {
+                "name": "user-agent",
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+              },
+              {
+                "name": "Cookie",
+                "value": "loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh"
+              }
+            ]
+          },
+          "options": {
+            "redirect": {
+              "redirect": {}
+            }
+          }
+        },
+        "id": "0730992d-74d3-4e30-aae6-e3226a1d4368",
+        "name": "Reddit Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          176,
+          144
+        ]
+      },
+      {
+        "parameters": {
+          "authentication": "privateKey",
+          "command": "curl 'https://www.reddit.com/r/FreeCash/comments/1pouc6x/comment/nui1wfw.json' \\ -H 'accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8' \\ -H 'accept-language: en-GB,en;q=0.9' \\ -H 'cache-control: max-age=0' \\ -b 'loid=000000002488nfavxq.2.1765987704198.Z0FBQUFBQnBRdFY0U0hhNjZYN045VHpaV1l3UDhLb0NvX1g4S29oOUwycjI3LUQxNDRIS09KWVJ3X0U2QWZNeERrTnMwTERzNUVXcFAxWnNLMjRiOWtvdFkzN0c2VUUwSzdnaDZWOV9uYXU3OGtuUGhhUkNSODliWjNfTHNrUk9IdHoyTlVmNnR3RHQ; session_tracker=chenhppilrkhcibran.0.1765987704222.Z0FBQUFBQnBRdFY0azhxdzNrQ2JmeGV2WV90Nzl4R2JoM3ZISXFfUWs2dFFDTGtYQ2ZRUG4ydEs0THItMXhRb1FRMW0yN1hpREpMaE1PVjJDLVYzMVp1YlJ3MTRNYW5yX0VqMjQ2S1ZNcVUwaEdlRVF1YVZPSzNNLVdGaGV0YW1kd1hGdWpMZ3pMMDE; csv=2; edgebucket=oouX8dwZagiCIvR8Kh' \\ -H 'priority: u=0, i' \\ -H 'sec-ch-ua: \"Google Chrome\";v=\"143\", \"Chromium\";v=\"143\", \"Not A(Brand\";v=\"24\"' \\ -H 'sec-ch-ua-mobile: ?0' \\ -H 'sec-ch-ua-platform: \"macOS\"' \\ -H 'sec-fetch-dest: document' \\ -H 'sec-fetch-mode: navigate' \\ -H 'sec-fetch-site: none' \\ -H 'sec-fetch-user: ?1' \\ -H 'sec-gpc: 1' \\ -H 'upgrade-insecure-requests: 1' \\ -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36'"
+        },
+        "type": "n8n-nodes-base.ssh",
+        "typeVersion": 1,
+        "position": [
+          464,
+          144
+        ],
+        "id": "14bcba7c-285a-48f1-9282-4e8c17a979ad",
+        "name": "Execute a command",
+        "credentials": {
+          "sshPrivateKey": {
+            "id": "D3sPlVcppZzCh4fv",
+            "name": "SSH Private Key account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "completion",
+          "completionTitle": "Document Created",
+          "completionMessage": "=The document {{ $('On form submission').item.json.Title }} has been created. \n\n<br><br>\n\nHere's the <a href=\"{{ $json.docUrl }}\">Google Doc URL.</a>",
+          "options": {
+            "formTitle": "Done"
+          }
+        },
+        "type": "n8n-nodes-base.form",
+        "typeVersion": 2.3,
+        "position": [
+          480,
+          -112
+        ],
+        "id": "452cf416-3570-42a6-8383-f135e7207a73",
+        "name": "Form",
+        "webhookId": "dc7d9258-b4b0-4272-a92c-d87a4a21bdd6"
+      }
+    ],
+    "connections": {
+      "On form submission": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "HTTP Request": {
+        "main": [
+          [
+            {
+              "node": "Form",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Reddit Request": {
+        "main": [
+          [
+            {
+              "node": "Execute a command",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Form": {
+        "main": [
+          [
+            {
+              "node": "Send a message",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Storied Admin",
+    "name": null,
+    "description": null
+  },
   "tags": []
 }

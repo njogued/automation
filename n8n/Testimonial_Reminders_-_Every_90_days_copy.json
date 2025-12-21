@@ -1,0 +1,633 @@
+{
+  "updatedAt": "2025-12-20T01:56:12.000Z",
+  "createdAt": "2025-12-20T01:54:47.855Z",
+  "id": "zvX5TLaRTH5tXXHW",
+  "name": "Testimonial Reminders - Every 90 days copy",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "months",
+              "triggerAtHour": 8
+            },
+            {
+              "field": "months",
+              "triggerAtDayOfMonth": 2,
+              "triggerAtHour": 8
+            },
+            {
+              "field": "months",
+              "triggerAtDayOfMonth": 3,
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        -464
+      ],
+      "id": "02b12b77-3cda-4131-8c55-272e1b68aef5",
+      "name": "Monthly Trigger Day 2 And 3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "801229cf-9133-4948-a45f-01885e4062d4",
+              "leftValue": "={{ [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\"].includes($json['Day of week']) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -352,
+        -464
+      ],
+      "id": "dd01ce44-a491-418d-9e6f-d0c5c61afcd2",
+      "name": "Is Current Day Weekday?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json['Day of month'] }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7e488afa-25f4-4e55-a486-01b64125a909"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "ed6322f0-c737-411f-83ff-6879572762df",
+                    "leftValue": "={{ $json['Day of month'] }}",
+                    "rightValue": "1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        32,
+        -480
+      ],
+      "id": "1271b0a4-86ec-47f9-9d66-ed90f2c0fdee",
+      "name": "Check If First Day Month"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c3fbd3bb-bb1b-4467-8494-379f8b9cdc7f",
+              "leftValue": "={{ [\"Monday\", \"Tuesday\", \"Wednesday\", \"Thursday\", \"Friday\"].includes($json.timestamp.toDateTime().minus(1, \"days\").weekdayLong) }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        -512
+      ],
+      "id": "077756f7-d98f-4fcd-a317-0d687159d626",
+      "name": "Was Yesterday A Weekday?"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        -800
+      ],
+      "id": "36d1ea63-eb90-4091-bb44-437dd3d48d29",
+      "name": "Send Testimonial Email 6 Months",
+      "webhookId": "2ff928f2-0684-4545-999b-9368ceb30d3a",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        912,
+        -528
+      ],
+      "id": "3ca210a5-27e2-47b2-9d68-71cf21746fba",
+      "name": "Skip If Yesterday Weekday"
+    },
+    {
+      "parameters": {
+        "emailType": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        912,
+        -1056
+      ],
+      "id": "d3bae432-7601-4ac0-949b-2b0ec3da3a50",
+      "name": "Send Testimonial Email 3 Months",
+      "webhookId": "bbd9a252-fabe-4bfc-bcd2-1a2afb7a9161",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "aLqiTFR2cLtIBYK6",
+          "name": "Gmail account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "getAll",
+        "boardId": "8080609962",
+        "groupId": "new_group__1",
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        -752,
+        -784
+      ],
+      "id": "ed0d5894-5497-4e05-ab1a-45b72848f1cc",
+      "name": "Fetch Monday.com Board Items",
+      "credentials": {
+        "mondayComApi": {
+          "id": "gUBGUEmQCAL7pJ0X",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "2ed85206-f2cf-4e89-88ad-f8628e01f9b6",
+              "leftValue": "={{ $json.name.toLowerCase().includes(\"advisory\") }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "b3b14204-dd87-48c5-aa5c-8103fcad74df",
+              "leftValue": "={{ $json.column_values[15].text.toDateTime() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "dateTime",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3d00cb5f-6740-493a-8e3b-707992fe7eb8",
+              "leftValue": "={{ $json.column_values[15].text.toDateTime() < $now }}",
+              "rightValue": "={{ $now }}",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        -800
+      ],
+      "id": "ea2b2f27-9521-43d6-9f95-bac282eb9bd1",
+      "name": "Filter Advisory Past Dates"
+    },
+    {
+      "parameters": {
+        "operation": "getTimeBetweenDates",
+        "startDate": "={{ $json.column_values[19].text.toDateTime() }}",
+        "endDate": "={{ $now }}",
+        "units": [
+          "month"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        192,
+        -800
+      ],
+      "id": "e9e7065e-61de-49f1-8df7-c9b447aa4f10",
+      "name": "Calculate Months Since Date"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "954bc273-76f5-4232-9523-86f52978579e",
+              "leftValue": "={{ $json.column_values[15].text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3bd8ceb6-4599-44a5-8843-63c0abf5933f",
+              "leftValue": "={{ $json.column_values[15].text }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        -784
+      ],
+      "id": "13aac625-cf3f-428a-92c2-f08e48f17471",
+      "name": "Check Date Column Not Empty"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.timeDifference.months > 2.5 && $json.timeDifference.months < 3.5 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "ecb21d26-fea1-43a9-90a7-dabba62f025a"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5a66e50c-c1bf-4da0-b101-7fb26c4c4a56",
+                    "leftValue": "={{ $json.timeDifference.months > 5.5 && $json.timeDifference.months < 6.5 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4b796588-7950-4d3a-8b98-b9f57313326c",
+                    "leftValue": "={{ $json.timeDifference.months > 8.5 && $json.timeDifference.months < 9.5 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        448,
+        -816
+      ],
+      "id": "79129e58-f82c-4982-aa9e-44261993b4b8",
+      "name": "Route By Month Interval"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -288
+      ],
+      "id": "bb42ed22-3d85-4eee-bb3c-acee2ceedbc6",
+      "name": "Skip On Weekend Day"
+    }
+  ],
+  "connections": {
+    "Monthly Trigger Day 2 And 3": {
+      "main": [
+        [
+          {
+            "node": "Is Current Day Weekday?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Current Day Weekday?": {
+      "main": [
+        [
+          {
+            "node": "Check If First Day Month",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip On Weekend Day",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If First Day Month": {
+      "main": [
+        [
+          {
+            "node": "Fetch Monday.com Board Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Was Yesterday A Weekday?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Was Yesterday A Weekday?": {
+      "main": [
+        [
+          {
+            "node": "Skip If Yesterday Weekday",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fetch Monday.com Board Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Monday.com Board Items": {
+      "main": [
+        [
+          {
+            "node": "Check Date Column Not Empty",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Advisory Past Dates": {
+      "main": [
+        [
+          {
+            "node": "Calculate Months Since Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Months Since Date": {
+      "main": [
+        [
+          {
+            "node": "Route By Month Interval",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Date Column Not Empty": {
+      "main": [
+        [
+          {
+            "node": "Filter Advisory Past Dates",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route By Month Interval": {
+      "main": [
+        [
+          {
+            "node": "Send Testimonial Email 3 Months",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Testimonial Email 6 Months",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Monthly Trigger Day 2 And 3": [
+      {
+        "json": {
+          "timestamp": "2025-12-19T17:46:15.113-08:00",
+          "Readable date": "December 19th 2025, 5:46:15 pm",
+          "Readable time": "5:46:15 pm",
+          "Day of week": "Friday",
+          "Year": "2025",
+          "Month": "December",
+          "Day of month": "1",
+          "Hour": "17",
+          "Minute": "46",
+          "Second": "15",
+          "Timezone": "America/Los_Angeles (UTC-08:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "4b56b29c-1619-456c-a966-7b56dbf7d1c3",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-20T01:54:47.862Z",
+      "createdAt": "2025-12-20T01:54:47.862Z",
+      "role": "workflow:owner",
+      "workflowId": "zvX5TLaRTH5tXXHW",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
