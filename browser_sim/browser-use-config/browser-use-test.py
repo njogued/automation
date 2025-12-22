@@ -9,6 +9,7 @@ browser = Browser(
     user_data_dir='~/Library/Application Support/Google/Chrome',
     # profile_directory='Profile 3',
     profile_directory='Default',
+    headless=True,
 )
 
 # initial_actions = [
