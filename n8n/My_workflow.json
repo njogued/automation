@@ -1,61 +1,87 @@
 {
-  "updatedAt": "2025-07-24T22:22:54.000Z",
-  "createdAt": "2025-07-24T22:18:36.913Z",
-  "id": "abXwMBqzSlwL8SEE",
+  "updatedAt": "2025-12-22T22:43:47.085Z",
+  "createdAt": "2025-12-22T22:43:47.085Z",
+  "id": "OFIaCKgOD1EuFJlh",
   "name": "My workflow",
   "active": false,
-  "isArchived": true,
+  "isArchived": false,
   "nodes": [
     {
-      "parameters": {
-        "command": "df -h /"
-      },
-      "type": "n8n-nodes-base.executeCommand",
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -160,
-        -16
+        -128,
+        -80
       ],
-      "id": "7890a7da-07d2-44ab-819b-73765cff50bf",
-      "name": "Execute Command"
+      "id": "b4336b81-2927-4d36-a3d8-ff517171c7b5",
+      "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
-        "rule": {
-          "interval": [
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "messages": {
+          "values": [
             {
-              "daysInterval": 3
+              "content": "hello, is this live?"
             }
           ]
-        }
+        },
+        "options": {}
       },
-      "type": "n8n-nodes-base.scheduleTrigger",
-      "typeVersion": 1.2,
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
       "position": [
-        48,
-        -16
+        80,
+        -80
       ],
-      "id": "29fe9207-b17c-44d9-bab5-75d10dbdfb67",
-      "name": "Schedule Trigger"
+      "id": "b7410cef-6def-4516-b40b-36a7e2e8860a",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "nlWicxtRTEk11Nqt",
+          "name": "leaked"
+        }
+      }
     }
   ],
-  "connections": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1"
   },
   "staticData": null,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "pinData": {},
-  "versionId": "85d18916-cf33-48e4-b183-cea22a4c343d",
+  "versionId": "ffd3e7cf-6a0b-4ce9-a609-fa07ea52ca67",
+  "activeVersionId": null,
   "triggerCount": 0,
   "shared": [
     {
-      "updatedAt": "2025-07-24T22:18:36.925Z",
-      "createdAt": "2025-07-24T22:18:36.925Z",
+      "updatedAt": "2025-12-22T22:43:47.216Z",
+      "createdAt": "2025-12-22T22:43:47.216Z",
       "role": "workflow:owner",
-      "workflowId": "abXwMBqzSlwL8SEE",
-      "projectId": "VAJTVGe0TjfANDAE"
+      "workflowId": "OFIaCKgOD1EuFJlh",
+      "projectId": "DukkafP5uTjGrfTt"
     }
   ],
+  "activeVersion": null,
   "tags": []
 }
