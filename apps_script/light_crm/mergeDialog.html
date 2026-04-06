@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <style>
+    body {font:14px sans-serif;margin:16px}
+    textarea{width:100%;height:250px}
+    input[type=text]{width:100%}
+  </style>
+</head>
+<body>
+  <label><strong>Choose a template:</strong></label><br>
+  <select id="tmpl" style="width:100%" onchange="load()">
+    <? templates.forEach(function(t,i){ ?>
+      <option value="<?= i ?>"><?= t[0] ?></option>
+    <? }); ?>
+  </select><br><br>
+  
+  <div style="display:flex; gap:12px">
+    <div style="flex:1">
+      <label>Sender&nbsp;Name:</label><br>
+      <input type="text" id="senderName" style="width:100%">
+    </div>
+    <div style="flex:1">
+      <label>Send&nbsp;from&nbsp;alias:</label><br>
+      <select id="senderEmail" style="width:100%">
+        <? aliases.forEach(function(a){ ?>
+          <option value="<?= a ?>"><?= a ?></option>
+        <? }); ?>
+      </select>
+    </div>
+  </div><br><br>
+
+  <label>Subject:</label><br>
+  <input type="text" id="subj"><br><br>
+
+  <label>HTML body (placeholders like {{First Name}} allowed):</label><br>
+  <textarea id="body"></textarea><br>
+
+  <button onclick="go(false)">Send</button>
+  <button onclick="go(true)">Save drafts only</button>
+
+  <script>
+    const templates = <?!= JSON.stringify(templates) ?>; 
+    load(); // initial
+
+    function load(){
+      const i = +document.getElementById('tmpl').value;
+      subj.value = templates[i][0];
+      body.value = templates[i][1];
+    }
+
+    function go(asDraft){
+      google.script.run
+        .withSuccessHandler(count=>{
+          google.script.run.showResultPrompt(count, asDraft);
+          google.script.host.close();
+        })
+        .processMerge(body.value, subj.value, asDraft, senderName.value.trim(), senderEmail.value);
+    }
+  </script>
+</body>
+</html>

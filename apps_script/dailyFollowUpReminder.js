@@ -1,0 +1,75 @@
+function sendDailyFollowUpEmail() {
+  const sheet =
+    SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Personal Outreach");
+  const data = sheet.getDataRange().getValues();
+  const today = new Date();
+  const followUps = [];
+
+  // Headers
+  const headers = data[0];
+  const nameIndex = headers.indexOf("Contact Name");
+  const emailIndex = headers.indexOf("Email");
+  const notesIndex = headers.indexOf("Notes");
+  const nextTouchIndex = headers.indexOf("Next Touch Point");
+
+  // Validate required columns exist
+  if (nameIndex === -1 || emailIndex === -1 || nextTouchIndex === -1) {
+    throw new Error("Required columns missing from spreadsheet. Please ensure 'Contact Name', 'Email', and 'Next Touch Point' columns exist.");
+  }
+
+  let missingDateCount = 0;
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+
+    // Check if Next Touch Point exists before creating Date object
+    if (!row[nextTouchIndex]) {
+      missingDateCount++;
+      continue;
+    }
+
+    const nextTouch = new Date(row[nextTouchIndex]);
+
+    // Validate the date is valid
+    if (isNaN(nextTouch.getTime())) {
+      missingDateCount++;
+      continue;
+    }
+
+    // Normalize dates to avoid time discrepancies
+    if (
+      nextTouch.getFullYear() === today.getFullYear() &&
+      nextTouch.getMonth() === today.getMonth() &&
+      nextTouch.getDate() === today.getDate()
+    ) {
+      followUps.push({
+        name: row[nameIndex],
+        email: row[emailIndex],
+        notes: row[notesIndex],
+      });
+    }
+  }
+
+  if (followUps.length > 0) {
+    const emailBody = followUps
+      .map(
+        (contact, i) =>
+          `${i + 1}. ${contact.name} (${contact.email})\nNotes: ${
+            contact.notes || "None"
+          }`
+      )
+      .join("\n\n");
+
+    MailApp.sendEmail({
+      to: "x@example.com",
+      subject: "Daily Follow-up Reminder",
+      body: `Hi - \n\nHere are your follow-ups for today (${today.toDateString()}):\n\n${emailBody}\n\n---\n${missingDateCount} contact(s) do not have a Next Touch Point date and need to be updated.\n\nHere's the link to the spreadsheet: https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=sharing`,
+    });
+  } else {
+    MailApp.sendEmail({
+      to: "x@example.com",
+      subject: "Daily Follow-up Reminder",
+      body: `Hi - \n\nYou have no follow-ups scheduled for today (${today.toDateString()}).\n\n---\n${missingDateCount} contact(s) do not have a Next Touch Point date and need to be updated.\n\nHere's the link to the spreadsheet: https://docs.google.com/spreadsheets/d/1R9mnFuV9CYPDBUlP64H8d_bb30gLUCo_PkSgYKiWmck/edit?usp=sharing`,
+    });
+  }
+}
