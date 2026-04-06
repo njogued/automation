@@ -1,0 +1,16 @@
+{
+  "name": "pp-playwright_shark",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.35.0"
+  },
+  "dependencies": {
+    "semistandard": "^17.0.0"
+  }
+}

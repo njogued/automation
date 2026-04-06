@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ZebraDialog Example</title>
+    <style>
+      .ZebraDialog {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 20px;
+      }
+
+      .ZebraDialog_Title {
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .ZebraDialog_Body {
+        margin-top: 10px;
+      }
+
+      .ZebraDialog_Buttons {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .ZebraDialog_Button {
+        display: inline-block;
+        padding: 5px 15px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="openDialogButton">Open Dialog</button>
+    <div
+      class="ZebraDialog ZebraDialog_Icon ZebraDialog_Information ZebraDialog_NoCloseButton"
+    >
+      <h3 class="ZebraDialog_Title">New assignment</h3>
+      <div class="ZebraDialog_Body">
+        <div>
+          Please check a
+          <a href="/writer/orders/256202040.html"
+            >new assignment in your discipline</a
+          >.
+        </div>
+      </div>
+      <div class="ZebraDialog_Buttons">
+        <a href="javascript:void(0)" class="ZebraDialog_Button">Ok</a>
+      </div>
+    </div>
+
+    <script>
+      const openDialogButton = document.getElementById("openDialogButton");
+      const dialog = document.querySelector(".ZebraDialog");
+
+      openDialogButton.addEventListener("click", () => {
+        dialog.style.visibility = "visible";
+      });
+
+      const okButton = dialog.querySelector(".ZebraDialog_Button");
+      okButton.addEventListener("click", () => {
+        dialog.style.visibility = "hidden";
+      });
+    </script>
+  </body>
+</html>
