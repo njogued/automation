@@ -1,0 +1,2051 @@
+{
+  "updatedAt": "2026-01-16T00:55:04.964Z",
+  "createdAt": "2026-01-11T18:09:49.065Z",
+  "id": "L7sW1T04qLFjcl9CAT84U",
+  "name": "Gemini File Search",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2544,
+        80
+      ],
+      "id": "20f9315f-7bbf-429e-9513-6bd3b496efbe",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "formTitle": "Doc Upload",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "File",
+              "fieldType": "file",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -2784,
+        -944
+      ],
+      "id": "6cee01ff-4fa7-46f1-9e46-ef2ae2355207",
+      "name": "On form submission",
+      "webhookId": "2e20e6c8-8736-44d5-83c5-a9f2eae405f4"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "displayName",
+              "value": "__-playbooks"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2528,
+        -1264
+      ],
+      "id": "470419c0-57ab-4aa6-a237-14f9a54e32e5",
+      "name": "Create File Store",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "File",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2576,
+        -944
+      ],
+      "id": "06ff971e-493a-4058-ae69-e79920c3b424",
+      "name": "Upload File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/YOUR FILE STORE:importFile",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_name",
+              "value": "={{ $json.file.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -2384,
+        -944
+      ],
+      "id": "7298c9db-6358-408a-ad2d-29c70dd414ca",
+      "name": "Import File",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "##  Create Store",
+        "height": 288,
+        "width": 608,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2864,
+        -1360
+      ],
+      "id": "9b740815-bed8-40d9-86df-ae06d969c9c9",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "##  Upload File\n",
+        "height": 288,
+        "width": 704,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2864,
+        -1040
+      ],
+      "id": "896ddd19-61c0-4915-b84e-46f887f34584",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nI can assist you with understanding __ Playbooks. ",
+        "options": {
+          "loadPreviousSession": "notSupported",
+          "subtitle": "Start a chat.",
+          "responseMode": "streaming"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -2832,
+        -672
+      ],
+      "id": "cc4702a3-1a0e-42f1-bb32-1456c25b91cc",
+      "name": "When chat message received",
+      "webhookId": "f61815ce-f800-4913-a5d3-69303910022f"
+    },
+    {
+      "parameters": {
+        "content": "##  Query\n",
+        "height": 560,
+        "width": 704,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2864,
+        -736
+      ],
+      "id": "5e6bb395-1c1d-49fc-997e-522ed691014d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        { \"text\": \"{{ $fromAI(\"query\",\"the question the user needs an answer to\") }}\" }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/FILESTOREID\"\n        ]\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        -2304,
+        -432
+      ],
+      "id": "dffe5b7d-77e1-4f8f-9b91-f0e911c8b115",
+      "name": "Knowledge Base",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=You are a helpful RAG agent, and your task is to respond to the user pertaining to __'s playbooks, SOPs, and so on. Your job is to answer the user's question using your Knowledge Base tool to make sure all of your answers are grounded in truth. \n\nWhen you are sending a query to the Knowledge Base tool, only send over text. No punctuation, quotation marks, or new lines. \n\nYou primarily answer questions related to __ and Michael Margolis. Always use the Knowledge Base tool to get relevant contextual information. "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -2576,
+        -672
+      ],
+      "id": "b02c83f2-d215-4dda-a497-7d9bfd33d971",
+      "name": "RAG Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -2656,
+        -432
+      ],
+      "id": "af6582d5-1f22-42df-b82b-7f084839df9d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "P0TQQiGAV5I5pAou",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Comprehensive File Intake System\n* Checks if file has already been uploaded to Gemini File Storage to avoid duplicates\n* If not, downloads the file, generates a hash, uploads the file, and saves file details and hash in spreadsheet",
+        "height": 784,
+        "width": 4000,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2864,
+        -160
+      ],
+      "typeVersion": 1,
+      "id": "5dac24d2-466f-4e48-8caa-3e3212bf3fc2",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Loop Over Items').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -528,
+        96
+      ],
+      "id": "e3fb09db-85b1-42ad-ae2d-be14b3c4ebc6",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "kWDd86dODoZQPcVX",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendBody": true,
+        "contentType": "binaryData",
+        "inputDataFieldName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -192,
+        96
+      ],
+      "id": "0615e238-faab-4640-84df-610c5b12d453",
+      "name": "Upload File1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/FILESTOREID:importFile",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "file_name",
+              "value": "={{ $json.file.name }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        192,
+        96
+      ],
+      "id": "4fa7051a-8dde-4653-b4e2-06802ec86f73",
+      "name": "Import File1",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/FILESTOREID/documents",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1952,
+        -656
+      ],
+      "id": "4329d14e-a925-4f4d-afb1-ac5b5d5451e9",
+      "name": "List Files",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/{{ $json.name }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "force",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1296,
+        -656
+      ],
+      "id": "2e2dcdcd-047e-45ce-80bf-d64593705880",
+      "name": "Delete Files",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1456,
+        80
+      ],
+      "id": "5d149b5c-f563-4400-8e0b-5a09c6357dba",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -864,
+        -96
+      ],
+      "id": "4e8909af-7342-46cf-b890-9420d0bc7744",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "documents",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        -656
+      ],
+      "id": "0cc4415a-f6d6-4cb3-b2e0-5bfc1962ec3c",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "content": "## List and Delete Files",
+        "height": 560,
+        "width": 1088,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2144,
+        -736
+      ],
+      "typeVersion": 1,
+      "id": "ffd72769-bbab-4f54-a048-4b44d85578b1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "fileSearchStores",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        -448
+      ],
+      "id": "440da66a-bdb3-4561-a10f-7f63ab7d3a8b",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "resource": "fileFolder",
+        "returnAll": true,
+        "filter": {
+          "folderId": {
+            "__rl": true,
+            "value": "1Im_6_gt8XP5E3jT1mF5dPkzDDcXuiULa",
+            "mode": "id"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -2112,
+        80
+      ],
+      "id": "91f2dd62-30b3-48d8-a743-04e5582244ee",
+      "name": "Search files and folders",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "kWDd86dODoZQPcVX",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "13WqwNE6DIWBFMiLGOYKzHPZOOzEVUbc2bFRgY5zC4Uc",
+          "mode": "list",
+          "cachedResultName": "Gemini Files Mapping",
+          "cachedResultUrl": "SPREADSHEET GOES HERE"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Map",
+          "cachedResultUrl": "SPREADSHEET GOES HERE"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "File Name": "={{ $('Loop Over Items').item.json.name }}",
+            "Gemini File ID": "={{ $json.name }}",
+            "Drive File ID": "={{ $('Loop Over Items').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "File Name",
+              "displayName": "File Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Gemini File ID",
+              "displayName": "Gemini File ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Drive File ID",
+              "displayName": "Drive File ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        720,
+        96
+      ],
+      "id": "6faafeda-cb9a-46a0-9750-3f6915d4f1d8",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "13WqwNE6DIWBFMiLGOYKzHPZOOzEVUbc2bFRgY5zC4Uc",
+          "mode": "list",
+          "cachedResultName": "Gemini Files Mapping",
+          "cachedResultUrl": "SPREADSHEET GOES HERE"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Map",
+          "cachedResultUrl": "SPREADSHEET GOES HERE"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Drive File ID",
+              "lookupValue": "={{ $json.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1072,
+        96
+      ],
+      "id": "2026eca3-1a45-457b-b263-6b70e3fe0241",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "a2GvYolbVNMGjx2A",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        448,
+        96
+      ],
+      "id": "795b2f09-c4e4-4fdb-99bc-fa030c113582",
+      "name": "Wait",
+      "webhookId": "63d8d607-156f-486f-aae6-c85fb200e973"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ffa84d2b-9f88-4ead-99a3-c99c2ec61b09",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -800,
+        96
+      ],
+      "id": "fdb5c0a4-70e2-4ef0-a24d-9b7811d0b04a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -2480,
+        -432
+      ],
+      "id": "d50f9768-ef41-4df3-ab14-0b5e0fa6b7d3",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1936,
+        -448
+      ],
+      "id": "16688c84-7409-4d7a-ac1c-1674f235e382",
+      "name": "List File Stores",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/{{ $json.name }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "force",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1328,
+        -448
+      ],
+      "id": "bfe008af-4d6f-4a9b-bf83-4893d954ff5b",
+      "name": "Delete File Stores",
+      "credentials": {
+        "httpQueryAuth": {
+          "id": "k8MhZboApK1omSVs",
+          "name": "Gemini Query Auth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search files and folders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Upload File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File": {
+      "main": [
+        [
+          {
+            "node": "Import File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Knowledge Base": {
+      "ai_tool": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Upload File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload File1": {
+      "main": [
+        [
+          {
+            "node": "Import File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import File1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Files": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Delete Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Delete File Stores",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search files and folders": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "RAG Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List File Stores": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": "geHpTM7jr9NoyZNi"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Create File Store": [
+      {
+        "json": {
+          "name": "fileSearchStores/FILESTOREID",
+          "displayName": "__-playbooks",
+          "createTime": "2026-01-16T00:06:11.768342Z",
+          "updateTime": "2026-01-16T00:06:11.768342Z"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "f02b6039-a8ec-45b7-885c-689bf27da3a8",
+  "activeVersionId": "f02b6039-a8ec-45b7-885c-689bf27da3a8",
+  "triggerCount": 2,
+  "shared": [
+    {
+      "updatedAt": "2026-01-11T18:09:49.092Z",
+      "createdAt": "2026-01-11T18:09:49.092Z",
+      "role": "workflow:owner",
+      "workflowId": "L7sW1T04qLFjcl9CAT84U",
+      "projectId": "VAJTVGe0TjfANDAE"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-16T00:55:10.000Z",
+    "createdAt": "2026-01-16T00:55:05.006Z",
+    "versionId": "f02b6039-a8ec-45b7-885c-689bf27da3a8",
+    "workflowId": "L7sW1T04qLFjcl9CAT84U",
+    "nodes": [
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -2544,
+          80
+        ],
+        "id": "20f9315f-7bbf-429e-9513-6bd3b496efbe",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "formTitle": "Doc Upload",
+          "formFields": {
+            "values": [
+              {
+                "fieldLabel": "File",
+                "fieldType": "file",
+                "requiredField": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.formTrigger",
+        "typeVersion": 2.3,
+        "position": [
+          -2784,
+          -944
+        ],
+        "id": "6cee01ff-4fa7-46f1-9e46-ef2ae2355207",
+        "name": "On form submission",
+        "webhookId": "2e20e6c8-8736-44d5-83c5-a9f2eae405f4"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "displayName",
+                "value": "__-playbooks"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -2528,
+          -1264
+        ],
+        "id": "470419c0-57ab-4aa6-a237-14f9a54e32e5",
+        "name": "Create File Store",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "File",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -2576,
+          -944
+        ],
+        "id": "06ff971e-493a-4058-ae69-e79920c3b424",
+        "name": "Upload File",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://generativelanguage.googleapis.com/v1beta/YOUR FILE STORE:importFile",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "file_name",
+                "value": "={{ $json.file.name }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -2384,
+          -944
+        ],
+        "id": "7298c9db-6358-408a-ad2d-29c70dd414ca",
+        "name": "Import File",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "##  Create Store",
+          "height": 288,
+          "width": 608,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -2864,
+          -1360
+        ],
+        "id": "9b740815-bed8-40d9-86df-ae06d969c9c9",
+        "name": "Sticky Note"
+      },
+      {
+        "parameters": {
+          "content": "##  Upload File\n",
+          "height": 288,
+          "width": 704,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -2864,
+          -1040
+        ],
+        "id": "896ddd19-61c0-4915-b84e-46f887f34584",
+        "name": "Sticky Note1"
+      },
+      {
+        "parameters": {
+          "public": true,
+          "initialMessages": "Hi there! 👋\nI can assist you with understanding __ Playbooks. ",
+          "options": {
+            "loadPreviousSession": "notSupported",
+            "subtitle": "Start a chat.",
+            "responseMode": "streaming"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "typeVersion": 1.4,
+        "position": [
+          -2832,
+          -672
+        ],
+        "id": "cc4702a3-1a0e-42f1-bb32-1456c25b91cc",
+        "name": "When chat message received",
+        "webhookId": "f61815ce-f800-4913-a5d3-69303910022f"
+      },
+      {
+        "parameters": {
+          "content": "##  Query\n",
+          "height": 560,
+          "width": 704,
+          "color": 5
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -2864,
+          -736
+        ],
+        "id": "5e6bb395-1c1d-49fc-997e-522ed691014d",
+        "name": "Sticky Note2"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"contents\": [\n    {\n      \"parts\": [\n        { \"text\": \"{{ $fromAI(\"query\",\"the question the user needs an answer to\") }}\" }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"file_search\": {\n        \"file_search_store_names\": [\n          \"fileSearchStores/FILESTOREID\"\n        ]\n      }\n    }\n  ]\n}\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequestTool",
+        "typeVersion": 4.3,
+        "position": [
+          -2304,
+          -432
+        ],
+        "id": "dffe5b7d-77e1-4f8f-9b91-f0e911c8b115",
+        "name": "Knowledge Base",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {
+            "systemMessage": "=You are a helpful RAG agent, and your task is to respond to the user pertaining to __'s playbooks, SOPs, and so on. Your job is to answer the user's question using your Knowledge Base tool to make sure all of your answers are grounded in truth. \n\nWhen you are sending a query to the Knowledge Base tool, only send over text. No punctuation, quotation marks, or new lines. \n\nYou primarily answer questions related to __ and Michael Margolis. Always use the Knowledge Base tool to get relevant contextual information. "
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          -2576,
+          -672
+        ],
+        "id": "b02c83f2-d215-4dda-a497-7d9bfd33d971",
+        "name": "RAG Agent"
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          -2656,
+          -432
+        ],
+        "id": "af6582d5-1f22-42df-b82b-7f084839df9d",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "P0TQQiGAV5I5pAou",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "content": "## Comprehensive File Intake System\n* Checks if file has already been uploaded to Gemini File Storage to avoid duplicates\n* If not, downloads the file, generates a hash, uploads the file, and saves file details and hash in spreadsheet",
+          "height": 784,
+          "width": 4000,
+          "color": 4
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -2864,
+          -160
+        ],
+        "typeVersion": 1,
+        "id": "5dac24d2-466f-4e48-8caa-3e3212bf3fc2",
+        "name": "Sticky Note3"
+      },
+      {
+        "parameters": {
+          "operation": "download",
+          "fileId": {
+            "__rl": true,
+            "value": "={{ $('Loop Over Items').item.json.id }}",
+            "mode": "id"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          -528,
+          96
+        ],
+        "id": "e3fb09db-85b1-42ad-ae2d-be14b3c4ebc6",
+        "name": "Download file",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "kWDd86dODoZQPcVX",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://generativelanguage.googleapis.com/upload/v1beta/files",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendBody": true,
+          "contentType": "binaryData",
+          "inputDataFieldName": "data",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -192,
+          96
+        ],
+        "id": "0615e238-faab-4640-84df-610c5b12d453",
+        "name": "Upload File1",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/FILESTOREID:importFile",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "file_name",
+                "value": "={{ $json.file.name }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          192,
+          96
+        ],
+        "id": "4fa7051a-8dde-4653-b4e2-06802ec86f73",
+        "name": "Import File1",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores/FILESTOREID/documents",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -1952,
+          -656
+        ],
+        "id": "4329d14e-a925-4f4d-afb1-ac5b5d5451e9",
+        "name": "List Files",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://generativelanguage.googleapis.com/v1beta/{{ $json.name }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "force",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -1296,
+          -656
+        ],
+        "id": "2e2dcdcd-047e-45ce-80bf-d64593705880",
+        "name": "Delete Files",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -1456,
+          80
+        ],
+        "id": "5d149b5c-f563-4400-8e0b-5a09c6357dba",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.noOp",
+        "typeVersion": 1,
+        "position": [
+          -864,
+          -96
+        ],
+        "id": "4e8909af-7342-46cf-b890-9420d0bc7744",
+        "name": "No Operation, do nothing"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "documents",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          -656
+        ],
+        "id": "0cc4415a-f6d6-4cb3-b2e0-5bfc1962ec3c",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "content": "## List and Delete Files",
+          "height": 560,
+          "width": 1088,
+          "color": 3
+        },
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -2144,
+          -736
+        ],
+        "typeVersion": 1,
+        "id": "ffd72769-bbab-4f54-a048-4b44d85578b1",
+        "name": "Sticky Note5"
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "fileSearchStores",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          -1648,
+          -448
+        ],
+        "id": "440da66a-bdb3-4561-a10f-7f63ab7d3a8b",
+        "name": "Split Out1"
+      },
+      {
+        "parameters": {
+          "resource": "fileFolder",
+          "returnAll": true,
+          "filter": {
+            "folderId": {
+              "__rl": true,
+              "value": "1Im_6_gt8XP5E3jT1mF5dPkzDDcXuiULa",
+              "mode": "id"
+            }
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          -2112,
+          80
+        ],
+        "id": "91f2dd62-30b3-48d8-a743-04e5582244ee",
+        "name": "Search files and folders",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "kWDd86dODoZQPcVX",
+            "name": "Google Drive account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "13WqwNE6DIWBFMiLGOYKzHPZOOzEVUbc2bFRgY5zC4Uc",
+            "mode": "list",
+            "cachedResultName": "Gemini Files Mapping",
+            "cachedResultUrl": "SPREADSHEET GOES HERE"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Map",
+            "cachedResultUrl": "SPREADSHEET GOES HERE"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "File Name": "={{ $('Loop Over Items').item.json.name }}",
+              "Gemini File ID": "={{ $json.name }}",
+              "Drive File ID": "={{ $('Loop Over Items').item.json.id }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "File Name",
+                "displayName": "File Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Gemini File ID",
+                "displayName": "Gemini File ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Drive File ID",
+                "displayName": "Drive File ID",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          720,
+          96
+        ],
+        "id": "6faafeda-cb9a-46a0-9750-3f6915d4f1d8",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "a2GvYolbVNMGjx2A",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "13WqwNE6DIWBFMiLGOYKzHPZOOzEVUbc2bFRgY5zC4Uc",
+            "mode": "list",
+            "cachedResultName": "Gemini Files Mapping",
+            "cachedResultUrl": "SPREADSHEET GOES HERE"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Map",
+            "cachedResultUrl": "SPREADSHEET GOES HERE"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "Drive File ID",
+                "lookupValue": "={{ $json.id }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -1072,
+          96
+        ],
+        "id": "2026eca3-1a45-457b-b263-6b70e3fe0241",
+        "name": "Get row(s) in sheet",
+        "alwaysOutputData": true,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "a2GvYolbVNMGjx2A",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.wait",
+        "typeVersion": 1.1,
+        "position": [
+          448,
+          96
+        ],
+        "id": "795b2f09-c4e4-4fdb-99bc-fa030c113582",
+        "name": "Wait",
+        "webhookId": "63d8d607-156f-486f-aae6-c85fb200e973"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "ffa84d2b-9f88-4ead-99a3-c99c2ec61b09",
+                "leftValue": "={{ $json }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "object",
+                  "operation": "empty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -800,
+          96
+        ],
+        "id": "fdb5c0a4-70e2-4ef0-a24d-9b7811d0b04a",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 10
+        },
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "typeVersion": 1.3,
+        "position": [
+          -2480,
+          -432
+        ],
+        "id": "d50f9768-ef41-4df3-ab14-0b5e0fa6b7d3",
+        "name": "Simple Memory"
+      },
+      {
+        "parameters": {
+          "url": "=https://generativelanguage.googleapis.com/v1beta/fileSearchStores",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -1936,
+          -448
+        ],
+        "id": "16688c84-7409-4d7a-ac1c-1674f235e382",
+        "name": "List File Stores",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "DELETE",
+          "url": "=https://generativelanguage.googleapis.com/v1beta/{{ $json.name }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "force",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -1328,
+          -448
+        ],
+        "id": "bfe008af-4d6f-4a9b-bf83-4893d954ff5b",
+        "name": "Delete File Stores",
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "k8MhZboApK1omSVs",
+            "name": "Gemini Query Auth"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Search files and folders",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "On form submission": {
+        "main": [
+          [
+            {
+              "node": "Upload File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload File": {
+        "main": [
+          [
+            {
+              "node": "Import File",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When chat message received": {
+        "main": [
+          [
+            {
+              "node": "RAG Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Knowledge Base": {
+        "ai_tool": [
+          [
+            {
+              "node": "RAG Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "RAG Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Download file": {
+        "main": [
+          [
+            {
+              "node": "Upload File1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Upload File1": {
+        "main": [
+          [
+            {
+              "node": "Import File1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Import File1": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List Files": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [
+            {
+              "node": "No Operation, do nothing",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Delete Files",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out1": {
+        "main": [
+          [
+            {
+              "node": "Delete File Stores",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Search files and folders": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Download file",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Simple Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "RAG Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "List File Stores": {
+        "main": [
+          [
+            {
+              "node": "Split Out1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "__ Admin",
+    "name": "Version f02b6039",
+    "description": "",
+    "autosaved": false
+  },
+  "tags": []
+}

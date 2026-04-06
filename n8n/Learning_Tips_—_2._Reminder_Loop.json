@@ -1,0 +1,262 @@
+{
+  "updatedAt": "2026-03-15T13:27:57.946Z",
+  "createdAt": "2026-03-15T13:27:57.946Z",
+  "id": "3gsLbA3vXtGW8Uva",
+  "name": "Learning Tips — 2. Reminder Loop",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "id": "a1c4b7bd-ce24-4ee1-bfc6-f1d8e89d757d",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1392,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/4f3c8803-b1e1-470e-801d-908f2ebb1a99/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "7a54783f-8f9f-4630-b170-3deeeb19a501",
+      "name": "Query Unacknowledged Tips Today",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1168,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-1",
+              "leftValue": "={{ $json.results.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "ca458fc6-8b60-4f8b-b354-cf28eecacf25",
+      "name": "Any Pending Reminders?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -944,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = $input.first().json.results || [];\nif (!results.length) return [];\n\nconst page = results[0];\nconst pageId = page.id;\nconst tipsText = page.properties?.Tips?.rich_text?.[0]?.plain_text || 'No tips found.';\nconst reminderCount = (page.properties?.['Reminder Count']?.number || 0);\nconst dateStr = page.properties?.Date?.date?.start || DateTime.now().setZone('Africa/Nairobi').toFormat('yyyy-MM-dd');\n\nconst today = DateTime.now().setZone('Africa/Nairobi');\n\nconst emailBody = [\n  '<h2>🔔 Reminder: Daily Learning Tips — ' + dateStr + '</h2>',\n  '<p>You haven\\'t acknowledged today\\'s tips yet. Here they are again:</p>',\n  '<pre style=\"font-family:inherit;white-space:pre-wrap;background:#f5f5f5;padding:16px;border-radius:8px\">' + tipsText + '</pre>',\n  '<hr/>',\n  '<p style=\"color:#888;font-size:12px\">Reminder #' + (reminderCount + 1) + ' · ' + today.toFormat('HH:mm') + ' EAT</p>'\n].join('\\n');\n\nreturn [{\n  json: {\n    page_id: pageId,\n    tips_text: tipsText,\n    reminder_count: reminderCount,\n    date_str: dateStr,\n    email_body: emailBody,\n    email_subject: '🔔 Reminder #' + (reminderCount + 1) + ': Daily Learning Tips — ' + dateStr,\n    session_id: 'tips-' + dateStr\n  }\n}];"
+      },
+      "id": "7cfbb627-d713-4dab-acc2-8d56db7fe296",
+      "name": "Extract Tips + Page ID",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -736,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://api.notion.com/v1/pages/' + $json.page_id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "dedeeb90-f57b-42ce-8bb1-2bbec041d160",
+      "name": "Increment Reminder Count in Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -512,
+        -112
+      ]
+    },
+    {
+      "parameters": {
+        "subject": "={{ $('Extract Tips + Page ID').item.json.email_subject }}",
+        "message": "={{ $('Extract Tips + Page ID').item.json.email_body }}",
+        "options": {}
+      },
+      "id": "4c8a9eab-286f-4853-84b0-97640a33b067",
+      "name": "Send Reminder Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -224
+      ],
+      "webhookId": "861bcbf5-2bef-42bb-a689-36297d55bf50"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Extract Tips + Page ID').item.json.tips_text }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "id": "ab5c9bba-62b7-45a4-977d-c80c3890541f",
+      "name": "Send Reminder to Slack DM",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        -288,
+        16
+      ],
+      "webhookId": "74269083-d376-4d44-9c2a-3720680a52f7"
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [
+        [
+          {
+            "node": "Query Unacknowledged Tips Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query Unacknowledged Tips Today": {
+      "main": [
+        [
+          {
+            "node": "Any Pending Reminders?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any Pending Reminders?": {
+      "main": [
+        [
+          {
+            "node": "Extract Tips + Page ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Tips + Page ID": {
+      "main": [
+        [
+          {
+            "node": "Increment Reminder Count in Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Increment Reminder Count in Notion": {
+      "main": [
+        [
+          {
+            "node": "Send Reminder Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Reminder to Slack DM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "ae54a646-27bf-42f2-a821-4932f0838128",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-15T13:27:57.975Z",
+      "createdAt": "2026-03-15T13:27:57.975Z",
+      "role": "workflow:owner",
+      "workflowId": "3gsLbA3vXtGW8Uva",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}

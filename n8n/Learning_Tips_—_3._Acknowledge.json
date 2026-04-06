@@ -1,0 +1,222 @@
+{
+  "updatedAt": "2026-03-15T13:28:07.453Z",
+  "createdAt": "2026-03-15T13:28:07.453Z",
+  "id": "WLY9QFDVx1eTEViE",
+  "name": "Learning Tips — 3. Acknowledge",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "slack-tips-ack",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3e29958c-9b2b-4632-a7e7-d192bb9869aa",
+      "name": "Slack Interactive Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -608,
+        -48
+      ],
+      "webhookId": "d51f44bd-ad4e-4614-9cc8-9288672e5657"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "b5d1802d-2a54-42a0-9a73-e7836d1a9386",
+      "name": "Respond to Slack (200 OK)",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -384,
+        -192
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Slack sends interactive payloads as URL-encoded 'payload' field\nconst raw = $input.first().json.body?.payload || $input.first().json.body || '{}';\nlet payload;\ntry {\n  payload = typeof raw === 'string' ? JSON.parse(decodeURIComponent(raw)) : raw;\n} catch(e) {\n  payload = typeof raw === 'string' ? JSON.parse(raw) : raw;\n}\n\nconst action = payload?.actions?.[0];\nconst sessionId = action?.value || '';\nconst actionId = action?.action_id || '';\nconst channelId = payload?.channel?.id || '';\nconst messageTs = payload?.message?.ts || '';\nconst userId = payload?.user?.id || '';\n\n// Extract date from session_id (format: tips-yyyy-MM-dd)\nconst dateStr = sessionId.replace('tips-', '');\n\nreturn [{ json: { sessionId, actionId, channelId, messageTs, userId, dateStr } }];"
+      },
+      "id": "73ba8ffa-c63d-4ba0-b995-700758fb4c19",
+      "name": "Parse Slack Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/4f3c8803-b1e1-470e-801d-908f2ebb1a99/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "054ae903-51ee-4636-a7f7-1ca9d761ee40",
+      "name": "Find Notion Page for Today",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -160,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "={{ 'https://api.notion.com/v1/pages/' + $json.results[0].id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "f9285e8d-f973-447b-ac49-c27f1051ca02",
+      "name": "Mark Acknowledged in Notion",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "ts": "={{ $('Parse Slack Payload').item.json.messageTs }}",
+        "text": "✅ Tips acknowledged!",
+        "updateFields": {},
+        "otherOptions": {}
+      },
+      "id": "3f8e7dae-dbb1-4d07-aff8-c0f1a55d3803",
+      "name": "Update Slack Message",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        96
+      ],
+      "webhookId": "368efd2e-1d88-4373-aa65-8de02a9110a6"
+    }
+  ],
+  "connections": {
+    "Slack Interactive Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Slack (200 OK)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Parse Slack Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Slack Payload": {
+      "main": [
+        [
+          {
+            "node": "Find Notion Page for Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Notion Page for Today": {
+      "main": [
+        [
+          {
+            "node": "Mark Acknowledged in Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Acknowledged in Notion": {
+      "main": [
+        [
+          {
+            "node": "Update Slack Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a6169d6e-63a2-4819-a4d5-3242e0ce2279",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-15T13:28:07.462Z",
+      "createdAt": "2026-03-15T13:28:07.462Z",
+      "role": "workflow:owner",
+      "workflowId": "WLY9QFDVx1eTEViE",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}

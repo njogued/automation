@@ -1,0 +1,543 @@
+{
+  "updatedAt": "2026-03-15T13:27:34.000Z",
+  "createdAt": "2026-03-15T13:17:55.304Z",
+  "id": "wzkhlJdx0UZL22gI",
+  "name": "Learning Tips — 1. Daily Dispatch",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 5 * * *"
+            }
+          ]
+        }
+      },
+      "id": "766ec10b-4cb0-415d-9b60-8293f1bb6b7d",
+      "name": "Every Day 8AM EAT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -656,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/4f3c8803-b1e1-470e-801d-908f2ebb1a99/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "21b9c0d2-fe99-45a2-bb0c-de143e8f1605",
+      "name": "Check If Tips Already Sent Today",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -448,
+        144
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "sd0cmdxn4ZU2K2Y3",
+          "name": "Notion Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-1",
+              "leftValue": "={{ $json.results.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0a740ed5-7363-4220-b42f-82e8476c2dc7",
+      "name": "Already Sent Today?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/314e2617871780cb8e5bfc20715672fd/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b4ac0df4-a864-4910-b331-213c3838a3d4",
+      "name": "Fetch All Learning Docs Pages",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "sd0cmdxn4ZU2K2Y3",
+          "name": "Notion Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ 'https://api.notion.com/v1/pages/' + $json.id + '/markdown' }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2026-03-11"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "bb5b98d6-7236-4a0b-9a6d-8359888b37ef",
+      "name": "Fetch Each Page Blocks",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        432,
+        0
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "sd0cmdxn4ZU2K2Y3",
+          "name": "Notion Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/databases/4f3c8803-b1e1-470e-801d-908f2ebb1a99/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1ab54395-a65d-49ce-9ce9-00bf6116dfcb",
+      "name": "Fetch Last 7 Tip Topics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        0,
+        288
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "sd0cmdxn4ZU2K2Y3",
+          "name": "Notion Header Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "_source",
+              "value": "blocks",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "540dffc5-4b77-4477-8252-cbbfdd8a4ed2",
+      "name": "Tag as Blocks",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "name": "_source",
+              "value": "recent_tips",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "6bebce65-3acd-4706-9832-621c3f05868f",
+      "name": "Tag as Recent Tips",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        288
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "962c8da7-faee-4981-bcaf-e346ff583c95",
+      "name": "Merge Blocks + Recent Tips",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        832,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const allItems = $input.all();\n\n// Separate tagged sources\nconst blockItems = allItems.filter(i => i.json._source === 'blocks');\nconst recentTipItems = allItems.filter(i => i.json._source === 'recent_tips');\n\n// Build learnings string from page block content\nconst textParts = [];\nfor (const item of blockItems) {\n  const blocks = item.json.results || [];\n  for (const block of blocks) {\n    const type = block.type;\n    const richText = block[type]?.rich_text || [];\n    const text = richText.map(t => t.plain_text).join('');\n    if (text.trim()) textParts.push(text.trim());\n  }\n}\nconst learnings = textParts.join('\\n\\n').slice(0, 12000) || 'No learning notes found yet.';\n\n// Extract recent topics to avoid repeating them\nconst recentTopics = recentTipItems\n  .flatMap(i => i.json.results || [])\n  .map(page => page.properties?.['Topics Covered']?.rich_text?.[0]?.plain_text || '')\n  .filter(Boolean)\n  .join(', ');\n\nreturn [{ json: { learnings, recentTopics } }];"
+      },
+      "id": "3f461b33-c7ea-481b-a311-1fc893ea9404",
+      "name": "Aggregate Content + Recent Topics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1040,
+        144
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "263d79c0-f100-4291-9640-aa2a5c1ad760",
+      "name": "Generate 3 Tips with GPT-4",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1.4,
+      "position": [
+        1248,
+        400
+      ],
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "const content = $input.first().json.message?.content || '';\n\n// Split on TOPICS_COVERED marker\nconst [tipsPart, topicsPart] = content.split('TOPICS_COVERED:');\nconst tipsText = (tipsPart || '').replace('TIPS:', '').trim();\nconst topicsCovered = (topicsPart || '').trim();\n\nconst today = DateTime.now().setZone('Africa/Nairobi');\nconst dateStr = today.toFormat('yyyy-MM-dd');\nconst sessionId = `tips-${dateStr}`;\n\nconst emailBody = [\n  '<h2>🧠 Daily Learning Tips — ' + today.toFormat('dd MMM yyyy') + '</h2>',\n  '<p>Based on your notes in Notion, here are 3 tips for today:</p>',\n  '<pre style=\"font-family:inherit;white-space:pre-wrap;background:#f5f5f5;padding:16px;border-radius:8px\">' + tipsText + '</pre>',\n  '<hr/>',\n  '<p style=\"color:#888;font-size:12px\">Generated at ' + today.toFormat('HH:mm') + ' EAT · <a href=\"https://www.notion.so/4f3c8803b1e1470e801d908f2ebb1a99\">View in Notion</a></p>'\n].join('\\n');\n\nreturn [{\n  json: {\n    session_id: sessionId,\n    date_str: dateStr,\n    tips_text: tipsText,\n    topics_covered: topicsCovered,\n    email_body: emailBody,\n    email_subject: '🧠 Daily Learning Tips — ' + today.toFormat('dd MMM yyyy'),\n    sent_at: today.toISO()\n  }\n}];"
+      },
+      "id": "46fb1b64-98ba-4cc9-b2a7-ecdb62b96fd8",
+      "name": "Parse Tips + Topics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1264,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/pages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "id": "b60f0449-aa99-4b7c-ba2f-13083a7c5a34",
+      "name": "Save to Daily Tips Notion DB",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "subject": "={{ $('Parse Tips + Topics').item.json.email_subject }}",
+        "message": "={{ $('Parse Tips + Topics').item.json.email_body }}",
+        "options": {}
+      },
+      "id": "c6bd39ae-46ea-4429-a2ab-034168ab8a53",
+      "name": "Send Tips Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1712,
+        0
+      ],
+      "webhookId": "a2f6127d-d903-4fd0-916e-b59deb1e3bb8"
+    },
+    {
+      "parameters": {
+        "text": "={{ $('Parse Tips + Topics').item.json.tips_text }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "id": "c7d5e96b-4c13-47f2-a6d1-fdc33b909a8a",
+      "name": "Send Tips to Slack DM",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.2,
+      "position": [
+        1712,
+        288
+      ],
+      "webhookId": "4a988f25-d64e-481f-a4b8-022ce366951a"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "88bd80e6-0e26-4741-ae3d-a7d4f5cefa8d",
+      "name": "Split Out"
+    }
+  ],
+  "connections": {
+    "Every Day 8AM EAT": {
+      "main": [
+        [
+          {
+            "node": "Check If Tips Already Sent Today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check If Tips Already Sent Today": {
+      "main": [
+        [
+          {
+            "node": "Already Sent Today?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already Sent Today?": {
+      "main": [
+        [
+          {
+            "node": "Fetch All Learning Docs Pages",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch Last 7 Tip Topics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch All Learning Docs Pages": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Each Page Blocks": {
+      "main": [
+        [
+          {
+            "node": "Tag as Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Last 7 Tip Topics": {
+      "main": [
+        [
+          {
+            "node": "Tag as Recent Tips",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag as Blocks": {
+      "main": [
+        [
+          {
+            "node": "Merge Blocks + Recent Tips",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tag as Recent Tips": {
+      "main": [
+        [
+          {
+            "node": "Merge Blocks + Recent Tips",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge Blocks + Recent Tips": {
+      "main": [
+        [
+          {
+            "node": "Aggregate Content + Recent Topics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Tips + Topics": {
+      "main": [
+        [
+          {
+            "node": "Save to Daily Tips Notion DB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save to Daily Tips Notion DB": {
+      "main": [
+        [
+          {
+            "node": "Send Tips Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Tips to Slack DM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Fetch Each Page Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "11ca6cbb-081a-4a18-bde3-096490901f9a",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-15T13:17:55.353Z",
+      "createdAt": "2026-03-15T13:17:55.353Z",
+      "role": "workflow:owner",
+      "workflowId": "wzkhlJdx0UZL22gI",
+      "projectId": "DukkafP5uTjGrfTt"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
