@@ -1,0 +1,25 @@
+{
+    "name": "Scrape & Post",
+    "version": "2.0",
+    "manifest_version": 3,
+    "description": "Scrape job and send to FUZU",
+    "permissions": ["activeTab", "storage", "tabs", "scripting", "notifications"],
+    "host_permissions": ["https://manage.fuzu.com/*", "https://www.hotnigerianjobs.com/*"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+        "48": "utils/icon48.png"
+      },
+    "content_scripts": [
+        {
+            "matches": ["https://manage.fuzu.com/*", "https://www.hotnigerianjobs.com/*"],
+            "js": ["content.js"]
+        }
+    ],
+    "action": {
+        "default_title": "Scrape & Post",
+        "default_icon": "utils/icon48.png",
+        "default_popup": "popup/popup.html"
+    }    
+}

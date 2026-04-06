@@ -1,0 +1,522 @@
+const fields = [ { type: "text", label: "Employer", name: "employer" }, { type:
+"select", label: "Location", name: "location", options: [ "Lagos, Nigeria",
+"Abuja, Nigeria", "Portharcourt, Nigeria", "Maiduguri, Nigeria", "Ibadan,
+Nigeria", "Nigeria", "Aba, Nigeria", "Abakaliki, Nigeria", "Abeokuta, Nigeria",
+"Ado-Ekiti, Nigeria", "Agaie, Nigeria", "Akure, Nigeria", "Argungu, Nigeria",
+"Arochukwu, Nigeria", "Asaba, Nigeria", "Awka, Nigeria", "Azare, Nigeria",
+"Badagry, Nigeria", "Baro, Nigeria", "Bauchi, Nigeria", "Benin City, Nigeria",
+"Bida, Nigeria", "Birnin Kebbi, Nigeria", "Birnin Kudu, Nigeria", "Biu,
+Nigeria", "Bonny, Nigeria", "Brass, Nigeria", "Bukuru, Nigeria", "Burutu,
+Nigeria", "Calabar, Nigeria", "Damaturu, Nigeria", "Daura, Nigeria", "Deba Habe,
+Nigeria", "Degema, Nigeria", "Dikwa, Nigeria", "Dutse, Nigeria", "Ede, Nigeria",
+"Effon-Alaiye, Nigeria", "Enugu, Nigeria", "Epe, Nigeria", "Gombe, Nigeria",
+"Gumel, Nigeria", "Gusau, Nigeria", "Gwandu, Nigeria", "Hadejia, Nigeria", "Ibi,
+Nigeria", "Idah, Nigeria", "Ijebu-Ode, Nigeria", "Ikare, Nigeria", "Ikere-Ekiti,
+Nigeria", "Ikire, Nigeria", "Ikirun, Nigeria", "Ikorodu, Nigeria", "Ikot Abasi,
+Nigeria", "Ikot Ekpene, Nigeria", "Ila, Nigeria", "Ilaro, Nigeria", "Ile-Ife,
+Nigeria", "Ilesha, Nigeria", "Ilobu, Nigeria", "Ilorin, Nigeria", "Inisa,
+Nigeria", "Iseyin, Nigeria", "Iwo, Nigeria", "Jalingo, Nigeria", "Jamaare,
+Nigeria", "Jebba, Nigeria", "Jemaa, Nigeria", "Jimeta, Nigeria", "Jos, Nigeria",
+"Kabba, Nigeria", "Kaduna, Nigeria", "Kano, Nigeria", "Katagum, Nigeria",
+"Katsina, Nigeria", "Kaura Namoda, Nigeria", "Kazaure, Nigeria", "Keffi,
+Nigeria", "Koko, Nigeria", "Kontagora, Nigeria", "Kumo, Nigeria", "Lafia,
+Nigeria", "Lafiagi, Nigeria", "Lapai, Nigeria", "Lokoja, Nigeria", "Makurdi,
+Nigeria", "Minna, Nigeria", "Misau, Nigeria", "Mubi, Nigeria", "Muri, Nigeria",
+"Mushin, Nigeria", "Nasarawa, Nigeria", "Nguru, Nigeria", "Nsukka, Nigeria",
+"Numan, Nigeria", "Offa, Nigeria", "Ogbomosho, Nigeria", "Ogoja, Nigeria",
+"Oka-Akoko, Nigeria", "Okene, Nigeria", "Okrika, Nigeria", "Ondo, Nigeria",
+"Onitsha, Nigeria", "Oron, Nigeria", "Oshogbo, Nigeria", "Owerri, Nigeria",
+"Owo, Nigeria", "Oyo, Nigeria", "Pategi, Nigeria", "Saki, Nigeria", "Sapele,
+Nigeria", "Shagamu, Nigeria", "Shomolu, Nigeria", "Sokoto, Nigeria", "Suleja,
+Nigeria", "Ughelli, Nigeria", "Umuahia, Nigeria", "Uyo, Nigeria", "Vom,
+Nigeria", "Warri, Nigeria", "Wase, Nigeria", "Yelwa, Nigeria", "Yola, Nigeria",
+"Zaria, Nigeria", "Nigeria", ], }, { type: "text", label: "Job Title", name:
+"jobTitle" }, { type: "select", label: "Job Type", name: "jobType", options:
+["Permanent", "Fixed Term", "Temporary"], }, { type: "select", label: "Job
+Category", name: "jobCategory", options: [ "Accounting, finance, banking,
+insurance", "Administrative, clerical", "Agriculture, fishing, forestry,
+wildlife", "Business, strategic management", "Construction", "Customer support,
+client care", "Design, arts", "Electrical engineering", "Energy, power",
+"Engineering, architecture", "Entertainment", "Food, nutrition", "General
+management, leadership", "Government, community development, public services",
+"Human resources", "Information technology, software development, data",
+"Installation, maintenance, repair", "Legal", "Manufacturing, operations,
+quality", "Mechanical engineering", "Media, communications, languages",
+"Medical, health", "Project, program management", "Research, academy",
+"Restaurant, hospitality, travel", "Sales, marketing, promotion", "Security",
+"Skilled, manual labor", "Sports, beauty, wellbeing", "Teaching, training",
+"Telecommunications", "Transportation, logistics, driving", ], }, { type:
+"select", label: "Industry", name: "industry", options: [ "Aeronautics",
+"Agriculture, fishing, forestry", "Arts, design", "Automotive", "Banking,
+microfinance, insurance", "Beauty, cosmetics", "Communications, media, radio,
+tv", "Computers, software development and services", "Construction, renovation,
+maintenance", "Consulting, business support, auditing", "Data/Research",
+"Education, academic", "Electronics", "Energy, utilities, environment",
+"Engineering, architecture", "Entertainment, events", "Finance & FinTech",
+"Financial Services", "Fitness, well-being and lifestyle", "Governmental",
+"Handicraft", "Health care, medical", "Housekeeping, maintenance", "Human
+resources, talent development, recruiting", "Import, export", "Legal,
+accounting", "Manufacturing", "Marketing, advertising", "Non-profit, social
+work", "Outsourcing, leasing", "Raw materials, oil, chemicals", "Real estate",
+"Restaurant, hospitality, travel", "Retail, wholesale, FMCG", "Security",
+"Telecommunications", "Textile, fashion", "Transportation, logistics, storage",
+], }, { type: "div", label: "Job Summary", name: "jobSummary" }, { type: "div",
+label: "Responsibilities", name: "responsibilities" }, { label: "Years of
+Experience", name: "experience", type: "select", options: [ "None", "One Month",
+"Three Months", "6 Months", "12 Months", "18 Months", "2 Years", "3 Years", "5
+Years", "7 Years", "10 Years", ], }, { label: "Education Level", name:
+"education", type: "select", options: [ "Bachelor's degree", "Primary school",
+"High, secondary school", "Vocational school", "Diploma, Associate's degree",
+"Post-graduate education", ], }, { label: "Job Level", name: "jobLevel", type:
+"select", options: [ "Experienced (senior worker)", "Intern or trainee", "Basic
+level (worker)", "Expert (non-managerial)", "Manager (team leader)", "Senior
+manager (department head)", "Executive (director)", ], }, { type: "date", label:
+"Job Expiry", name: "jobExpiry" }, { type: "select", label: "Method of
+Application", name: "applicationMethod", options: ["email_application",
+"outside", "postal"], }, { type: "text", label: "Application Link", name:
+"applicationLink" }, { type: "submit", label: "", name: "submitButton" }, ];
+fields.forEach((field) => { if (field.type === "div") { // create the div label
+const label = document.createElement("label"); label.textContent = field.label;
+// Create a div with contenteditable attribute const div =
+document.createElement("div"); div.classList.add("editableDivs"); div.id =
+field.name; div.contentEditable = true; form.appendChild(label);
+form.appendChild(div); } else { const label = document.createElement("label");
+label.textContent = field.label; const input = field.type === "textarea" ?
+document.createElement("textarea") : field.type === "select" ?
+document.createElement("select") : field.type === "submit" ?
+document.createElement("input") : document.createElement("input"); if
+(field.type === "select") { if (field.name === "location") {
+chrome.storage.local.get("locations").then((result) => { // Iterate through
+options and create option elements for (const option of field.options) { const
+optionElement = document.createElement("option"); optionElement.value =
+result.locations[option]; optionElement.text = option;
+input.appendChild(optionElement); } }); } else { field.options.forEach((option)
+=> { const optionElement = document.createElement("option"); optionElement.value
+= option; optionElement.text = option; input.appendChild(optionElement); }); } }
+input.type = field.type === "select" ? "" : field.type; input.name = field.name;
+input.id = field.name; form.appendChild(label); form.appendChild(input); } });
+
+<style>
+  #jobForm {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    width: 93%;
+  }
+
+  .gridDiv {
+    display: grid;
+    grid-template-columns: 60% auto;
+  }
+
+  .gridCol {
+    width: 95%;
+  }
+
+  .editableDivs {
+    border: 2px solid #000000;
+    min-height: 50px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+  }
+
+  input[type="submit"] {
+    background-color: #4caf50;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+</style>
+
+<form id="jobForm">
+  <div class="gridDiv">
+    <div class="gridCol">
+      <label>Employer</label><input type="text" name="employer" id="employer" />
+    </div>
+    <div class="gridCol">
+      <label>Location</label
+      ><select name="location" id="location">
+        <option value="862">Lagos, Nigeria</option>
+        <option value="733">Abuja, Nigeria</option>
+        <option value="801">Portharcourt, Nigeria</option>
+        <option value="834">Maiduguri, Nigeria</option>
+        <option value="771">Ibadan, Nigeria</option>
+        <option value="532">Nigeria</option>
+        <option value="730">Aba, Nigeria</option>
+        <option value="731">Abakaliki, Nigeria</option>
+        <option value="732">Abeokuta, Nigeria</option>
+        <option value="734">Ado-Ekiti, Nigeria</option>
+        <option value="735">Agaie, Nigeria</option>
+        <option value="736">Akure, Nigeria</option>
+        <option value="737">Argungu, Nigeria</option>
+        <option value="738">Arochukwu, Nigeria</option>
+        <option value="739">Asaba, Nigeria</option>
+        <option value="740">Awka, Nigeria</option>
+        <option value="741">Azare, Nigeria</option>
+        <option value="742">Badagry, Nigeria</option>
+        <option value="743">Baro, Nigeria</option>
+        <option value="744">Bauchi, Nigeria</option>
+        <option value="745">Benin City, Nigeria</option>
+        <option value="746">Bida, Nigeria</option>
+        <option value="747">Birnin Kebbi, Nigeria</option>
+        <option value="748">Birnin Kudu, Nigeria</option>
+        <option value="749">Biu, Nigeria</option>
+        <option value="750">Bonny, Nigeria</option>
+        <option value="751">Brass, Nigeria</option>
+        <option value="752">Bukuru, Nigeria</option>
+        <option value="753">Burutu, Nigeria</option>
+        <option value="754">Calabar, Nigeria</option>
+        <option value="755">Damaturu, Nigeria</option>
+        <option value="756">Daura, Nigeria</option>
+        <option value="757">Deba Habe, Nigeria</option>
+        <option value="758">Degema, Nigeria</option>
+        <option value="759">Dikwa, Nigeria</option>
+        <option value="760">Dutse, Nigeria</option>
+        <option value="761">Ede, Nigeria</option>
+        <option value="762">Effon-Alaiye, Nigeria</option>
+        <option value="763">Enugu, Nigeria</option>
+        <option value="764">Epe, Nigeria</option>
+        <option value="765">Gombe, Nigeria</option>
+        <option value="766">Gumel, Nigeria</option>
+        <option value="768">Gusau, Nigeria</option>
+        <option value="769">Gwandu, Nigeria</option>
+        <option value="770">Hadejia, Nigeria</option>
+        <option value="767">Ibi, Nigeria</option>
+        <option value="772">Idah, Nigeria</option>
+        <option value="773">Ijebu-Ode, Nigeria</option>
+        <option value="774">Ikare, Nigeria</option>
+        <option value="775">Ikere-Ekiti, Nigeria</option>
+        <option value="776">Ikire, Nigeria</option>
+        <option value="777">Ikirun, Nigeria</option>
+        <option value="778">Ikorodu, Nigeria</option>
+        <option value="779">Ikot Abasi, Nigeria</option>
+        <option value="780">Ikot Ekpene, Nigeria</option>
+        <option value="781">Ila, Nigeria</option>
+        <option value="782">Ilaro, Nigeria</option>
+        <option value="783">Ile-Ife, Nigeria</option>
+        <option value="784">Ilesha, Nigeria</option>
+        <option value="785">Ilobu, Nigeria</option>
+        <option value="786">Ilorin, Nigeria</option>
+        <option value="787">Inisa, Nigeria</option>
+        <option value="788">Iseyin, Nigeria</option>
+        <option value="789">Iwo, Nigeria</option>
+        <option value="790">Jalingo, Nigeria</option>
+        <option value="791">Jamaare, Nigeria</option>
+        <option value="792">Jebba, Nigeria</option>
+        <option value="793">Jemaa, Nigeria</option>
+        <option value="794">Jimeta, Nigeria</option>
+        <option value="795">Jos, Nigeria</option>
+        <option value="841">Kabba, Nigeria</option>
+        <option value="842">Kaduna, Nigeria</option>
+        <option value="843">Kano, Nigeria</option>
+        <option value="844">Katagum, Nigeria</option>
+        <option value="845">Katsina, Nigeria</option>
+        <option value="846">Kaura Namoda, Nigeria</option>
+        <option value="847">Kazaure, Nigeria</option>
+        <option value="848">Keffi, Nigeria</option>
+        <option value="849">Koko, Nigeria</option>
+        <option value="850">Kontagora, Nigeria</option>
+        <option value="851">Kumo, Nigeria</option>
+        <option value="796">Lafia, Nigeria</option>
+        <option value="797">Lafiagi, Nigeria</option>
+        <option value="798">Lapai, Nigeria</option>
+        <option value="799">Lokoja, Nigeria</option>
+        <option value="835">Makurdi, Nigeria</option>
+        <option value="836">Minna, Nigeria</option>
+        <option value="837">Misau, Nigeria</option>
+        <option value="838">Mubi, Nigeria</option>
+        <option value="839">Muri, Nigeria</option>
+        <option value="840">Mushin, Nigeria</option>
+        <option value="833">Nasarawa, Nigeria</option>
+        <option value="832">Nguru, Nigeria</option>
+        <option value="831">Nsukka, Nigeria</option>
+        <option value="830">Numan, Nigeria</option>
+        <option value="829">Offa, Nigeria</option>
+        <option value="828">Ogbomosho, Nigeria</option>
+        <option value="827">Ogoja, Nigeria</option>
+        <option value="826">Oka-Akoko, Nigeria</option>
+        <option value="825">Okene, Nigeria</option>
+        <option value="824">Okrika, Nigeria</option>
+        <option value="823">Ondo, Nigeria</option>
+        <option value="822">Onitsha, Nigeria</option>
+        <option value="821">Oron, Nigeria</option>
+        <option value="820">Oshogbo, Nigeria</option>
+        <option value="819">Owerri, Nigeria</option>
+        <option value="818">Owo, Nigeria</option>
+        <option value="817">Oyo, Nigeria</option>
+        <option value="800">Pategi, Nigeria</option>
+        <option value="814">Saki, Nigeria</option>
+        <option value="815">Sapele, Nigeria</option>
+        <option value="816">Shagamu, Nigeria</option>
+        <option value="813">Shomolu, Nigeria</option>
+        <option value="812">Sokoto, Nigeria</option>
+        <option value="811">Suleja, Nigeria</option>
+        <option value="802">Ughelli, Nigeria</option>
+        <option value="803">Umuahia, Nigeria</option>
+        <option value="804">Uyo, Nigeria</option>
+        <option value="805">Vom, Nigeria</option>
+        <option value="806">Warri, Nigeria</option>
+        <option value="807">Wase, Nigeria</option>
+        <option value="808">Yelwa, Nigeria</option>
+        <option value="809">Yola, Nigeria</option>
+        <option value="810">Zaria, Nigeria</option>
+        <option value="532">Nigeria</option>
+      </select>
+    </div>
+  </div>
+  <div class="gridDiv">
+    <div class="gridCol">
+      <label>Job Title</label
+      ><input type="text" name="jobTitle" id="jobTitle" />
+    </div>
+    <div class="gridCol">
+      <label>Job Type</label
+      ><select name="jobType" id="jobType">
+        <option value="Permanent">Permanent</option>
+        <option value="Fixed Term">Fixed Term</option>
+        <option value="Temporary">Temporary</option>
+      </select>
+    </div>
+  </div>
+  <div class="gridDiv">
+    <div class="gridCol">
+      <label>Job Category</label
+      ><select name="jobCategory" id="jobCategory">
+        <option value="Accounting, finance, banking, insurance">
+          Accounting, finance, banking, insurance
+        </option>
+        <option value="Administrative, clerical">
+          Administrative, clerical
+        </option>
+        <option value="Agriculture, fishing, forestry, wildlife">
+          Agriculture, fishing, forestry, wildlife
+        </option>
+        <option value="Business, strategic management">
+          Business, strategic management
+        </option>
+        <option value="Construction">Construction</option>
+        <option value="Customer support, client care">
+          Customer support, client care
+        </option>
+        <option value="Design, arts">Design, arts</option>
+        <option value="Electrical engineering">Electrical engineering</option>
+        <option value="Energy, power">Energy, power</option>
+        <option value="Engineering, architecture">
+          Engineering, architecture
+        </option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Food, nutrition">Food, nutrition</option>
+        <option value="General management, leadership">
+          General management, leadership
+        </option>
+        <option value="Government, community development, public services">
+          Government, community development, public services
+        </option>
+        <option value="Human resources">Human resources</option>
+        <option value="Information technology, software development, data">
+          Information technology, software development, data
+        </option>
+        <option value="Installation, maintenance, repair">
+          Installation, maintenance, repair
+        </option>
+        <option value="Legal">Legal</option>
+        <option value="Manufacturing, operations, quality">
+          Manufacturing, operations, quality
+        </option>
+        <option value="Mechanical engineering">Mechanical engineering</option>
+        <option value="Media, communications, languages">
+          Media, communications, languages
+        </option>
+        <option value="Medical, health">Medical, health</option>
+        <option value="Project, program management">
+          Project, program management
+        </option>
+        <option value="Research, academy">Research, academy</option>
+        <option value="Restaurant, hospitality, travel">
+          Restaurant, hospitality, travel
+        </option>
+        <option value="Sales, marketing, promotion">
+          Sales, marketing, promotion
+        </option>
+        <option value="Security">Security</option>
+        <option value="Skilled, manual labor">Skilled, manual labor</option>
+        <option value="Sports, beauty, wellbeing">
+          Sports, beauty, wellbeing
+        </option>
+        <option value="Teaching, training">Teaching, training</option>
+        <option value="Telecommunications">Telecommunications</option>
+        <option value="Transportation, logistics, driving">
+          Transportation, logistics, driving
+        </option>
+      </select>
+    </div>
+    <div class="gridCol">
+      <label>Industry</label
+      ><select name="industry" id="industry">
+        <option value="Aeronautics">Aeronautics</option>
+        <option value="Agriculture, fishing, forestry">
+          Agriculture, fishing, forestry
+        </option>
+        <option value="Arts, design">Arts, design</option>
+        <option value="Automotive">Automotive</option>
+        <option value="Banking, microfinance, insurance">
+          Banking, microfinance, insurance
+        </option>
+        <option value="Beauty, cosmetics">Beauty, cosmetics</option>
+        <option value="Communications, media, radio, tv">
+          Communications, media, radio, tv
+        </option>
+        <option value="Computers, software development and services">
+          Computers, software development and services
+        </option>
+        <option value="Construction, renovation, maintenance">
+          Construction, renovation, maintenance
+        </option>
+        <option value="Consulting, business support, auditing">
+          Consulting, business support, auditing
+        </option>
+        <option value="Data/Research">Data/Research</option>
+        <option value="Education, academic">Education, academic</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Energy, utilities, environment">
+          Energy, utilities, environment
+        </option>
+        <option value="Engineering, architecture">
+          Engineering, architecture
+        </option>
+        <option value="Entertainment, events">Entertainment, events</option>
+        <option value="Finance &amp; FinTech">Finance &amp; FinTech</option>
+        <option value="Financial Services">Financial Services</option>
+        <option value="Fitness, well-being and lifestyle">
+          Fitness, well-being and lifestyle
+        </option>
+        <option value="Governmental">Governmental</option>
+        <option value="Handicraft">Handicraft</option>
+        <option value="Health care, medical">Health care, medical</option>
+        <option value="Housekeeping, maintenance">
+          Housekeeping, maintenance
+        </option>
+        <option value="Human resources, talent development, recruiting">
+          Human resources, talent development, recruiting
+        </option>
+        <option value="Import, export">Import, export</option>
+        <option value="Legal, accounting">Legal, accounting</option>
+        <option value="Manufacturing">Manufacturing</option>
+        <option value="Marketing, advertising">Marketing, advertising</option>
+        <option value="Non-profit, social work">Non-profit, social work</option>
+        <option value="Outsourcing, leasing">Outsourcing, leasing</option>
+        <option value="Raw materials, oil, chemicals">
+          Raw materials, oil, chemicals
+        </option>
+        <option value="Real estate">Real estate</option>
+        <option value="Restaurant, hospitality, travel">
+          Restaurant, hospitality, travel
+        </option>
+        <option value="Retail, wholesale, FMCG">Retail, wholesale, FMCG</option>
+        <option value="Security">Security</option>
+        <option value="Telecommunications">Telecommunications</option>
+        <option value="Textile, fashion">Textile, fashion</option>
+        <option value="Transportation, logistics, storage">
+          Transportation, logistics, storage
+        </option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <label>Job Summary</label>
+    <div class="editableDivs" id="jobSummary" contenteditable="true">
+      <br />
+    </div>
+  </div>
+  <div>
+    <label>Responsibilities</label>
+    <div
+      class="editableDivs"
+      id="responsibilities"
+      contenteditable="true"
+    ></div>
+  </div>
+  <div class="gridDiv">
+    <div class="gridCol">
+      <label>Education Level</label
+      ><select name="education" id="education">
+        <option value="Bachelor's degree">Bachelor's degree</option>
+        <option value="Primary school">Primary school</option>
+        <option value="High, secondary school">High, secondary school</option>
+        <option value="Vocational school">Vocational school</option>
+        <option value="Diploma, Associate's degree">
+          Diploma, Associate's degree
+        </option>
+        <option value="Post-graduate education">Post-graduate education</option>
+      </select>
+    </div>
+    <div class="gridCol">
+      <label>Years of Experience</label
+      ><select name="experience" id="experience">
+        <option value="None">None</option>
+        <option value="One Month">One Month</option>
+        <option value="Three Months">Three Months</option>
+        <option value="6 Months">6 Months</option>
+        <option value="12 Months">12 Months</option>
+        <option value="18 Months">18 Months</option>
+        <option value="2 Years">2 Years</option>
+        <option value="3 Years">3 Years</option>
+        <option value="5 Years">5 Years</option>
+        <option value="7 Years">7 Years</option>
+        <option value="10 Years">10 Years</option>
+      </select>
+    </div>
+  </div>
+  <div class="gridDiv">
+    <div class="gridCol">
+      <label>Job Expiry</label
+      ><input type="date" name="jobExpiry" id="jobExpiry" />
+    </div>
+    <div class="gridCol">
+      <label>Job Level</label
+      ><select name="jobLevel" id="jobLevel">
+        <option value="Experienced (senior worker)">
+          Experienced (senior worker)
+        </option>
+        <option value="Intern or trainee">Intern or trainee</option>
+        <option value="Basic level (worker)">Basic level (worker)</option>
+        <option value="Expert (non-managerial)">Expert (non-managerial)</option>
+        <option value="Manager (team leader)">Manager (team leader)</option>
+        <option value="Senior manager (department head)">
+          Senior manager (department head)
+        </option>
+        <option value="Executive (director)">Executive (director)</option>
+      </select>
+    </div>
+  </div>
+  <label>Method of Application</label
+  ><select name="applicationMethod" id="applicationMethod">
+    <option value="email_application">email_application</option>
+    <option value="outside">outside</option>
+    <option value="postal">postal</option></select
+  ><label>Application Link</label
+  ><input
+    type="text"
+    name="applicationLink"
+    id="applicationLink"
+  /><label></label><input type="submit" name="submitButton" id="submitButton" />
+</form>

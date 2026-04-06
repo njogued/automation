@@ -1,0 +1,25 @@
+{
+    "name": "FUZU - Scrape & Post",
+    "version": "3.0",
+    "manifest_version": 3,
+    "description": "Scrape from MyJobMag and send to FUZU",
+    "permissions": ["activeTab", "storage", "tabs", "scripting", "notifications"],
+    "host_permissions": ["https://manage.fuzu.com/*", "https://www.hotnigerianjobs.com/*"],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+        "48": "utils/ke-icon.png"
+      },
+    "content_scripts": [
+        {
+            "matches": ["https://manage.fuzu.com/*", "https://www.hotnigerianjobs.com/*", "https://www.myjobmag.co.ke/*"],
+            "js": ["content.js"]
+        }
+    ],
+    "action": {
+        "default_title": "KE - Scrape & Post",
+        "default_icon": "utils/ke-icon.png",
+        "default_popup": "popup/popup.html"
+    }    
+}

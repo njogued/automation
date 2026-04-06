@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Poster 2.0</title>
+    <link href="popup.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <form>
+      <label for="companyName">Company Name</label>
+      <input type="text" id="companyName" name="companyName" />
+      <label for="companyId">Company Id</label>
+      <input type="text" id="companyId" name="companyId" readonly />
+      <button id="searchCompany" type="submit">Find</button>
+    </form>
+    <form>
+      <label for="newCompanyName">New Company Name</label>
+      <input type="text" id="newCompanyName" name="newCompanyName" />
+      <label for="newCompanyId">New Company Id</label>
+      <input type="text" id="newCompanyId" name="newCompanyId" />
+      <button id="updateCompany" type="submit">Set</button>
+    </form>
+    <!-- Button to save data into the output file -->
+    <!-- <button id="saveDataButton" class="popupButtons">
+      <strong>Save Employer Data</strong>
+    </button> -->
+    <!-- Button to load data from the output file -->
+    <!-- <button id="loadDataButton" class="popupButtons">
+      <strong>Load Employer Data</strong>
+    </button> -->
+    <button id="clearDataButton" class="popupButtons">
+      <strong>Clear Session Data</strong>
+    </button>
+    <script src="popup.js"></script>
+  </body>
+</html>

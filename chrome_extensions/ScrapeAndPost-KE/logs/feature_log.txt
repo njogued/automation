@@ -1,0 +1,48 @@
+Feature #1: Create a popup.html that will load employers,
+query local storage for employer ID, update employer ID
+based on employer name, and allow user to clear session storage 
+(chrome.session.storage.clear())
+Status: Closed
+
+Feature #2: Clear session storage for that tab when the job
+has been posted
+Status: Closed
+
+Feature #3: Specify the permissions for website in the manifest
+Status: Closed
+
+Feature #4: Filter location automatically
+Status: Open
+
+Feature #5: Stop using alerts as they are buggy. Also, pass employer
+to the create employer page
+Status: Closed
+
+Feature #6: Add details in email method of application to qualifications
+Status: Closed
+
+Feature #7: Pass job title to the skills page
+Status: Closed
+
+Feature #8: Use grid to display form elements
+Status: Closed
+
+Feature #9: Get locations from the local storage
+Status: Closed. **locations are now added in HTML form
+
+Feature #10: Buttons to go up to the location and then down to the submit element
+Status: Open
+
+Feature #11: Get employer from session storage and add counter to make sure employer is autofilled once
+Status: Closed
+
+Feature #12: If application method is outside, open the link in new tab
+Status: Closed => Unnecesary
+
+Feature #13: Set employerID and update storage for employers not in DB after selecting the right employer.
+            Alternatively: Consider setting employer using select tag in HTML instead of chrome storage.
+Status: Closed => Getting employer from storage because iterating through 14k employers may lead to 
+performance issues so I believe its better to use the dictionary in storage. 
+
+Feature #14: Use OpenAI to get skills, employer level, and job category.
+Status: Open
