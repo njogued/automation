@@ -1,0 +1,19 @@
+{
+  "name": "browserbase-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "browserbase-runner.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@browserbasehq/sdk": "^1.5.0",
+    "dotenv": "^16.6.1",
+    "playwright": "^1.58.0",
+    "playwright-core": "^1.58.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
