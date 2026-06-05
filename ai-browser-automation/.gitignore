@@ -11,3 +11,8 @@ tests
 .venv
 .agents
 .env
+
+browser-use-agent/.env
+browser-use-agent/.venv
+browser-use-agent/.agents
+browser-use-agent/scripts/
